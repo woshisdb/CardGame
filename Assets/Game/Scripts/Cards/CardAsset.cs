@@ -10,7 +10,7 @@ public class CardAsset : SerializedScriptableObject
     public string cardDescription;
     [ReadOnly]
     public CardEnum cardEnum;
-    public List<EffectData> cardEffects=new List<EffectData>();
+    public List<CardEffectData> cardEffects=new List<CardEffectData>();
     [Button]
     public void AddEffect(CardEffect cardEffect)
     {

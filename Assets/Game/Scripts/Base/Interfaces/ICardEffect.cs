@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EffectData
+public class CardEffectData
 {
     public ICardEffect cardEffect;
-    public EffectData(ICardEffect cardEffect)
+    public CardEffectData(ICardEffect cardEffect)
     {
         this.cardEffect = cardEffect;
     }
@@ -14,15 +14,15 @@ public class EffectData
 
 public interface ICardEffect
 {
-    bool CanExe(EffectData effectData, TableModel table, CardModel card);
+    bool CanExe(CardEffectData effectData, TableModel table, CardModel card);
     /// <summary>
-    /// ¿¨ÅÆÐ§¹û
+    /// ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
     /// </summary>
-    TableExeData Effect(EffectData effectData, TableModel table, CardModel card);
+    TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card);
 
     /// <summary>
-    /// Ð§¹ûÊý¾Ý
+    /// Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     /// <returns></returns>
-    EffectData EffectData();
+    CardEffectData EffectData();
 }
