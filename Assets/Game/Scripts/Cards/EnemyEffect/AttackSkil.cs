@@ -1,19 +1,18 @@
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AddBuffEffectData: CardEffectData
+public class AttackSkilData : CardEffectData
 {
     public string Name;
 
-    public AddBuffEffectData(ICardEffect cardEffect) : base(cardEffect)
+    public AttackSkilData(ICardEffect cardEffect) : base(cardEffect)
     {
     }
 }
 
-[CreateAssetMenu(fileName = "AddBuffEffect", menuName = "Effect/AddBuffEffect")]
-public class AddBuffEffect : CardEffect,ISendEvent
+[CreateAssetMenu(fileName = "AttackSkil", menuName = "Effect/AttackSkil")]
+public class AttackSkil : CardEffect, ISendEvent
 {
     public override bool CanExe(CardEffectData effectData, TableModel table, CardModel card)
     {
@@ -40,6 +39,6 @@ public class AddBuffEffect : CardEffect,ISendEvent
 
     public override CardEffectData EffectData()
     {
-        return new AddBuffEffectData(this);
+        return new AttackSkilData(this);
     }
 }
