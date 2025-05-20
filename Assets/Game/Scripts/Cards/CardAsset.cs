@@ -1,0 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
+using Sirenix.OdinInspector;
+using UnityEngine;
+[CreateAssetMenu(fileName = "newCard", menuName = "SaveData/newCard")]
+
+public class CardAsset : SerializedScriptableObject
+{
+    public string cardName;
+    public string cardDescription;
+    [ReadOnly]
+    public CardEnum cardEnum;
+    public List<EffectData> cardEffects=new List<EffectData>();
+    [Button]
+    public void AddEffect(CardEffect cardEffect)
+    {
+        cardEffects.Add(cardEffect.EffectData());
+    }
+}
