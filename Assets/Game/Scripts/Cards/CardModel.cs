@@ -6,9 +6,9 @@ public class CardModel : IUISelector, IModel, ISendEvent
     public CardAsset cardAsset;
     public string cardName { get { return cardAsset.cardName; } }
     public string cardDescription { get { return cardAsset.cardDescription; } }
-    public CardModel()
+    public CardModel(CardAsset cardAsset)
     {
-
+        this.cardAsset = cardAsset;
     }
 
     public IView CreateView()
@@ -27,7 +27,11 @@ public class CardModel : IUISelector, IModel, ISendEvent
         cardScView.BindModel(this);
         return cardScView;
     }
-    public List<UIItemBinder> GetUI(bool fromScene)
+    public virtual void OnAddSlot(SlotView slotView)
+    {
+        
+    }
+    public virtual List<UIItemBinder> GetUI(bool fromScene)
     {
         var ret = new List<UIItemBinder>();
         ret.Add(new KVItemBinder(() =>

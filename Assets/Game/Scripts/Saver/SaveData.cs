@@ -19,11 +19,6 @@ public class SaveFile
     [Button]
     public void InitMap()
     {
-        cards = new List<CardModel>();
-        for(int i=0;i<5;i++)
-        {
-            cards.Add(new CardModel());
-        }
         cells.Clear();
         for (int i = 0; i < sizeX; i++)
         {
@@ -59,5 +54,10 @@ public class SaveData : SerializedScriptableObject
         var filePath = "Assets/Resources/Saves" + "/tablesaveData.dat";
         var json = File.ReadAllBytes(filePath);
         saveFile = SerializationUtility.DeserializeValue<SaveFile>(json, DataFormat.JSON);
+    }
+    [Button]
+    public void AddCard(CardAsset asset)
+    {
+        saveFile.cards.Add(asset.CreateCardModel());
     }
 }

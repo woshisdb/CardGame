@@ -44,6 +44,13 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
             State.Next(e.effect.Effect(e.effect.EffectData(), this, e.cardModel));
         }
     }
+    public void SlotEffectEvent(SlotEffectEvent e)
+    {
+        if (e.effect.CanExe(e.effect.EffectData(), this, e.slotView))
+        {
+            State.Next(e.effect.Effect(e.effect.EffectData(), this, e.slotView));
+        }
+    }
     public void SelectSlotEvent(SelectSlotEvent e)
     {
         if (TableCircleEnum.SelectSloting == circleEnum)
@@ -68,6 +75,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         //Debug.Log(this);
         this.Register<ChangeEvent>(ChangeEvent);
         this.Register<CardEffectEvent>(CardEffectEvent);
+        this.Register<SlotEffectEvent>(SlotEffectEvent);
         this.Register<SelectSlotEvent>(SelectSlotEvent);
         gameRule.Init();
     }
@@ -76,6 +84,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         this.Unregister<ChangeEvent>(ChangeEvent);
         this.Unregister<CardEffectEvent>(CardEffectEvent);
         this.Unregister<SelectSlotEvent>(SelectSlotEvent);
+        this.Unregister<SlotEffectEvent>(SlotEffectEvent);
     }
     public void StartSelectSlot(Func<SlotView,bool> cond,Action<SlotView> succ)
     {

@@ -42,3 +42,14 @@ public struct CardEffectEvent:IEvent
         this.cardModel = cardModel;
     }
 }
+
+public struct SlotEffectEvent : IEvent
+{
+    public ISlotEffect effect;
+    public SlotView slotView;
+    public SlotEffectEvent(ISlotEffect effect, SlotView slotView)
+    {
+        this.effect = effect;
+        this.slotView = slotView;
+    }
+}

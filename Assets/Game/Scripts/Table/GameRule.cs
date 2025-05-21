@@ -66,7 +66,7 @@ public class EnemyGameState : GameState
 {
     public override bool IsEnd()
     {
-        return true ;
+        return false ;
     }
 
     public override GameState Next()

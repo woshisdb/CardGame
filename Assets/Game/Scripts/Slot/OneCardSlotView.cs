@@ -14,6 +14,7 @@ public class OneCardSlotView : SlotView, IUISelector
     public void AddCard(CardModel cardModel,Action onSucc,Action onFail)
     {
         this.cardModel = cardModel;
+        cardModel.OnAddSlot(this);
         var cardScView = cardModel.CreateCardScView();
         this.scView = cardScView;
         cardScView.transform.parent = transform;
