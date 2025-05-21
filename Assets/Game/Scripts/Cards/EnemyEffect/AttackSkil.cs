@@ -2,42 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackSkilData : CardEffectData
+public class AttackSkilData : SlotEffectData
 {
     public string Name;
 
-    public AttackSkilData(ICardEffect cardEffect) : base(cardEffect)
+    public AttackSkilData(ISlotEffect slotEffect) : base(slotEffect)
     {
     }
 }
 
-[CreateAssetMenu(fileName = "AttackSkil", menuName = "Effect/AttackSkil")]
-public class AttackSkil : CardEffect, ISendEvent
+[CreateAssetMenu(fileName = "EnemyAttackSkil", menuName = "Effect/EnemyAttackSkil")]
+public class EnemyAttackSkil : SlotEffect, ISendEvent
 {
-    public override bool CanExe(CardEffectData effectData, TableModel table, CardModel card)
+    public override bool CanExe(SlotEffectData effectData, TableModel table, SlotView slot)
     {
         return true;
     }
 
-    public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card)
+    public override TableExeData Effect(SlotEffectData effectData, TableModel table, SlotView card)
     {
         return new SelectSlotData((slot) =>
         {
-            return slot is OneCardSlotView;
+            return slot is OneCardSlotView && ((OneCardSlotView)slot).ExistTag(SlotTag.AnimalSlot);
         },
         (slot) =>
         {
-            State.Next(new AddSlotCardData((OneCardSlotView)slot, card, () =>
-            {
-                State.Next(new RemoveHandCardData(card, () =>
-                {
-                    State.End();
-                }));
-            }));
+            State.End();
         });
     }
 
-    public override CardEffectData EffectData()
+    public override SlotEffectData EffectData()
     {
         return new AttackSkilData(this);
     }

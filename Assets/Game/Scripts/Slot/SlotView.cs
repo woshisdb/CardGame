@@ -6,6 +6,7 @@ using UnityEngine;
 
 public abstract class SlotView : SerializedMonoBehaviour,IUISelector
 {
+    public HashSet<SlotTag> slotTags=new HashSet<SlotTag>();
     [ReadOnly]
     public string slotName;
     public TableView tableView;
@@ -34,4 +35,15 @@ public abstract class SlotView : SerializedMonoBehaviour,IUISelector
     //        return list;
     //    }
     //}
+    public bool ExistTag(SlotTag tag)
+    {
+        if(slotTags!=null)
+        {
+            return slotTags.Contains(tag);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
