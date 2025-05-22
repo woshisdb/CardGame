@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -18,7 +19,7 @@ public interface ISlotEffect
     /// <summary>
     /// ����Ч��
     /// </summary>
-    TableExeData Effect(SlotEffectData effectData, TableModel table, SlotView card);
+    TableExeData Effect(SlotEffectData effectData, TableModel table, SlotView card,Action done);
 
     /// <summary>
     /// Ч������
@@ -33,7 +34,7 @@ public abstract class SlotEffect : SerializedScriptableObject,ISlotEffect
     [ReadOnly]
     public SlotEffectEnum slotEffectEnum;
     public abstract bool CanExe(SlotEffectData effectData, TableModel table, SlotView card);
-    public abstract TableExeData Effect(SlotEffectData effectData, TableModel table, SlotView card);
+    public abstract TableExeData Effect(SlotEffectData effectData, TableModel table, SlotView card,Action done);
 
     public abstract SlotEffectData EffectData();
 }

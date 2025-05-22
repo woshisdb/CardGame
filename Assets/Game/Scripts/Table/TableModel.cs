@@ -41,14 +41,14 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
     {
         if (e.effect.CanExe(e.effect.EffectData(), this, e.cardModel))
         {
-            State.Next(e.effect.Effect(e.effect.EffectData(), this, e.cardModel));
+            State.Next(e.effect.Effect(e.effect.EffectData(), this, e.cardModel,null));
         }
     }
     public void SlotEffectEvent(SlotEffectEvent e)
     {
         if (e.effect.CanExe(e.effect.EffectData(), this, e.slotView))
         {
-            State.Next(e.effect.Effect(e.effect.EffectData(), this, e.slotView));
+            State.Next(e.effect.Effect(e.effect.EffectData(), this, e.slotView,null));
         }
     }
     public void SelectSlotEvent(SelectSlotEvent e)
@@ -62,6 +62,8 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
             }
         }
     }
+    
+    
     public TableModel()
     {
         tableCircle = new TableCircle();

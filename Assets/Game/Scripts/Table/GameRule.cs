@@ -104,7 +104,7 @@ public class EnemyGameState : GameState
                     var enemyCard = enemySlot.GetCardModel() as EnemyCardModel;
                     asyncQueue.Add(e =>
                     {
-                        enemyCard.GameTurn(done);
+                        enemyCard.GameTurn(e,TableModel,enemySlot);
                     });
                 }    
             }

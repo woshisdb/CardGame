@@ -9,26 +9,77 @@ public static class State
     {
         data.Exe();
     }
-    public static void End()
+    public static void End(Action done)
     {
-        State.Next(new EndData());
+        State.Next(new EndData(done));
     }
 }
 
 public abstract class TableExeData : ISendEvent
 {
+    public TableModel tableModel
+    {
+        get
+        {
+            return GameArchitect.Instance.GetTableModel();
+        }
+    }
+
     public abstract void Exe();
     public void EndStage()
     {
-        State.End();
+        State.End(null);
     }
 }
 
 public class EndData : TableExeData
 {
+    public Action done;
+    public EndData(Action done = null)
+    {
+        this.done = done;
+    }
     public override void Exe()
     {
-        this.SendEvent(new ChangeEvent(TableCircleEnum.Pending));
+        if (done != null)
+        {
+            done();
+        }
+        else
+        {
+            this.SendEvent(new ChangeEvent(TableCircleEnum.Pending));
+        }
+    }
+}
+
+public class TableChangeHpData : TableExeData
+{
+    public int hpChange;
+    public IAnimalCard from;
+    public IAnimalCard to;
+    public Action done;
+    public TableChangeHpData(int hpChange, IAnimalCard from, IAnimalCard to,Action done) : base()
+    {
+        this.done = done;
+        this.hpChange = hpChange;
+        this.from = from;
+        this.to = to;
+    }
+
+    public override void Exe()
+    {
+        if (hpChange>0)
+        {
+            
+        }
+        else if (hpChange < 0)
+        {
+            
+        }
+        else
+        {
+            done();
+        }
     }
 }
 
@@ -55,8 +106,7 @@ public class SelectSlotData : TableExeData
 
     public override void Exe()
     {
-        var table = GameArchitect.Instance.GetTableModel();
-        table.StartSelectSlot((slot) => { return this.require(slot); }, onSucc);
+        tableModel.StartSelectSlot((slot) => { return this.require(slot); }, onSucc);
     }
 }
 

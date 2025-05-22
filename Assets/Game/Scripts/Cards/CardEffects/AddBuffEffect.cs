@@ -24,7 +24,7 @@ public class AddBuffEffect : CardEffect,ISendEvent
         return true;
     }
 
-    public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card)
+    public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card,Action done)
     {
         return new SelectSlotData((slot) =>
         {
@@ -36,7 +36,7 @@ public class AddBuffEffect : CardEffect,ISendEvent
             {
                 State.Next(new RemoveHandCardData(card, () =>
                 {
-                    State.End();
+                    State.End(done);
                 }));
             }));
         });

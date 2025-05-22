@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroCardModel : CardModel
+public class HeroCardModel : CardModel,IAnimalCard
 {
     public int hp;
-
+    public SlotView slot;
     public HeroCardModel(CardAsset cardAsset) : base(cardAsset)
     {
         var asset = cardAsset as HeroCardAsset;
@@ -15,6 +15,29 @@ public class HeroCardModel : CardModel
     public void AddHp(int hp)
     {
         this.hp += hp;
+    }
+
+    public int GetHp()
+    {
+        return this.hp;
+    }
+
+    public void SetHp(int hp)
+    {
+        this.hp = hp;
+    }
+
+    public void ChangeHp(int hp)
+    {
+        this.hp = this.hp+hp;
+    }
+    public SlotView GetSlot()
+    {
+        return slot;
+    }
+    public override void OnAddSlot(SlotView slotView)
+    {
+        slot = slotView;
     }
 }
 

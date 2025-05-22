@@ -18,7 +18,7 @@ public interface ICardEffect
     /// <summary>
     /// ����Ч��
     /// </summary>
-    TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card);
+    TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card,Action done);
 
     /// <summary>
     /// Ч������

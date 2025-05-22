@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
+
 public class TableView : SerializedMonoBehaviour,IView,ISendEvent
 {
     public List<SlotView> slotViews { get { return tableModel.slots; } }
@@ -49,7 +50,7 @@ public class TableView : SerializedMonoBehaviour,IView,ISendEvent
 
     }
     /// <summary>
-    /// ½øÈë³¡¾°ºó³õÊ¼»¯
+    /// ï¿½ï¿½ï¿½ë³¡ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
     /// </summary>
     public void StartGame()
     {
@@ -67,5 +68,10 @@ public class TableView : SerializedMonoBehaviour,IView,ISendEvent
         //    done();
         //});
         //asyncQueue.Run();
+    }
+
+    public void ShowEffect(TableEffectData effectData)
+    {
+        
     }
 }

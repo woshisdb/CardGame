@@ -25,7 +25,7 @@ public class PutToSlotEffect : CardEffect, ISendEvent
         return true;
     }
 
-    public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card)
+    public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card,Action done)
     {
         return new SelectSlotData((slot) =>
         {
@@ -37,7 +37,7 @@ public class PutToSlotEffect : CardEffect, ISendEvent
             {
                 State.Next(new RemoveHandCardData(card, () =>
                 {
-                    State.End();
+                    State.End(done);
                 }));
             }));
         });

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,10 +24,11 @@ public class EnemyAttackSkil : SlotEffect, ISendEvent
         return true;
     }
 
-    public override TableExeData Effect(SlotEffectData effectData, TableModel table, SlotView card)
+    public override TableExeData Effect(SlotEffectData effectData, TableModel table, SlotView card,Action done)
     {
         var heroSlot = table.FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView;
         var hero = heroSlot.cardModel as HeroCardModel;
+        
         return new EndData();
     }
 
