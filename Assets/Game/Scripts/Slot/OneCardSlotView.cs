@@ -11,6 +11,10 @@ public class OneCardSlotView : SlotView, IUISelector
     public void Refresh()
     {
     }
+    public CardModel GetCardModel()
+    {
+        return cardModel;
+    }
     public void AddCard(CardModel cardModel,Action onSucc,Action onFail)
     {
         this.cardModel = cardModel;
@@ -43,7 +47,8 @@ public class OneCardSlotView : SlotView, IUISelector
     {
         if(cardModel==null)
         {
-
+            return true;
         }
+        return false;
     }
 }

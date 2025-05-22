@@ -30,6 +30,8 @@ public interface ISlotEffect
 
 public abstract class SlotEffect : SerializedScriptableObject,ISlotEffect
 {
+    [ReadOnly]
+    public SlotEffectEnum slotEffectEnum;
     public abstract bool CanExe(SlotEffectData effectData, TableModel table, SlotView card);
     public abstract TableExeData Effect(SlotEffectData effectData, TableModel table, SlotView card);
 

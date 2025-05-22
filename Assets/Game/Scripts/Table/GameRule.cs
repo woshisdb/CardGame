@@ -86,16 +86,35 @@ public class EnemyGameState : GameState
 
     public override void Process(Action done)
     {
+        Debug.Log("ssss");
+        var hero = TableModel.FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView;
+        if(hero.IsEmpty())
+        {
+            done();
+        }
         var enemys = TableModel.FindSlotByTags(SlotTag.EnemySlot);
+        AsyncQueue asyncQueue = new AsyncQueue();
         for(int i =0;i<enemys.Count;i++)
         {
             if(enemys[i] is OneCardSlotView)
             {
                 var enemySlot = enemys[i] as OneCardSlotView;
-
+                if(!enemySlot.IsEmpty())
+                {
+                    var enemyCard = enemySlot.GetCardModel() as EnemyCardModel;
+                    asyncQueue.Add(e =>
+                    {
+                        enemyCard.GameTurn(done);
+                    });
+                }    
             }
         }
-        done();
+        asyncQueue.Add(e =>
+        {
+            done();
+            e();
+        });
+        asyncQueue.Run();
     }
 }
 

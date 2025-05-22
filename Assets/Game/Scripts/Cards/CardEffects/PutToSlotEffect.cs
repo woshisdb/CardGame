@@ -15,6 +15,11 @@ public class PutToSlotEffectData : CardEffectData
 [CreateAssetMenu(fileName = "PutToSlotEffect", menuName = "Effect/PutToSlotEffect")]
 public class PutToSlotEffect : CardEffect, ISendEvent
 {
+    public PutToSlotEffect()
+    {
+        cardEffectEnum = CardEffectEnum.PutToSlotEffect;
+    }
+
     public override bool CanExe(CardEffectData effectData, TableModel table, CardModel card)
     {
         return true;

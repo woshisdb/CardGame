@@ -6,6 +6,8 @@ using UnityEngine;
 //[CreateAssetMenu(fileName = "newCardEffect", menuName = "SaveData/newCardEffect")]
 public abstract class CardEffect : SerializedScriptableObject, ICardEffect
 {
+    [ReadOnly]
+    public CardEffectEnum cardEffectEnum;
     public abstract bool CanExe(CardEffectData effectData, TableModel table, CardModel card);
     public abstract TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card);
 

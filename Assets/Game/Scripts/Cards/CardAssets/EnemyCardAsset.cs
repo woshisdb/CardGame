@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -13,6 +14,12 @@ public class EnemyCardModel : CardModel
         var asset = cardAsset as EnemyCardAsset;
         this.hp = asset.hp;
     }
+
+    public void GameTurn(Action done)
+    {
+        done();
+    }
+
     public override void OnAddSlot(SlotView slotView)
     {
         slot = slotView;

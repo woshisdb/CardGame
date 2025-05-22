@@ -14,6 +14,10 @@ public class AttackSkilData : SlotEffectData
 [CreateAssetMenu(fileName = "EnemyAttackSkil", menuName = "Effect/EnemyAttackSkil")]
 public class EnemyAttackSkil : SlotEffect, ISendEvent
 {
+    public EnemyAttackSkil()
+    {
+        slotEffectEnum = SlotEffectEnum.EnemyAttackSkil;
+    }
     public override bool CanExe(SlotEffectData effectData, TableModel table, SlotView slot)
     {
         return true;

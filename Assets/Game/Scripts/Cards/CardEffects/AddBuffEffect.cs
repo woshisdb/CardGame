@@ -15,6 +15,10 @@ public class AddBuffEffectData: CardEffectData
 [CreateAssetMenu(fileName = "AddBuffEffect", menuName = "Effect/AddBuffEffect")]
 public class AddBuffEffect : CardEffect,ISendEvent
 {
+    public AddBuffEffect()
+    {
+        cardEffectEnum = CardEffectEnum.AddBuffEffect;
+    }
     public override bool CanExe(CardEffectData effectData, TableModel table, CardModel card)
     {
         return true;
