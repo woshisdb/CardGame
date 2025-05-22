@@ -86,6 +86,15 @@ public class EnemyGameState : GameState
 
     public override void Process(Action done)
     {
+        var enemys = TableModel.FindSlotByTags(SlotTag.EnemySlot);
+        for(int i =0;i<enemys.Count;i++)
+        {
+            if(enemys[i] is OneCardSlotView)
+            {
+                var enemySlot = enemys[i] as OneCardSlotView;
+
+            }
+        }
         done();
     }
 }

@@ -31,6 +31,10 @@ public class CardModel : IUISelector, IModel, ISendEvent
     {
         
     }
+    public virtual void OnRemoveSlot(SlotView slotView)
+    {
+
+    }
     public virtual List<UIItemBinder> GetUI(bool fromScene)
     {
         var ret = new List<UIItemBinder>();

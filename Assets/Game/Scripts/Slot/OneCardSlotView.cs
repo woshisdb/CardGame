@@ -21,7 +21,12 @@ public class OneCardSlotView : SlotView, IUISelector
         cardScView.transform.localPosition = Vector3.zero;
         onSucc();
     }
-
+    public void RemoveCard(CardModel cardModel,Action onSucc,Action onFail)
+    {
+        this.cardModel = null;
+        cardModel.OnRemoveSlot(this);
+        onSucc();
+    }
     public override List<UIItemBinder> GetUI()
     {
         if(cardModel!=null)
@@ -32,6 +37,13 @@ public class OneCardSlotView : SlotView, IUISelector
         {
             var list = new List<UIItemBinder>();
             return list;
+        }
+    }
+    public bool IsEmpty()
+    {
+        if(cardModel==null)
+        {
+
         }
     }
 }

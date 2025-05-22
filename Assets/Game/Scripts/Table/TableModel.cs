@@ -105,6 +105,23 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         }
         return null;
     }
+
+    public List<SlotView> FindSlotByTags(SlotTag slotTag, Func<SlotView, bool> func = null)
+    {
+        List<SlotView> ret = new List<SlotView>();
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (slots[i].ExistTag(slotTag))
+            {
+                if (func != null && func(slots[i]))
+                {
+                    ret.Add(slots[i]);
+                }
+            }
+        }
+        return ret;
+    }
+
     [Button]
     public void AddSlot(SlotView slotView)
     {
