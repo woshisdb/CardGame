@@ -26,10 +26,10 @@ public class EnemyAttackSkil : SlotEffect, ISendEvent
 
     public override TableExeData Effect(SlotEffectData effectData, TableModel table, SlotView card,Action done)
     {
+        var enemy = (card as OneCardSlotView).GetCardModel() as EnemyCardModel;
         var heroSlot = table.FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView;
         var hero = heroSlot.cardModel as HeroCardModel;
-        
-        return new EndData();
+        return new TableChangeHpData(1, enemy, hero, done);
     }
 
     public override SlotEffectData EffectData()
