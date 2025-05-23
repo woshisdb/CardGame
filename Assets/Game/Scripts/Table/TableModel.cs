@@ -4,6 +4,23 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
+public class TableModelData
+{
+    public HeroCardModel hero;
+    public EnemyCardModel enemy;
+    [Button]
+    public void AddCard(CardAsset asset,CardEnum cardEnum)
+    {
+        if (cardEnum == CardEnum.HeroCard)
+        {
+            hero = asset.CreateCardModel() as HeroCardModel;
+        }
+        else if (cardEnum == CardEnum.EnemyCard)
+        {
+            enemy = asset.CreateCardModel() as EnemyCardModel;
+        }
+    }
+}
 
 public class TableModel:IModel,IRegisterEvent,ISendEvent
 {
@@ -12,6 +29,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
     public TableCircle tableCircle;
     public SlotSel slotSel;
     public GameRule gameRule;
+    
     public CardManager cardManager { get
         {
             return GameArchitect.Instance.cardManager;
@@ -75,8 +93,12 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         slots = new List<SlotView>();
         gameRule = new GameRule(this);
     }
-    public void Init()
+    public void Init(TableModelData tableData)
     {
+        var heroSlot = FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView;
+        heroSlot.AddCard(tableData.hero,()=>{},()=>{});
+        // var enemySlot = FindSlotByTag(SlotTag.EnemySlot) as OneCardSlotView;
+        // enemySlot.AddCard(tableData.enemy,()=>{},()=>{});
         gameRule = new GameRule(this);
         //Debug.Log(gameRule);
         //Debug.Log(this);
@@ -122,7 +144,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         {
             if (slots[i].ExistTag(slotTag))
             {
-                if (func != null && func(slots[i]))
+                if (func != null && func(slots[i])||func==null)
                 {
                     ret.Add(slots[i]);
                 }

@@ -5,12 +5,13 @@ using UnityEngine;
 
 
 /// <summary>
-/// Íø¸ñÀà
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 /// </summary>
 public class Cell : IUISelector, ISendEvent, IModel
 {
+    public TableModelData tableData;
     /// <summary>
-    /// Î»ÖÃ
+    /// Î»ï¿½ï¿½
     /// </summary>
     public Vector2Int pos;
 
@@ -55,7 +56,7 @@ public class Cell : IUISelector, ISendEvent, IModel
         GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.cellUI);
         Camera.main.transform.position = new Vector3(477, 190, 11);
         //Debug.Log("gbbbofjff");
-        GameArchitect.Instance.GetTableModel().view.StartGame();
+        GameArchitect.Instance.GetTableModel().view.StartGame(tableData);
     }
 }
 

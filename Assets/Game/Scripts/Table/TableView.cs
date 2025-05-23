@@ -53,9 +53,9 @@ public class TableView : SerializedMonoBehaviour,IView,ISendEvent
     /// <summary>
     /// ���볡�����ʼ��
     /// </summary>
-    public void StartGame()
+    public void StartGame(TableModelData tableData)
     {
-        tableModel.Init();
+        tableModel.Init(tableData);
         this.SendEvent(new ChangeEvent(TableCircleEnum.Pending));
         //AsyncQueue asyncQueue = new AsyncQueue();
         //asyncQueue.Add((done) =>

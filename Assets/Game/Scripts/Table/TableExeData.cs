@@ -74,7 +74,7 @@ public class TableChangeHpData : TableExeData
     {
         if (hpChange>0)
         {
-            new AddHpEffectObjData(to,hpChange,done);
+            this.SendEvent( new TableEffectDataEvent(new AddHpEffectObjData(to,hpChange,done)));
         }
         else if (hpChange < 0)
         {
