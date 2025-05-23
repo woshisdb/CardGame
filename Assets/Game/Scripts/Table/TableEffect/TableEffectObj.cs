@@ -5,9 +5,18 @@ public enum TableEffectEnum
     AddHpEffectObj,
 }
 
-public class TableEffectData
+public struct TableEffectDataEvent:IEvent
 {
-    
+    public TableEffectData tableEffectData;
+    public TableEffectDataEvent(TableEffectData tableEffectData)
+    {
+        this.tableEffectData = tableEffectData;
+    }
+}
+
+public interface TableEffectData
+{
+    TableEffectEnum GetEffectEnum();
 }
 
 public abstract class TableEffectObj: SerializedScriptableObject

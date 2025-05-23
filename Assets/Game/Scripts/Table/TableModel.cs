@@ -28,6 +28,11 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
             this.succ = succ;
         }
     }
+    public void TableEffectEvent(TableEffectDataEvent effectData)
+    {
+        var effs = view.effects;
+        effs[effectData.tableEffectData.GetEffectEnum()].ShowEffect(effectData.tableEffectData);
+    }
     public void ChangeEvent(ChangeEvent e)
     {
         tableCircle.SetCircle(e.circleEnum);
@@ -79,6 +84,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         this.Register<CardEffectEvent>(CardEffectEvent);
         this.Register<SlotEffectEvent>(SlotEffectEvent);
         this.Register<SelectSlotEvent>(SelectSlotEvent);
+        this.Register<TableEffectDataEvent>(TableEffectEvent);
         gameRule.Init();
     }
     public void Destory()
@@ -87,6 +93,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         this.Unregister<CardEffectEvent>(CardEffectEvent);
         this.Unregister<SelectSlotEvent>(SelectSlotEvent);
         this.Unregister<SlotEffectEvent>(SlotEffectEvent);
+        this.Unregister<TableEffectDataEvent>(TableEffectEvent);
     }
     public void StartSelectSlot(Func<SlotView,bool> cond,Action<SlotView> succ)
     {
@@ -99,7 +106,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         {
             if(slots[i].ExistTag(slotTag))
             {
-                if(func!=null&& func(slots[i]))
+                if(func!=null&& func(slots[i])||func==null)
                 {
                     return slots[i];
                 }

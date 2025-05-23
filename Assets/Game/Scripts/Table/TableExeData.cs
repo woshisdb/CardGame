@@ -30,6 +30,10 @@ public abstract class TableExeData : ISendEvent
     {
         State.End(null);
     }
+    public void Send(TableEffectData tableEffectData)
+    {
+        this.SendEvent(new TableEffectDataEvent(tableEffectData));
+    }
 }
 
 public class EndData : TableExeData
@@ -70,7 +74,7 @@ public class TableChangeHpData : TableExeData
     {
         if (hpChange>0)
         {
-            
+            new AddHpEffectObjData(to,hpChange,done);
         }
         else if (hpChange < 0)
         {

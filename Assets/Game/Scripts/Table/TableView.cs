@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class TableView : SerializedMonoBehaviour,IView,ISendEvent
 {
+    public Dictionary<TableEffectEnum, TableEffectObj> effects;
     public List<SlotView> slotViews { get { return tableModel.slots; } }
     public CardManager GetCardManager()
     {
