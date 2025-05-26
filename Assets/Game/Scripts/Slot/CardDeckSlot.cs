@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.PlayerLoop;
 
 public interface CardSetView
 {
@@ -27,6 +29,7 @@ public class CardDeckModel
 
 public class CardDeckSlot : SlotView,ISendEvent,CardSetView
 {
+    public TextMeshPro text;
     public CardDeckModel cardDeckModel;
     public override List<UIItemBinder> GetUI()
     {
@@ -85,5 +88,10 @@ public class CardDeckSlot : SlotView,ISendEvent,CardSetView
         {
             return false;
         }
+    }
+
+    public void Update()
+    {
+        text.text = "("+cardDeckModel.cards.Count.ToString()+")";
     }
 }

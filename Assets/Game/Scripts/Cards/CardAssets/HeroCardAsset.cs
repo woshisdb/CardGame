@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class HeroCardModel : CardModel,IAnimalCard
 {
+    public int knowledge;
+    public int brave;
+    public int charm;
+    public int agility;
+    public int strength;
+    //////////////////////////////
     public int hp;
     public SlotView slot;
     public HeroCardModel(CardAsset cardAsset) : base(cardAsset)
