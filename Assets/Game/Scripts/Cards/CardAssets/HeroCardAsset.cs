@@ -12,11 +12,6 @@ public class HeroCardModel : CardModel,IAnimalCard
         this.hp = asset.hp;
     }
 
-    public void AddHp(int hp)
-    {
-        this.hp += hp;
-    }
-
     public int GetHp()
     {
         return this.hp;
@@ -25,11 +20,13 @@ public class HeroCardModel : CardModel,IAnimalCard
     public void SetHp(int hp)
     {
         this.hp = hp;
+        TryRefresh();
     }
 
     public void ChangeHp(int hp)
     {
         this.hp = this.hp+hp;
+        TryRefresh();
     }
     public SlotView GetSlot()
     {
@@ -38,6 +35,18 @@ public class HeroCardModel : CardModel,IAnimalCard
     public override void OnAddSlot(SlotView slotView)
     {
         slot = slotView;
+    }
+    public override void Refresh(CardScView cardScView)
+    {
+        base.Refresh(cardScView);
+        cardScView.items["hp"].text = this.hp.ToString();
+    }
+    public void TryRefresh()
+    {
+        if (slot != null)
+        {
+            slot.Update();
+        }
     }
 }
 

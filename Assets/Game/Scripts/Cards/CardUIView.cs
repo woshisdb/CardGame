@@ -5,11 +5,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardUIView : MonoBehaviour,ISendEvent,IView
+public class CardUIView : SerializedMonoBehaviour,ISendEvent,IView
 {
     public CardModel cardModel;
     public TextMeshProUGUI title;
     public TextMeshProUGUI description;
+    public Dictionary<string, TextMeshProUGUI> items=new Dictionary<string, TextMeshProUGUI>();
     public Image image;
 
     public void BindModel(IModel model)
@@ -25,8 +26,9 @@ public class CardUIView : MonoBehaviour,ISendEvent,IView
 
     public void Refresh()
     {
-        title.SetText(cardModel.cardName);
-        description.SetText(cardModel.cardDescription);
+        cardModel.Refresh(this);
+        //title.SetText(cardModel.cardName);
+        //description.SetText(cardModel.cardDescription);
     }
 
     public void XUpdate()

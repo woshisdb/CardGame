@@ -35,11 +35,20 @@ public class TableItemBinder:UIItemBinder
     }
 }
 
-public class ButtonBinder : UIItemBinder
+public class ButtonBinder : UIItemBinder,ISendEvent
 {
     public Action getValue;
-    public ButtonBinder(Func<string> getKey, Action getValue) : base(getKey)
+    public ButtonBinder(Func<string> getKey, Action getValue,bool clearUI=true) : base(getKey)
     {
+        if(clearUI==true)
+        {
+            this.getValue = () =>
+            {
+                getValue();
+                this.SendEvent(new ClearUIEvent());
+            };
+        }
+        else
         this.getValue = getValue;
     }
 }

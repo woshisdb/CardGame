@@ -27,6 +27,18 @@ public class CardModel : IUISelector, IModel, ISendEvent
         cardScView.BindModel(this);
         return cardScView;
     }
+
+    public virtual void Refresh(CardScView cardScView)
+    {
+        cardScView.items["title"].text = this.cardName;
+        cardScView.items["description"].text = this.cardDescription;
+    }
+    public virtual void Refresh(CardUIView cardUIView)
+    {
+        cardUIView.items["title"].text = this.cardName;
+        cardUIView.items["description"].text = this.cardDescription;
+    }
+
     public virtual void OnAddSlot(SlotView slotView)
     {
         
@@ -62,7 +74,7 @@ public class CardModel : IUISelector, IModel, ISendEvent
                     return "use";
                 }, () =>
                 {
-                    this.SendEvent(new CardEffectEvent(eff.cardEffect, this));
+                    this.SendEvent(new CardEffectEvent(eff, this));
                 }));
             }
         }

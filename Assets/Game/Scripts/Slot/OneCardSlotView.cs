@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class OneCardSlotView : SlotView, IUISelector
+public class OneCardSlotView : SlotView, IUISelector,ISendEvent
 {
     public CardModel cardModel;
     public CardScView scView;
-    public void Refresh()
+    public override void Update()
     {
+        if(!IsEmpty())
+        scView.Refresh();
     }
     public CardModel GetCardModel()
     {
@@ -50,5 +53,16 @@ public class OneCardSlotView : SlotView, IUISelector
             return true;
         }
         return false;
+    }
+    public override void OnTouch(PointerEventData eventData)
+    {
+        if (tableView.tableModel != null && tableView.tableModel.circleEnum == TableCircleEnum.SelectSloting)
+        {
+            this.SendEvent<SelectSlotEvent>(new SelectSlotEvent(this));
+        }
+        else
+        {
+            this.SendEvent<SelectViewEvent>(new SelectViewEvent(this));
+        }
     }
 }

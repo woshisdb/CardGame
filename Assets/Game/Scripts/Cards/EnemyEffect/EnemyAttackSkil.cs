@@ -15,6 +15,7 @@ public class AttackSkilData : SlotEffectData
 [CreateAssetMenu(fileName = "EnemyAttackSkil", menuName = "Effect/EnemyAttackSkil")]
 public class EnemyAttackSkil : SlotEffect, ISendEvent
 {
+    public int attackCount;
     public EnemyAttackSkil()
     {
         slotEffectEnum = SlotEffectEnum.EnemyAttackSkil;
@@ -29,7 +30,7 @@ public class EnemyAttackSkil : SlotEffect, ISendEvent
         var enemy = (card as OneCardSlotView).GetCardModel() as EnemyCardModel;
         var heroSlot = table.FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView;
         var hero = heroSlot.cardModel as HeroCardModel;
-        return new TableChangeHpData(1, enemy, hero, done);
+        return new TableChangeHpData(attackCount, enemy, hero, done);
     }
 
     public override SlotEffectData EffectData()

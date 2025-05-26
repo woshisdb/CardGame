@@ -6,7 +6,10 @@ using UnityEngine;
 public struct RefreshViewEvent : IEvent
 {
 }
+public struct ClearUIEvent:IEvent
+{
 
+}
 
 public class InspectorUI : MonoBehaviour,IRegisterEvent
 {
@@ -17,6 +20,10 @@ public class InspectorUI : MonoBehaviour,IRegisterEvent
         this.Register<RefreshViewEvent>(e =>
         {
             ShowUI(nowObj);
+        });
+        this.Register<ClearUIEvent>(e =>
+        {
+            ClearUI();
         });
     }
     public void ShowUI(IUISelector obj)
@@ -32,6 +39,10 @@ public class InspectorUI : MonoBehaviour,IRegisterEvent
         {
             GenItems(item, listUI);
         }
+    }
+    public void ClearUI()
+    {
+        listUI.ClearUis();
     }
     public static void GenItems(UIItemBinder item, ListUI listUI)
     {

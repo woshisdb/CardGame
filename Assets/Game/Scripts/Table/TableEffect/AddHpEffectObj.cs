@@ -35,6 +35,8 @@ public class AddHpEffectObj:TableEffectObj
         hpEff.gameObject.transform.parent = slot.transform;
         hpEff.gameObject.transform.DOLocalMoveX(1, 1).OnComplete(() =>
         {
+            GameObject.Destroy(hpEff);
+            data.card.ChangeHp(data.hp);
             data.done();
         });
     }

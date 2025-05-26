@@ -34,9 +34,9 @@ public struct SelectSlotEvent:IEvent
 
 public struct CardEffectEvent:IEvent
 {
-    public ICardEffect effect;
+    public CardEffectData effect;
     public CardModel cardModel;
-    public CardEffectEvent(ICardEffect effect,CardModel cardModel)
+    public CardEffectEvent(CardEffectData effect,CardModel cardModel)
     {
         this.effect = effect;
         this.cardModel = cardModel;

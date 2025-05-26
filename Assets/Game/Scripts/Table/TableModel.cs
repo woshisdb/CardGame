@@ -62,9 +62,9 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
     }
     public void CardEffectEvent(CardEffectEvent e)
     {
-        if (e.effect.CanExe(e.effect.EffectData(), this, e.cardModel))
+        if (e.effect.cardEffect.CanExe(e.effect, this, e.cardModel))
         {
-            State.Next(e.effect.Effect(e.effect.EffectData(), this, e.cardModel,null));
+            State.Next(e.effect.cardEffect.Effect(e.effect, this, e.cardModel,null));
         }
     }
     public void SlotEffectEvent(SlotEffectEvent e)
@@ -136,7 +136,20 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         }
         return null;
     }
-
+    public SlotView FindSlotByName(string name, Func<SlotView, bool> func = null)
+    {
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (slots[i].name == name)
+            {
+                if (func != null && func(slots[i]) || func == null)
+                {
+                    return slots[i];
+                }
+            }
+        }
+        return null;
+    }
     public List<SlotView> FindSlotByTags(SlotTag slotTag, Func<SlotView, bool> func = null)
     {
         List<SlotView> ret = new List<SlotView>();

@@ -20,17 +20,15 @@ public class EnemyCardModel : CardModel,IAnimalCard
     {
         var asset = cardAsset as EnemyCardAsset;
         asset.ExeEnemyBehavior(done,this,slot,tableModel);
-        done();
     }
-
+    public override void Refresh(CardScView cardScView)
+    {
+        base.Refresh(cardScView);
+        cardScView.items["hp"].text = this.hp.ToString();
+    }
     public override void OnAddSlot(SlotView slotView)
     {
         slot = slotView;
-    }
-
-    public void AddHp(int hp)
-    {
-        this.hp += hp;
     }
 
     public override List<UIItemBinder> GetUI(bool fromScene)
@@ -60,20 +58,20 @@ public class EnemyCardModel : CardModel,IAnimalCard
                     return "use";
                 }, () =>
                 {
-                    this.SendEvent(new CardEffectEvent(eff.cardEffect, this));
+                    this.SendEvent(new CardEffectEvent(eff, this));
                 }));
             }
-            foreach (var x in ((EnemyCardAsset)cardAsset).enemySkils)
-            {
-                var eff = x;
-                ret.Add(new ButtonBinder(() =>
-                {
-                    return "www";
-                }, () =>
-                {
-                    this.SendEvent(new SlotEffectEvent(eff.slotEffect, slot));
-                }));
-            }
+            //foreach (var x in ((EnemyCardAsset)cardAsset).enemySkils)
+            //{
+            //    var eff = x;
+            //    ret.Add(new ButtonBinder(() =>
+            //    {
+            //        return "www";
+            //    }, () =>
+            //    {
+            //        this.SendEvent(new SlotEffectEvent(eff.slotEffect, slot));
+            //    }));
+            //}
         }
         return ret;
     }
@@ -86,13 +84,21 @@ public class EnemyCardModel : CardModel,IAnimalCard
     public void SetHp(int hp)
     {
         this.hp = hp;
+        TryRefresh();
     }
 
     public void ChangeHp(int hp)
     {
         this.hp = this.hp + hp;
+        TryRefresh();
     }
-
+    public void TryRefresh()
+    {
+        if (slot != null)
+        {
+            slot.Update();
+        }
+    }
     public SlotView GetSlot()
     {
         return slot;

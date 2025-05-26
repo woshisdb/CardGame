@@ -9,13 +9,14 @@ public class SlotTouch : MonoBehaviour,ISendEvent, IPointerClickHandler
     public TableView tableView { get { return slotView.tableView; } }
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (slotView.tableView.tableModel!= null && slotView.tableView.tableModel.circleEnum == TableCircleEnum.SelectSloting)
-        {
-            this.SendEvent<SelectSlotEvent>(new SelectSlotEvent(slotView));
-        }
-        else
-        {
-            this.SendEvent<SelectViewEvent>(new SelectViewEvent(slotView));
-        }
+        slotView.OnTouch(eventData);
+        //if (slotView.tableView.tableModel!= null && slotView.tableView.tableModel.circleEnum == TableCircleEnum.SelectSloting)
+        //{
+        //    this.SendEvent<SelectSlotEvent>(new SelectSlotEvent(slotView));
+        //}
+        //else
+        //{
+        //    this.SendEvent<SelectViewEvent>(new SelectViewEvent(slotView));
+        //}
     }
 }

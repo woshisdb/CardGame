@@ -54,8 +54,19 @@ public class UserGameState : GameState
 
     public override void Process(Action done)
     {
-        this.SendEvent(new ChangeEvent(TableCircleEnum.SelectCarding));
-        done();
+        Debug.Log("UserGameState");
+        AsyncQueue async = new AsyncQueue();
+        async.Add(e =>
+        {
+            TableModel.view.endTurnAction = e;
+            //要收到e这个行为
+            this.SendEvent(new ChangeEvent(TableCircleEnum.SelectCarding));
+        });
+        async.Add(e =>
+        {
+            done();
+        });
+        async.Run();
     }
 }
 
@@ -71,7 +82,7 @@ public class EnemyGameState : GameState
 
     public override GameState Next()
     {
-        return null;
+        return new UserGameState();
     }
 
     public override void Post(Action done)
@@ -86,7 +97,7 @@ public class EnemyGameState : GameState
 
     public override void Process(Action done)
     {
-        Debug.Log("ssss");
+        Debug.Log("EnemyGameState");
         var hero = TableModel.FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView;
         if(hero.IsEmpty())
         {
@@ -120,9 +131,15 @@ public class EnemyGameState : GameState
 
 public class GameRule:ISendEvent,IRegisterEvent
 {
+    public int power=10;//能量
     public TableModel tableModel;
     public GameState gameState;//当前状态
     public Action RunTemp=null;
+
+    public void ChangePower(int val)
+    {
+        power += val;
+    }
     public GameRule(TableModel tableModel)
     {
         this.tableModel = tableModel;
@@ -172,11 +189,13 @@ public class GameRule:ISendEvent,IRegisterEvent
                     else
                     {
                         done();
+                        Run();
                     }
                 });
             }
             else
             {
+                Run();
                 done();
             }
         });

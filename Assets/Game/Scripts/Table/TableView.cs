@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -74,5 +75,20 @@ public class TableView : SerializedMonoBehaviour,IView,ISendEvent
     public void ShowEffect(TableEffectData effectData)
     {
         
+    }
+    public Action endTurnAction;
+    public void EndTurn()
+    {
+        if(endTurnAction != null)
+            endTurnAction();
+    }
+    public SlotView GetSlot(string name)
+    {
+        foreach (var slotView in slotViews)
+        {
+            if (slotView.name == name)
+            { return slotView;}
+        }
+        return null;
     }
 }

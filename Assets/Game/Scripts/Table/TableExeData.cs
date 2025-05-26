@@ -78,7 +78,7 @@ public class TableChangeHpData : TableExeData
         }
         else if (hpChange < 0)
         {
-            
+            this.SendEvent(new TableEffectDataEvent(new AddHpEffectObjData(to, hpChange, done)));
         }
         else
         {
@@ -145,6 +145,24 @@ public class RemoveHandCardData : TableExeData
     public override void Exe()
     {
         GameArchitect.Instance.cardManager.RemoveCard(cardModel, onSucc, onFail == null ? EndStage : onFail);
+    }
+}
+
+public class ChangePowerData:TableExeData
+{
+    public Action done;
+    public int power;
+    public ChangePowerData(Action done,int power)
+    {
+        this.done = done;
+        this.power = power;
+    }
+
+    public override void Exe()
+    {
+        var powerSlot = tableModel.FindSlotByName("power") as EnergeSlot;
+        powerSlot.ChangeEnerge(power);
+        done();
     }
 }
 
