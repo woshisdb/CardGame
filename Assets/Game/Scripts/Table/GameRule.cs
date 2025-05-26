@@ -7,11 +7,7 @@ public abstract class GameState:ISendEvent
 {
     public GameRule GameRule { get { return GameArchitect.Instance.GetTableModel().gameRule; } }
     public TableModel TableModel { get { return GameArchitect.Instance.GetTableModel(); } }
-
-    public void Run(Action action=null)
-    {
-        GameRule.RunTemp = action;
-    }
+    
     /// <summary>
     /// 是否初始化
     /// </summary>
@@ -56,6 +52,20 @@ public class UserGameState : GameState
     {
         Debug.Log("UserGameState");
         AsyncQueue async = new AsyncQueue();
+        async.Add(e =>
+        {
+            State.Next(new GetCardFromDeck(1,e,e));
+            // var slot = TableModel.FindSlotByName("cardDeckSlot") as CardDeckSlot;
+            // var cards= slot.GetCardsAnim(2,()=>{});
+            // if (cards == null)
+            // {
+            //     e();
+            // }
+            // else
+            // {
+            //     TableModel.cardManager.AddCardsAnim(cards,e);
+            // }
+        });
         async.Add(e =>
         {
             TableModel.view.endTurnAction = e;
@@ -134,7 +144,6 @@ public class GameRule:ISendEvent,IRegisterEvent
     public int power=10;//能量
     public TableModel tableModel;
     public GameState gameState;//当前状态
-    public Action RunTemp=null;
 
     public void ChangePower(int val)
     {
@@ -203,14 +212,7 @@ public class GameRule:ISendEvent,IRegisterEvent
     }
     public void Run()
     {
-        if(RunTemp==null)
-        {
-            RunNormal();
-        }
-        else
-        {
-            RunTemp();
-        }
+        RunNormal();
     }
     public void EndGame(Action done)
     {

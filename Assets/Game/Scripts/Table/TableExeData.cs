@@ -87,6 +87,36 @@ public class TableChangeHpData : TableExeData
     }
 }
 
+public class GetCardFromDeck : TableExeData
+{
+    /// <summary>
+    /// 选择对数目
+    /// </summary>
+    public int num;
+    public Action onSucc;
+    public Action onFail;
+
+    public GetCardFromDeck(int num, Action onSucc, Action onFail) : base()
+    {
+        this.num = num;
+        this.onSucc = onSucc;
+        this.onFail = onFail;
+    }
+    public override void Exe()
+    {
+        var slot = tableModel.FindSlotByName("cardDeckSlot") as CardDeckSlot;
+        var cards= slot.GetCardsAnim(num,()=>{});
+        if (cards == null)
+        {
+            onFail();
+        }
+        else
+        {
+            tableModel.cardManager.AddCardsAnim(cards,onSucc);
+        }
+    }
+}
+
 public class SelectSlotData : TableExeData
 {
     /// <summary>

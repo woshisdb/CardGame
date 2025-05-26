@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class CardManager : MonoBehaviour
+public class CardManager : MonoBehaviour,CardSetView
 {
     public Transform hand;
     [ShowInInspector]
@@ -12,6 +12,15 @@ public class CardManager : MonoBehaviour
     public void Awake()
     {
         cards = new Dictionary<CardModel, CardUIView>();
+    }
+
+    public void RemoveCards(List<CardModel> cards, Action done)
+    {
+        foreach (var card in cards)
+        {
+            RemoveCard(card,()=>{},()=>{});
+        }
+        done();
     }
     public void RemoveCard(CardModel card,Action onSucc,Action onFail)
     {
@@ -55,5 +64,17 @@ public class CardManager : MonoBehaviour
     public void TestCards()
     {
         AddCards(GameArchitect.Instance.saveSystem.saveFile.cards);
+    }
+
+    public void AddCardsAnim(List<CardModel> cards, Action done)
+    {
+        AddCards(cards);
+        done();
+    }
+
+    public void RemoveCardsAnim(List<CardModel> cards, Action done)
+    {
+        RemoveCards(cards,done);
+        done();
     }
 }

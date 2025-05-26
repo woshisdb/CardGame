@@ -12,6 +12,7 @@ public class SaveFile
     public List<List<Cell>> cells;
     public List<CardModel> cards;
     public TableModel tableModel;
+    public CardDeckModel cardDeckModel;
     [Button]
     public void InitCountry()
     {

@@ -6,14 +6,20 @@ using UnityEngine;
 public class AttackSkillEffectData : CardEffectData
 {
     public int hp;
+    public int power;
     public AttackSkillEffectData(ICardEffect cardEffect) : base(cardEffect)
     {
+        var data = cardEffect as AttackSkillEffect;
+        hp = data.hp;
+        power = data.power;
     }
 }
 
 [CreateAssetMenu(fileName = "AttackSkillEffect", menuName = "Effect/AttackSkillEffect")]
 public class AttackSkillEffect : CardEffect, ISendEvent
 {
+    public int hp;
+    public int power;
     public AttackSkillEffect()
     {
         cardEffectEnum = CardEffectEnum.AddBuffEffect;
@@ -38,7 +44,6 @@ public class AttackSkillEffect : CardEffect, ISendEvent
                 {
                     State.Next(new TableChangeHpData(eff.hp, null, (slot as OneCardSlotView).cardModel as IAnimalCard, done));
                 }));
-
             })
             );
         }, eff.hp);
