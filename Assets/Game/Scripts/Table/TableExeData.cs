@@ -5,10 +5,26 @@ using UnityEngine;
 
 public static class State
 {
+    public static TableModel tableModel
+    {
+        get
+        {
+            return GameArchitect.Instance.GetTableModel();
+        }
+    }
     public static void Next(TableExeData data)
     {
-        data.Exe();
+        tableModel.ExeActionBef(data,() =>
+        {
+            data.Exe(); 
+        });
     }
+
+    public static Action Then(TableExeData data,Action done)
+    {
+        return () => { tableModel.ExeActionAfter(data,done); };
+    }
+    
     public static void End(Action done)
     {
         State.Next(new EndData(done));
@@ -17,6 +33,7 @@ public static class State
 
 public abstract class TableExeData : ISendEvent
 {
+
     public TableModel tableModel
     {
         get
@@ -29,6 +46,11 @@ public abstract class TableExeData : ISendEvent
     public void EndStage()
     {
         State.End(null);
+    }
+
+    public Action OnFail(Action onFail)
+    {
+        return onFail == null ? EndStage : onFail;
     }
     public void Send(TableEffectData tableEffectData)
     {
@@ -47,21 +69,22 @@ public class EndData : TableExeData
     {
         if (done != null)
         {
-            done();
+            State.Then(this,done)();
         }
         else
         {
-            this.SendEvent(new ChangeEvent(TableCircleEnum.Pending));
+            this.SendEvent(new ChangeEvent(TableCircleEnum.Pending));//继续下个回合
         }
     }
 }
 
+
 public class TableChangeHpData : TableExeData
 {
+    public Action done;
     public int hpChange;
     public IAnimalCard from;
     public IAnimalCard to;
-    public Action done;
     public TableChangeHpData(int hpChange, IAnimalCard from, IAnimalCard to,Action done) : base()
     {
         this.done = done;
@@ -74,19 +97,35 @@ public class TableChangeHpData : TableExeData
     {
         if (hpChange>0)
         {
-            this.SendEvent( new TableEffectDataEvent(new AddHpEffectObjData(to,hpChange,done)));
+            this.SendEvent( new TableEffectDataEvent(new AddHpEffectObjData(to,hpChange,State.Then(this,done)
+            )));
         }
         else if (hpChange < 0)
         {
-            this.SendEvent(new TableEffectDataEvent(new AddHpEffectObjData(to, hpChange, done)));
+            this.SendEvent(new TableEffectDataEvent(new AddHpEffectObjData(to, hpChange, State.Then(this,done))));
         }
         else
         {
-            done();
+            State.Then(this,done)();
         }
     }
 }
 
+public class AddBuffToAnimal:TableExeData
+{
+    public AddBuffToAnimal():base()
+    {
+        
+    }
+
+    public override void Exe()
+    {
+        
+    }
+}
+/// <summary>
+/// 抽卡
+/// </summary>
 public class GetCardFromDeck : TableExeData
 {
     /// <summary>
@@ -108,15 +147,17 @@ public class GetCardFromDeck : TableExeData
         var cards= slot.GetCardsAnim(num,()=>{});
         if (cards == null)
         {
-            onFail();
+            State.Then(this,onFail)();
         }
         else
         {
-            tableModel.cardManager.AddCardsAnim(cards,onSucc);
+            tableModel.cardManager.AddCardsAnim(cards, State.Then(this,onSucc));
         }
     }
 }
-
+/// <summary>
+/// 选择Slot
+/// </summary>
 public class SelectSlotData : TableExeData
 {
     /// <summary>
@@ -140,10 +181,18 @@ public class SelectSlotData : TableExeData
 
     public override void Exe()
     {
-        tableModel.StartSelectSlot((slot) => { return this.require(slot); }, onSucc);
+        tableModel.StartSelectSlot((slot) => { return this.require(slot); }, (e)=>
+        {
+            State.Then(this,()=>
+            {
+                onSucc(e);
+            });
+        });
     }
 }
-
+/// <summary>
+/// 添加手牌
+/// </summary>
 public class AddHandCardData : TableExeData
 {
     public Action onSucc;
@@ -157,10 +206,12 @@ public class AddHandCardData : TableExeData
     }
     public override void Exe()
     {
-        GameArchitect.Instance.cardManager.AddCard(cardModel, onSucc, onFail == null ? EndStage : onFail);
+        GameArchitect.Instance.cardManager.AddCard(cardModel, State.Then(this,onSucc), OnFail(onFail));
     }
 }
-
+/// <summary>
+/// 移除手牌
+/// </summary>
 public class RemoveHandCardData : TableExeData
 {
     public Action onSucc;
@@ -174,7 +225,8 @@ public class RemoveHandCardData : TableExeData
     }
     public override void Exe()
     {
-        GameArchitect.Instance.cardManager.RemoveCard(cardModel, onSucc, onFail == null ? EndStage : onFail);
+        GameArchitect.Instance.cardManager.RemoveCard(cardModel, State.Then(this,onSucc),
+            OnFail(onFail)); //onFail == null ? EndStage : onFail);
     }
 }
 
@@ -192,7 +244,7 @@ public class ChangePowerData:TableExeData
     {
         var powerSlot = tableModel.FindSlotByName("power") as EnergeSlot;
         powerSlot.ChangeEnerge(power);
-        done();
+        State.Then(this,done)();
     }
 }
 
@@ -211,6 +263,6 @@ public class AddSlotCardData : TableExeData
     }
     public override void Exe()
     {
-        slotView.AddCard(cardModel, onSucc, onFail == null ? EndStage : onFail);
+        slotView.AddCard(cardModel, State.Then(this,onSucc), OnFail(onFail));
     }
 }

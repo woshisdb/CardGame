@@ -55,16 +55,6 @@ public class UserGameState : GameState
         async.Add(e =>
         {
             State.Next(new GetCardFromDeck(1,e,e));
-            // var slot = TableModel.FindSlotByName("cardDeckSlot") as CardDeckSlot;
-            // var cards= slot.GetCardsAnim(2,()=>{});
-            // if (cards == null)
-            // {
-            //     e();
-            // }
-            // else
-            // {
-            //     TableModel.cardManager.AddCardsAnim(cards,e);
-            // }
         });
         async.Add(e =>
         {

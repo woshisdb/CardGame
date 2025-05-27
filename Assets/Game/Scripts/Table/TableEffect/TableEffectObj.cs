@@ -3,6 +3,9 @@ using Sirenix.OdinInspector;
 public enum TableEffectEnum
 {
     AddHpEffectObj,
+    Counter,//反击
+    Shield,//护盾
+    Regeneration,
 }
 
 public struct TableEffectDataEvent:IEvent

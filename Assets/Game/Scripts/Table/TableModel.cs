@@ -22,6 +22,11 @@ public class TableModelData
     }
 }
 
+public class LinkAction
+{
+    public Action<Action> done;
+}
+
 public class TableModel:IModel,IRegisterEvent,ISendEvent
 {
     public List<SlotView> slots;
@@ -29,6 +34,52 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
     public TableCircle tableCircle;
     public SlotSel slotSel;
     public GameRule gameRule;
+    public Dictionary<Type, List<LinkAction>> actionBeforLinks=new Dictionary<Type, List<LinkAction>>();
+    public Dictionary<Type, List<LinkAction>> actionAfterLinks=new Dictionary<Type, List<LinkAction>>();
+
+    public void ExeActionBef(TableExeData data,Action done)
+    {
+        var seq = new AsyncQueue();
+        if (actionBeforLinks.ContainsKey(data.GetType()))
+        {
+            foreach (LinkAction action in actionBeforLinks[data.GetType()])
+            {
+                seq.Add(action.done);
+            }
+            seq.Add((e) =>
+            {
+                done();
+                e();
+            });
+            seq.Run();
+        }
+        else
+        {
+            done();
+        }
+    }
+    
+    public void ExeActionAfter(TableExeData data,Action done)
+    {
+        var seq = new AsyncQueue();
+        if (actionAfterLinks.ContainsKey(data.GetType()))
+        {
+            foreach (LinkAction action in actionAfterLinks[data.GetType()])
+            {
+                seq.Add(action.done);
+            }
+            seq.Add((e) =>
+            {
+                done();
+                e();
+            });
+            seq.Run();
+        }
+        else
+        {
+            done();
+        }
+    }
     
     public CardManager cardManager { get
         {
