@@ -54,7 +54,7 @@ public class CardManager : MonoBehaviour,CardSetView
     [Button]
     public void AddCards(List<CardModel> cardModels)
     {
-        ClearCard();
+        //ClearCard();
         foreach(CardModel cardModel in cardModels)
         {
             AddCard(cardModel);

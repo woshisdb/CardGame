@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -24,6 +25,11 @@ public class CardDeckModel
     public void RemoveCards(List<CardModel> newcards)
     {
         cards.RemoveAll(card => { return newcards.Contains(card);});
+    }
+    [Button]
+    public void AddCard(CardAsset asset)
+    {
+        cards.Add(asset.CreateCardModel());
     }
 }
 
@@ -92,6 +98,6 @@ public class CardDeckSlot : SlotView,ISendEvent,CardSetView
 
     public void Update()
     {
-        text.text = "("+cardDeckModel.cards.Count.ToString()+")";
+        text.text = "卡组\n("+cardDeckModel.cards.Count.ToString()+")";
     }
 }

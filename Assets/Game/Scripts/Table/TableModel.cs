@@ -100,6 +100,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         // var enemySlot = FindSlotByTag(SlotTag.EnemySlot) as OneCardSlotView;
         // enemySlot.AddCard(tableData.enemy,()=>{},()=>{});
         gameRule = new GameRule(this);
+        (this.FindSlotByName("cardDeckSlot") as CardDeckSlot).cardDeckModel = GameArchitect.Instance.saveSystem.saveFile.cardDeckModel;
         //Debug.Log(gameRule);
         //Debug.Log(this);
         this.Register<ChangeEvent>(ChangeEvent);
