@@ -186,7 +186,7 @@ public class SelectSlotData : TableExeData
             State.Then(this,()=>
             {
                 onSucc(e);
-            });
+            })();
         });
     }
 }
