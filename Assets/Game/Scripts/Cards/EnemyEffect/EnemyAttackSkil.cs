@@ -6,7 +6,6 @@ using UnityEngine;
 public class AttackSkilData : SlotEffectData
 {
     public string Name;
-
     public AttackSkilData(ISlotEffect slotEffect) : base(slotEffect)
     {
     }

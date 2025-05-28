@@ -5,5 +5,6 @@ using UnityEngine;
 public enum CardEffectEnum
 {
     AddBuffEffect,
-    PutToSlotEffect
+    PutToSlotEffect,
+    CounterBuffEffect,
 }

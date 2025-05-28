@@ -25,7 +25,7 @@ public class AddBuffEffectObj:TableEffectObj
         {
             GameObject.Destroy(eff);
             AddBuff(data.getCard(),data);
-            data.Done()();
+            data.Done().Invoke();
         });
     }
 

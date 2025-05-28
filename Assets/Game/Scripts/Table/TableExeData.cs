@@ -33,7 +33,7 @@ public static class State
 
 public abstract class TableExeData : ISendEvent
 {
-
+    public bool needLink;
     public TableModel tableModel
     {
         get
@@ -42,6 +42,10 @@ public abstract class TableExeData : ISendEvent
         }
     }
 
+    public TableExeData(bool needLink)
+    {
+        this.needLink = needLink;
+    }
     public abstract void Exe();
     public void EndStage()
     {
@@ -61,7 +65,7 @@ public abstract class TableExeData : ISendEvent
 public class EndData : TableExeData
 {
     public Action done;
-    public EndData(Action done = null)
+    public EndData(Action done = null,bool needLink=true):base(needLink)
     {
         this.done = done;
     }
@@ -69,7 +73,7 @@ public class EndData : TableExeData
     {
         if (done != null)
         {
-            State.Then(this,done)();
+            State.Then(this,done).Invoke();
         }
         else
         {
@@ -79,13 +83,14 @@ public class EndData : TableExeData
 }
 
 
+
 public class TableChangeHpData : TableExeData
 {
     public Action done;
     public int hpChange;
     public IAnimalCard from;
     public IAnimalCard to;
-    public TableChangeHpData(int hpChange, IAnimalCard from, IAnimalCard to,Action done) : base()
+    public TableChangeHpData(int hpChange, IAnimalCard from, IAnimalCard to,Action done,bool needLink=true):base(needLink)
     {
         this.done = done;
         this.hpChange = hpChange;
@@ -106,21 +111,24 @@ public class TableChangeHpData : TableExeData
         }
         else
         {
-            State.Then(this,done)();
+            State.Then(this,done).Invoke();
         }
     }
 }
 
 public class AddBuffToAnimal:TableExeData
 {
-    public AddBuffToAnimal():base()
+    public IAnimalCard card;
+    public Action done;
+    public AddBuffToAnimal(IAnimalCard card,Action action,bool needLink=true):base(needLink)
     {
-        
+        this.card = card;
+        this.done = action;
     }
 
     public override void Exe()
     {
-        
+        this.SendEvent(new TableEffectDataEvent(new CounterBuffObjData(done,card)));
     }
 }
 /// <summary>
@@ -135,7 +143,7 @@ public class GetCardFromDeck : TableExeData
     public Action onSucc;
     public Action onFail;
 
-    public GetCardFromDeck(int num, Action onSucc, Action onFail) : base()
+    public GetCardFromDeck(int num, Action onSucc, Action onFail,bool needLink=true):base(needLink)
     {
         this.num = num;
         this.onSucc = onSucc;
@@ -147,7 +155,7 @@ public class GetCardFromDeck : TableExeData
         var cards= slot.GetCardsAnim(num,()=>{});
         if (cards == null)
         {
-            State.Then(this,onFail)();
+            State.Then(this,onFail).Invoke();
         }
         else
         {
@@ -172,7 +180,7 @@ public class SelectSlotData : TableExeData
     /// ʧ��ѡ��
     /// </summary>
     public Action onConceal;
-    public SelectSlotData(Func<SlotView, bool> require, Action<SlotView> onSucc, Action onConceal = null)
+    public SelectSlotData(Func<SlotView, bool> require, Action<SlotView> onSucc, Action onConceal = null,bool needLink=true):base(needLink)
     {
         this.require = require;
         this.onSucc = onSucc;
@@ -186,7 +194,7 @@ public class SelectSlotData : TableExeData
             State.Then(this,()=>
             {
                 onSucc(e);
-            })();
+            }).Invoke();
         });
     }
 }
@@ -198,7 +206,7 @@ public class AddHandCardData : TableExeData
     public Action onSucc;
     public CardModel cardModel;
     public Action onFail;
-    public AddHandCardData(CardModel cardModel, Action onSucc, Action onFail = null)
+    public AddHandCardData(CardModel cardModel, Action onSucc, Action onFail = null,bool needLink=true):base(needLink)
     {
         this.cardModel = cardModel;
         this.onSucc = onSucc;
@@ -217,7 +225,7 @@ public class RemoveHandCardData : TableExeData
     public Action onSucc;
     public CardModel cardModel;
     public Action onFail;
-    public RemoveHandCardData(CardModel cardModel, Action onSucc, Action onFail = null)
+    public RemoveHandCardData(CardModel cardModel, Action onSucc, Action onFail = null,bool needLink=true):base(needLink)
     {
         this.cardModel = cardModel;
         this.onSucc = onSucc;
@@ -234,7 +242,7 @@ public class ChangePowerData:TableExeData
 {
     public Action done;
     public int power;
-    public ChangePowerData(Action done,int power)
+    public ChangePowerData(Action done,int power,bool needLink=true):base(needLink)
     {
         this.done = done;
         this.power = power;
@@ -244,7 +252,7 @@ public class ChangePowerData:TableExeData
     {
         var powerSlot = tableModel.FindSlotByName("power") as EnergeSlot;
         powerSlot.ChangeEnerge(power);
-        State.Then(this,done)();
+        State.Then(this,done).Invoke();
     }
 }
 
@@ -254,7 +262,7 @@ public class AddSlotCardData : TableExeData
     public CardModel cardModel;
     public OneCardSlotView slotView;
     public Action onFail;
-    public AddSlotCardData(OneCardSlotView slotView, CardModel cardModel, Action onSucc, Action onFail = null)
+    public AddSlotCardData(OneCardSlotView slotView, CardModel cardModel, Action onSucc, Action onFail = null,bool needLink=true):base(needLink)
     {
         this.slotView = slotView;
         this.cardModel = cardModel;

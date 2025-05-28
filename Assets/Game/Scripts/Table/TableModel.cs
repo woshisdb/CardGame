@@ -24,7 +24,12 @@ public class TableModelData
 
 public class LinkAction
 {
-    public Action<Action> done;
+    public Action<TableExeData,Action> done;
+
+    public LinkAction(Action<TableExeData,Action> done)
+    {
+        this.done = done;
+    }
 }
 
 public class TableModel:IModel,IRegisterEvent,ISendEvent
@@ -34,17 +39,51 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
     public TableCircle tableCircle;
     public SlotSel slotSel;
     public GameRule gameRule;
-    public Dictionary<Type, List<LinkAction>> actionBeforLinks=new Dictionary<Type, List<LinkAction>>();
-    public Dictionary<Type, List<LinkAction>> actionAfterLinks=new Dictionary<Type, List<LinkAction>>();
+    public Dictionary<Type, List<LinkAction>> actionBeforLinks;
+    public Dictionary<Type, List<LinkAction>> actionAfterLinks;
 
+    public LinkAction AddBeforActionToTable<T>(Action<TableExeData,Action> action)
+    {
+        var linkAction = new LinkAction(action);
+        if (!actionBeforLinks.ContainsKey(typeof(T)))
+        {
+            actionBeforLinks[typeof(T)]=new List<LinkAction>();
+        }
+        actionBeforLinks[typeof(T)].Add(linkAction);
+        return linkAction;
+    }
+    public LinkAction AddAfterActionToTable<T>(Action<TableExeData,Action> action)
+    {
+        var linkAction = new LinkAction(action);
+        if (!actionAfterLinks.ContainsKey(typeof(T)))
+        {
+            actionAfterLinks[typeof(T)]=new List<LinkAction>();
+        }
+        actionAfterLinks[typeof(T)].Add(linkAction);
+        return linkAction;
+    }
+
+    public void RemoveBeforActionFromTable<T>(LinkAction action)
+    {
+        actionBeforLinks[typeof(T)].Remove(action);
+    }
+
+    public void RemoveAfterActionFromTable<T>(LinkAction action)
+    {
+        actionAfterLinks[typeof(T)].Remove(action);
+    }
+    
     public void ExeActionBef(TableExeData data,Action done)
     {
         var seq = new AsyncQueue();
-        if (actionBeforLinks.ContainsKey(data.GetType()))
+        if (actionBeforLinks.ContainsKey(data.GetType())&& data.needLink)
         {
             foreach (LinkAction action in actionBeforLinks[data.GetType()])
             {
-                seq.Add(action.done);
+                seq.Add(e=>
+                {
+                    action.done(data,e);
+                });
             }
             seq.Add((e) =>
             {
@@ -62,11 +101,14 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
     public void ExeActionAfter(TableExeData data,Action done)
     {
         var seq = new AsyncQueue();
-        if (actionAfterLinks.ContainsKey(data.GetType()))
+        if (actionAfterLinks.ContainsKey(data.GetType())&&data.needLink)
         {
             foreach (LinkAction action in actionAfterLinks[data.GetType()])
             {
-                seq.Add(action.done);
+                seq.Add(e=>
+                {
+                    action.done(data,e);
+                });
             }
             seq.Add((e) =>
             {

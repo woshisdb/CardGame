@@ -32,9 +32,7 @@ public class AttackSkillEffect : CardEffect, ISendEvent
     public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card, Action done)
     {
         var eff = effectData as AttackSkillEffectData;
-        return new ChangePowerData(() => {
-            State.Next(
-            new RemoveHandCardData(card, () => {
+        return Cost(eff.power,new RemoveHandCardData(card, () => {
                 State.Next(
                 new SelectSlotData((slot) =>
                 {
@@ -44,11 +42,8 @@ public class AttackSkillEffect : CardEffect, ISendEvent
                 {
                     State.Next(new TableChangeHpData(eff.hp, null, (slot as OneCardSlotView).cardModel as IAnimalCard, done));
                 }));
-            })
-            );
-        }, eff.hp);
+            }, ()=>{}));
     }
-
     public override CardEffectData EffectData()
     {
         return new AttackSkillEffectData(this);
