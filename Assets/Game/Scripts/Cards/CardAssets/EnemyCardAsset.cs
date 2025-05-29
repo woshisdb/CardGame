@@ -103,6 +103,11 @@ public class EnemyCardModel : CardModel,IAnimalCard
     {
         return slot;
     }
+
+    public CardEnum GetCardType()
+    {
+        return cardAsset.cardEnum;
+    }
 }
 
 [CreateAssetMenu(fileName = "newEnemyCard", menuName = "SaveData/newEnemyCard")]

@@ -54,6 +54,11 @@ public class HeroCardModel : CardModel,IAnimalCard
             slot.Update();
         }
     }
+
+    public CardEnum GetCardType()
+    {
+        return cardAsset.cardEnum;
+    }
 }
 
 [CreateAssetMenu(fileName = "newHeroCard", menuName = "SaveData/newHeroCard")]

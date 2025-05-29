@@ -9,12 +9,18 @@ public interface IAddBuffEffectData
 {
     IAnimalCard getCard();
     Action Done();
+    /// <summary>
+    /// -1为永久,其他为时间
+    /// </summary>
+    /// <returns></returns>
+    int GetEffectTime();
 }
 
 // [CreateAssetMenu(fileName = "AddBuffEffectObj", menuName = "TableEffectObj/AddBuffEffectObj")]
 public class AddBuffEffectObj:TableEffectObj
 {
     public GameObject effect;
+    public GameObject effectIcon;
     public override void ShowEffect(TableEffectData effectData)
     {
         var data = effectData as IAddBuffEffectData;
@@ -32,5 +38,37 @@ public class AddBuffEffectObj:TableEffectObj
     public virtual void AddBuff(IAnimalCard card,IAddBuffEffectData addBuffObjData)
     {
         
+    }
+    public void SetEffectPassTime(int time,LinkAction linkAction, IAddBuffEffectData data)
+    {
+        var icon = GameObject.Instantiate(effectIcon);
+        icon.gameObject.transform.parent = data.getCard().GetSlot().gameObject.transform;
+        if(time!=-1)
+        if (data.getCard().GetCardType()== CardEnum.HeroCard)
+        {
+            int passTime = time;
+            TableModel.gameRule.HeroPreActions.Add(new GameAction(e =>
+            {
+                passTime--;
+                if (passTime <= 0)
+                {
+                    TableModel.RemoveAfterActionFromTable<TableChangeHpData>(linkAction);
+                    GameObject.Destroy(icon);
+                }
+            }));
+        }
+        else
+        {
+            int passTime = time;
+            TableModel.gameRule.EnemyPreActions.Add(new GameAction(e =>
+            {
+                passTime--;
+                if (passTime <= 0)
+                {
+                    TableModel.RemoveAfterActionFromTable<TableChangeHpData>(linkAction);
+                    GameObject.Destroy(icon);
+                }
+            }));
+        }
     }
 }

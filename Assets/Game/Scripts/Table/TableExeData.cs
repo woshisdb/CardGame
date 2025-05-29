@@ -128,7 +128,7 @@ public class AddBuffToAnimal:TableExeData
 
     public override void Exe()
     {
-        this.SendEvent(new TableEffectDataEvent(new CounterBuffObjData(done,card)));
+        this.SendEvent(new TableEffectDataEvent(new CounterBuffObjData(done,card,1)));
     }
 }
 /// <summary>
