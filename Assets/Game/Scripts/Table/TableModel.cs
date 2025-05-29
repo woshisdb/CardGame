@@ -4,23 +4,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class TableModelData
-{
-    public HeroCardModel hero;
-    public EnemyCardModel enemy;
-    [Button]
-    public void AddCard(CardAsset asset,CardEnum cardEnum)
-    {
-        if (cardEnum == CardEnum.HeroCard)
-        {
-            hero = asset.CreateCardModel() as HeroCardModel;
-        }
-        else if (cardEnum == CardEnum.EnemyCard)
-        {
-            enemy = asset.CreateCardModel() as EnemyCardModel;
-        }
-    }
-}
+
 
 public class LinkAction
 {
@@ -186,13 +170,11 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         slots = new List<SlotView>();
         gameRule = new GameRule(this);
     }
-    public void Init(TableModelData tableData)
+    public void Init(ICellBindTableModel tableData)
     {
-        var heroSlot = FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView;
-        heroSlot.AddCard(tableData.hero,()=>{},()=>{});
-        // var enemySlot = FindSlotByTag(SlotTag.EnemySlot) as OneCardSlotView;
-        // enemySlot.AddCard(tableData.enemy,()=>{},()=>{});
-        gameRule = new GameRule(this);
+        tableData.TableInit(this);
+        tableData.GameRule(this);
+        // gameRule = new GameRule(this);
         (this.FindSlotByName("cardDeckSlot") as CardDeckSlot).cardDeckModel = GameArchitect.Instance.saveSystem.saveFile.cardDeckModel;
         //Debug.Log(gameRule);
         //Debug.Log(this);

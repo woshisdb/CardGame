@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "newEnvirCard", menuName = "SaveData/newEnvirCard")]
+[CreateAssetMenu(fileName = "newEnvirCard", menuName = "Card/newEnvirCard")]
 public class EnvirCardAsset : CardAsset
 {
     public EnvirCardAsset() : base()

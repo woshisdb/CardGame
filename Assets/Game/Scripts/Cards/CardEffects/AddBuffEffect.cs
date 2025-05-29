@@ -12,7 +12,7 @@ public class AddBuffEffectData: CardEffectData
     }
 }
 
-[CreateAssetMenu(fileName = "AddBuffEffect", menuName = "Effect/AddBuffEffect")]
+// [CreateAssetMenu(fileName = "AddBuffEffect", menuName = "CardEffect/AddBuffEffect")]
 public class AddBuffEffect : CardEffect,ISendEvent
 {
     public AddBuffEffect()

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class HeroCardModel : CardModel,IAnimalCard
 {
-    public int knowledge;
-    public int brave;
-    public int charm;
-    public int agility;
-    public int strength;
+    public int knowledge;//知识
+    public int brave;//勇气
+    public int charm;//吸引力
+    public int agility;//敏捷
+    public int strength;//力量
     //////////////////////////////
     public int hp;
     public SlotView slot;
@@ -61,7 +61,7 @@ public class HeroCardModel : CardModel,IAnimalCard
     }
 }
 
-[CreateAssetMenu(fileName = "newHeroCard", menuName = "SaveData/newHeroCard")]
+[CreateAssetMenu(fileName = "newHeroCard", menuName = "Card/newHeroCard")]
 public class HeroCardAsset : CardAsset
 {
     public int hp;

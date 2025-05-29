@@ -54,7 +54,7 @@ public class TableView : SerializedMonoBehaviour,IView,ISendEvent
     /// <summary>
     /// ���볡�����ʼ��
     /// </summary>
-    public void StartGame(TableModelData tableData)
+    public void StartGame(ICellBindTableModel tableData)
     {
         tableModel.Init(tableData);
         this.SendEvent(new ChangeEvent(TableCircleEnum.Pending));

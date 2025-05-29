@@ -16,7 +16,7 @@ public class EffectCardModel : CardModel
     }
 }
 
-[CreateAssetMenu(fileName = "newEffectCard", menuName = "SaveData/newEffectCard")]
+[CreateAssetMenu(fileName = "newEffectCard", menuName = "Card/newEffectCard")]
 public class EffectCardAsset : CardAsset
 {
     public int power;

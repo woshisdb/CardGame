@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -9,7 +10,14 @@ using UnityEngine;
 /// </summary>
 public class Cell : IUISelector, ISendEvent, IModel
 {
-    public TableModelData tableData;
+    public ICellBindTableModel tableData;
+
+    public static Dictionary<TableModelDataEnum, Func<ICellBindTableModel>> tableModelDataModelDic =
+        new Dictionary<TableModelDataEnum, Func<ICellBindTableModel>>()
+        {
+            { TableModelDataEnum.NormalTableModelDataEnum , () => { return new TableModelData();}},
+            {TableModelDataEnum.RandomTableModelDataEnum, () => { return new RandomTableModelData();}}
+        };
     /// <summary>
     /// λ��
     /// </summary>
@@ -18,7 +26,11 @@ public class Cell : IUISelector, ISendEvent, IModel
     public Cell()
     {
     }
-
+    [Button]
+    public void CreateDataByEnum(TableModelDataEnum type)
+    {
+        tableData = tableModelDataModelDic[type]();
+    }
     public IView CreateView()
     {
         GameObject inst = GameArchitect.Instance.resConfig.cell;
@@ -48,15 +60,19 @@ public class Cell : IUISelector, ISendEvent, IModel
         }));
         return ret;
     }
-    public void ToCellMap()
+    public virtual void ToCellMap()
     {
         var table = GameArchitect.Instance.resConfig.FindTableObject(TableEnum.CombatTable);
         var tableV = GameObject.Instantiate(table);
         GameArchitect.Instance.SetTable(tableV);
         GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.cellUI);
         Camera.main.transform.position = new Vector3(477, 190, 11);
-        //Debug.Log("gbbbofjff");
         GameArchitect.Instance.GetTableModel().view.StartGame(tableData);
+    }
+
+    public virtual void OnBind(CellCol cellView)
+    {
+        
     }
 }
 
@@ -70,6 +86,7 @@ public class CellCol : MonoBehaviour,IRegisterEvent,IView
     {
         cell = (Cell)model;
         transform.position = new Vector3(cell.pos.x * 10, 0, cell.pos.y * 10);
+        cell.OnBind(this);
         Refresh();
     }
 

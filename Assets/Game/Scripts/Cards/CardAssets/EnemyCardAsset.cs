@@ -110,7 +110,7 @@ public class EnemyCardModel : CardModel,IAnimalCard
     }
 }
 
-[CreateAssetMenu(fileName = "newEnemyCard", menuName = "SaveData/newEnemyCard")]
+[CreateAssetMenu(fileName = "newEnemyCard", menuName = "Card/newEnemyCard")]
 public class EnemyCardAsset : CardAsset
 {
     public int hp;

@@ -19,7 +19,7 @@ public class CounterBuffEffectData: CardEffectData
     }
 }
 
-[CreateAssetMenu(fileName = "CounterBuffEffect", menuName = "Effect/CounterBuffEffect")]
+[CreateAssetMenu(fileName = "CounterBuffEffect", menuName = "CardEffect/CounterBuffEffect")]
 public class CounterBuffEffect : CardEffect,ISendEvent
 {
     public CounterBuffEffect()

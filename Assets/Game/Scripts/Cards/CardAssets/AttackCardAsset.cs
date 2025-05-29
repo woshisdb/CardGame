@@ -16,7 +16,7 @@ public class AttackCardModel : CardModel
     }
 }
 
-[CreateAssetMenu(fileName = "newAttackCard", menuName = "SaveData/newAttackCard")]
+[CreateAssetMenu(fileName = "newAttackCard", menuName = "Card/newAttackCard")]
 public class AttackCardAsset : CardAsset
 {
     public int power;

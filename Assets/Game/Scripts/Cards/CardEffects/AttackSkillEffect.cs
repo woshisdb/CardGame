@@ -15,7 +15,7 @@ public class AttackSkillEffectData : CardEffectData
     }
 }
 
-[CreateAssetMenu(fileName = "AttackSkillEffect", menuName = "Effect/AttackSkillEffect")]
+[CreateAssetMenu(fileName = "AttackSkillEffect", menuName = "CardEffect/AttackSkillEffect")]
 public class AttackSkillEffect : CardEffect, ISendEvent
 {
     public int hp;

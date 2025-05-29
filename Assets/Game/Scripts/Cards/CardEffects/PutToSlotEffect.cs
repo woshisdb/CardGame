@@ -12,7 +12,7 @@ public class PutToSlotEffectData : CardEffectData
     }
 }
 
-[CreateAssetMenu(fileName = "PutToSlotEffect", menuName = "Effect/PutToSlotEffect")]
+[CreateAssetMenu(fileName = "PutToSlotEffect", menuName = "CardEffect/PutToSlotEffect")]
 public class PutToSlotEffect : CardEffect, ISendEvent
 {
     public PutToSlotEffect()

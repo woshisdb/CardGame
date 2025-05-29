@@ -11,11 +11,13 @@ public class SaveFile
     public int sizeY;
     public List<List<Cell>> cells;
     public List<CardModel> cards;
-    public TableModel tableModel;
     public CardDeckModel cardDeckModel;
+    public HeroCardModel heroCardModel;
+
     [Button]
-    public void InitCountry()
+    public void CreateHero(HeroCardAsset heroCardAsset)
     {
+        heroCardModel = heroCardAsset.CreateCardModel() as HeroCardModel;
     }
     [Button]
     public void InitMap()
@@ -30,7 +32,6 @@ public class SaveFile
                 cells[i][j].pos = new Vector2Int(i, j);
             }
         }
-        tableModel = new TableModel();
     }
 }
 

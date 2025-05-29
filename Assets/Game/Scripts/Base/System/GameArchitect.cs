@@ -18,6 +18,10 @@ public class GameArchitect : Singleton<GameArchitect>
     public GameObject tableRoot; 
     public CardManager cardManager;
     protected GameObject tableViewNow;
+    public HeroCardModel heroCardModel
+    {
+        get { return saveSystem.saveFile.heroCardModel; }
+    }
     //public TableModel GetTableModel()
     //{
     //    return (TableModel)tableViewNow.GetComponent<TableView>().GetModel();

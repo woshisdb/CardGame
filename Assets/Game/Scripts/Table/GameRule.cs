@@ -48,7 +48,20 @@ public class UserGameState : GameState
 
     public override void Post(Action done)
     {
-        done();
+        AsyncQueue asyncQueue = new AsyncQueue();
+        foreach (GameAction action in TableModel.gameRule.HeroPostActions)
+        {
+            asyncQueue.Add(e =>
+            {
+                action.action(e);
+            });
+        }
+        asyncQueue.Add(e =>
+        {
+            done();
+            e();
+        });
+        asyncQueue.Run();
     }
 
     public override void Pre(Action done)
@@ -109,7 +122,20 @@ public class EnemyGameState : GameState
 
     public override void Post(Action done)
     {
-        done();
+        AsyncQueue asyncQueue = new AsyncQueue();
+        foreach (GameAction action in TableModel.gameRule.EnemyPostActions)
+        {
+            asyncQueue.Add(e =>
+            {
+                action.action(e);
+            });
+        }
+        asyncQueue.Add(e =>
+        {
+            done();
+            e();
+        });
+        asyncQueue.Run();
     }
 
     public override void Pre(Action done)
@@ -169,6 +195,8 @@ public class GameRule:ISendEvent,IRegisterEvent
 {
     public List<GameAction> HeroPreActions = new List<GameAction>();
     public List<GameAction> EnemyPreActions = new List<GameAction>();
+    public List<GameAction> HeroPostActions = new List<GameAction>();
+    public List<GameAction> EnemyPostActions = new List<GameAction>();
     public int power=10;//能量
     public TableModel tableModel;
     public GameState gameState;//当前状态
