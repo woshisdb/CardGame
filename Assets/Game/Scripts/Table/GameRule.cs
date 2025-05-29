@@ -45,6 +45,7 @@ public class UserGameState : GameState
 
     public override void Pre(Action done)
     {
+        (TableModel.FindSlotByName("gameStage") as TextSlot).SetText("玩家回合");
         done();
     }
 
@@ -92,6 +93,7 @@ public class EnemyGameState : GameState
 
     public override void Pre(Action done)
     {
+        (TableModel.FindSlotByName("gameStage") as TextSlot).SetText("敌方回合");
         done();
     }
 
@@ -138,6 +140,8 @@ public class GameRule:ISendEvent,IRegisterEvent
     public void ChangePower(int val)
     {
         power += val;
+        var powerSlot = tableModel.FindSlotByName("power") as TextSlot;
+        powerSlot.SetText(power.ToString());
     }
     public GameRule(TableModel tableModel)
     {
@@ -145,6 +149,8 @@ public class GameRule:ISendEvent,IRegisterEvent
     }
     public void Init()
     {
+        var powerSlot = tableModel.FindSlotByName("power") as TextSlot;
+        powerSlot.SetText(power.ToString());
         AsyncQueue asyncQueue = new AsyncQueue();
         asyncQueue.Add((done) =>
         {

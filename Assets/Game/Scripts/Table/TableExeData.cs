@@ -250,8 +250,7 @@ public class ChangePowerData:TableExeData
 
     public override void Exe()
     {
-        var powerSlot = tableModel.FindSlotByName("power") as EnergeSlot;
-        powerSlot.ChangeEnerge(power);
+        tableModel.gameRule.ChangePower(power);
         State.Then(this,done).Invoke();
     }
 }
