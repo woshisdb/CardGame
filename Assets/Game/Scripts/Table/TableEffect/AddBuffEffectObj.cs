@@ -10,7 +10,7 @@ public interface IAddBuffEffectData
     IAnimalCard getCard();
     Action Done();
     /// <summary>
-    /// -1ÎªÓÀ¾Ã,ÆäËûÎªÊ±¼ä
+    /// -1Îªï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ÎªÊ±ï¿½ï¿½
     /// </summary>
     /// <returns></returns>
     int GetEffectTime();
@@ -71,28 +71,10 @@ public class AddBuffEffectObj:TableEffectObj
                 }
             });
         }
-        if (time!=-1)
-        if (data.getCard().GetCardType()== CardEnum.HeroCard)
+
+        if (time != -1)
         {
-            if(gameAction==ActionTimePointType.Bef)
-            {
-                TableModel.gameRule.HeroPreActions.Add(act);
-            }
-            else
-            {
-                TableModel.gameRule.HeroPostActions.Add(act);
-            }
-        }
-        else
-        {
-            if (gameAction == ActionTimePointType.Bef)
-            {
-                TableModel.gameRule.EnemyPreActions.Add(act);
-            }
-            else
-            {
-                TableModel.gameRule.EnemyPostActions.Add(act);
-            }
+            AddGameRuleListen(gameAction,data.getCard(),time,act);
         }
     }
     public void AddGameRuleListen(ActionTimePointType gameActionType, IAnimalCard card,int time,GameAction act)
