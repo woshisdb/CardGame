@@ -52,6 +52,6 @@ public class CounterBuffEffectObj:AddBuffEffectObj
                 State.Next(new TableChangeHpData(-1,nowAct.to,nowAct.from,done,false));
             }
         });
-        SetEffectPassTime(addBuffObjData.GetEffectTime(), effect, data);
+        SetEffectPassTime<TableChangeHpData>(ActionTimePointType.Bef, ActionTimePointType.After, addBuffObjData.GetEffectTime(), effect, data);
     }
 }

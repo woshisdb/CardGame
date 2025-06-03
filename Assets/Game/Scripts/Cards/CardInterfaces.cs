@@ -9,5 +9,7 @@ public interface IAnimalCard:IBelongToSlot
     void ChangeHp(int hp);
     CardEnum GetCardType();
 
-    public int ProcessAttack(int val);
+    int ProcessAttack(int val);
+    void RegisterAttackProcess(AttackProcesser attackProcesser);
+    void RemoveRegisterAttackProcess(AttackProcesser attackProcesser);
 }

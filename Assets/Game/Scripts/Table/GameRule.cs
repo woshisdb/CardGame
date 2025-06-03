@@ -191,6 +191,14 @@ public class EnemyGameState : GameState
     }
 }
 
+public enum ActionTimePointType
+{
+    After,
+    Bef,
+}
+
+
+
 public class GameRule:ISendEvent,IRegisterEvent
 {
     public List<GameAction> HeroPreActions = new List<GameAction>();

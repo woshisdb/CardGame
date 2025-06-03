@@ -6,6 +6,7 @@ public enum TableEffectEnum
     Counter,//反击
     Shield,//护盾
     Regeneration,
+    Attack,
 }
 
 public struct TableEffectDataEvent:IEvent

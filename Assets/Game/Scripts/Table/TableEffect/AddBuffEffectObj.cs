@@ -40,37 +40,86 @@ public class AddBuffEffectObj:TableEffectObj
     {
         
     }
-    public void SetEffectPassTime(int time,LinkAction linkAction, IAddBuffEffectData data)
+    public void SetEffectPassTime<T>(ActionTimePointType gameAction, ActionTimePointType timePoint, int time,LinkAction linkAction, IAddBuffEffectData data)
     {
         var icon = GameObject.Instantiate(effectIcon);
         icon.gameObject.transform.parent = (data.getCard().GetSlot() as OneCardSlotView).contentView ;
         icon.transform.localScale= Vector3.one;
-        if(time!=-1)
-        if (data.getCard().GetCardType()== CardEnum.HeroCard)
+        int passTime = time;
+        GameAction act = null;
+        if (timePoint == ActionTimePointType.After)
         {
-            int passTime = time;
-            TableModel.gameRule.HeroPreActions.Add(new GameAction(e =>
+            act = new GameAction(e =>
             {
                 passTime--;
                 if (passTime <= 0)
                 {
-                    TableModel.RemoveAfterActionFromTable<TableChangeHpData>(linkAction);
+                    TableModel.RemoveAfterActionFromTable<T>(linkAction);
                     GameObject.Destroy(icon);
                 }
-            }));
+            });
         }
         else
         {
-            int passTime = time;
-            TableModel.gameRule.EnemyPreActions.Add(new GameAction(e =>
+            act = new GameAction(e =>
             {
                 passTime--;
                 if (passTime <= 0)
                 {
-                    TableModel.RemoveAfterActionFromTable<TableChangeHpData>(linkAction);
+                    TableModel.RemoveBeforActionFromTable<T>(linkAction);
                     GameObject.Destroy(icon);
                 }
-            }));
+            });
+        }
+        if (time!=-1)
+        if (data.getCard().GetCardType()== CardEnum.HeroCard)
+        {
+            if(gameAction==ActionTimePointType.Bef)
+            {
+                TableModel.gameRule.HeroPreActions.Add(act);
+            }
+            else
+            {
+                TableModel.gameRule.HeroPostActions.Add(act);
+            }
+        }
+        else
+        {
+            if (gameAction == ActionTimePointType.Bef)
+            {
+                TableModel.gameRule.EnemyPreActions.Add(act);
+            }
+            else
+            {
+                TableModel.gameRule.EnemyPostActions.Add(act);
+            }
         }
     }
+    public void AddGameRuleListen(ActionTimePointType gameActionType, IAnimalCard card,int time,GameAction act)
+    {
+        if (time != -1)
+            if (card.GetCardType() == CardEnum.HeroCard)
+            {
+                if (gameActionType == ActionTimePointType.Bef)
+                {
+                    TableModel.gameRule.HeroPreActions.Add(act);
+                }
+                else
+                {
+                    TableModel.gameRule.HeroPostActions.Add(act);
+                }
+            }
+            else
+            {
+                if (gameActionType == ActionTimePointType.Bef)
+                {
+                    TableModel.gameRule.EnemyPreActions.Add(act);
+                }
+                else
+                {
+                    TableModel.gameRule.EnemyPostActions.Add(act);
+                }
+            }
+    }
 }
+

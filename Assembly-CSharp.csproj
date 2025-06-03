@@ -128,6 +128,7 @@
      <Compile Include="Assets\Game\Scripts\Table\TableCircle.cs" />
      <Compile Include="Assets\Game\Scripts\Table\TableEffect\AddBuffEffectObj.cs" />
      <Compile Include="Assets\Game\Scripts\Table\TableEffect\AddHpEffectObj.cs" />
+     <Compile Include="Assets\Game\Scripts\Table\TableEffect\Buffs\AttackBuffEffectObj.cs" />
      <Compile Include="Assets\Game\Scripts\Table\TableEffect\Buffs\CounterBuffEffectObj.cs" />
      <Compile Include="Assets\Game\Scripts\Table\TableEffect\TableEffectObj.cs" />
      <Compile Include="Assets\Game\Scripts\Table\TableEnum.cs" />

@@ -118,6 +118,14 @@ public class HeroCardModel : CardModel,IAnimalCard
         }
         return ret;
     }
+    public void RegisterAttackProcess(AttackProcesser attackProcesser)
+    {
+        this.attackProcessers.Add(attackProcesser);
+    }
+    public void RemoveRegisterAttackProcess(AttackProcesser attackProcesser)
+    {
+        this.attackProcessers.Remove(attackProcesser);
+    }
 }
 
 [CreateAssetMenu(fileName = "newHeroCard", menuName = "Card/newHeroCard")]

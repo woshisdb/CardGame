@@ -113,6 +113,12 @@ public class EnemyCardModel : CardModel,IAnimalCard
     {
         return val;
     }
+    public void RegisterAttackProcess(AttackProcesser attackProcesser)
+    {
+    }
+    public void RemoveRegisterAttackProcess(AttackProcesser attackProcesser)
+    {
+    }
 }
 
 [CreateAssetMenu(fileName = "newEnemyCard", menuName = "Card/newEnemyCard")]
