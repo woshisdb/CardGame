@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -24,9 +25,17 @@ public class CardUIView : SerializedMonoBehaviour,ISendEvent,IView
         return cardModel;
     }
 
+    public void Update()
+    {
+        Refresh();
+    }
+
     public void Refresh()
     {
-        cardModel.Refresh(this);
+        if (cardModel!=null)
+        {
+            cardModel.Refresh(this);
+        }
         //title.SetText(cardModel.cardName);
         //description.SetText(cardModel.cardDescription);
     }

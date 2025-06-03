@@ -28,7 +28,11 @@ public class AttackSkillEffectData : CardEffectData
     }
     public int GetHp()
     {
-        return hp;
+        if (GameArchitect.Instance.heroCardModel==null)
+        {
+            return hp;
+        }
+        return GameArchitect.Instance.heroCardModel.ProcessAttack(hp);
     }
 }
 

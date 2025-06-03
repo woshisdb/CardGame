@@ -57,6 +57,6 @@ public class CounterBuffEffect : CardEffect,ISendEvent
     public override string GetEffectStr(CardEffectData data)
     {
         var cd = data as CounterBuffEffectData;
-        return "Ìí¼ÓÐ§¹û:·´ÉË"+",Ã¿´ÎÔì³É" + cd.GetPower().ToString()+"µãÉËº¦";
+        return "ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½:ï¿½ï¿½ï¿½ï¿½"+",Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½" + cd.GetPower().ToString()+"ï¿½ï¿½ï¿½Ëºï¿½";
     }
 }
