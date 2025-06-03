@@ -27,6 +27,7 @@ public class AddBuffEffectObj:TableEffectObj
         var slot = data.getCard().GetSlot().gameObject;
         var eff = GameObject.Instantiate(effect);
         eff.gameObject.transform.parent = slot.transform;
+        eff.transform.transform.localPosition = Vector3.zero;
         eff.gameObject.transform.DOLocalMoveX(1, 1).OnComplete(() =>
         {
             GameObject.Destroy(eff);
@@ -42,7 +43,8 @@ public class AddBuffEffectObj:TableEffectObj
     public void SetEffectPassTime(int time,LinkAction linkAction, IAddBuffEffectData data)
     {
         var icon = GameObject.Instantiate(effectIcon);
-        icon.gameObject.transform.parent = data.getCard().GetSlot().gameObject.transform;
+        icon.gameObject.transform.parent = (data.getCard().GetSlot() as OneCardSlotView).contentView ;
+        icon.transform.localScale= Vector3.one;
         if(time!=-1)
         if (data.getCard().GetCardType()== CardEnum.HeroCard)
         {

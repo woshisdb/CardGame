@@ -8,4 +8,6 @@ public interface IAnimalCard:IBelongToSlot
     void SetHp(int hp);
     void ChangeHp(int hp);
     CardEnum GetCardType();
+
+    public int ProcessAttack(int val);
 }

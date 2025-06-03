@@ -60,7 +60,7 @@ public class CameraView : MonoBehaviour
         {
             Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
             //Debug.Log(pos);
-            Vector3 move = new Vector3(pos.x * moveSpeed, 0,pos.y * moveSpeed);
+            Vector3 move = new Vector3(pos.x * moveSpeed,pos.y * moveSpeed, 0);
             transform.Translate(-move * dragRate * 0.7f, Space.World);
             dragOrigin = Input.mousePosition;
         }

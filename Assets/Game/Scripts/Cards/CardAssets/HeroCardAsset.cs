@@ -1,6 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum HeroProperty
+{
+    knowledge,
+    brave,
+    charm,
+    agility,
+    strength
+}
+
+public class AttackProcesser
+{
+    public Func<int, int> func;
+    public AttackProcesser(Func<int, int> func)
+    {
+        this.func = func;
+    }
+}
 
 public class HeroCardModel : CardModel,IAnimalCard
 {
@@ -9,9 +28,36 @@ public class HeroCardModel : CardModel,IAnimalCard
     public int charm;//吸引力
     public int agility;//敏捷
     public int strength;//力量
+
     //////////////////////////////
     public int hp;
     public SlotView slot;
+    public List<AttackProcesser> attackProcessers=new List<AttackProcesser>();
+
+    public void AddProperty(HeroProperty heroProperty,int val)
+    {
+        if(heroProperty==HeroProperty.knowledge)
+        {
+            knowledge += val;
+        }
+        else if(heroProperty==HeroProperty.brave)
+        {
+            brave += val;
+        }
+        if(heroProperty==HeroProperty.charm)
+        {
+            charm += val;
+        }
+        if (heroProperty==HeroProperty.agility)
+        {
+            agility += val;
+        }
+        if(heroProperty == HeroProperty.strength)
+        {
+            strength += val;
+        }
+    }
+
     public HeroCardModel(CardAsset cardAsset) : base(cardAsset)
     {
         var asset = cardAsset as HeroCardAsset;
@@ -58,6 +104,19 @@ public class HeroCardModel : CardModel,IAnimalCard
     public CardEnum GetCardType()
     {
         return cardAsset.cardEnum;
+    }
+    /// <summary>
+    /// 获得伤害
+    /// </summary>
+    /// <returns></returns>
+    public int ProcessAttack(int val)
+    {
+        int ret = val;
+        for(int i=0;i< attackProcessers.Count; i++)
+        {
+            ret = attackProcessers[i].func(ret);
+        }
+        return ret;
     }
 }
 

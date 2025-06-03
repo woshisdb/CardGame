@@ -50,17 +50,17 @@ public class EnemyCardModel : CardModel,IAnimalCard
         }));
         if (!fromScene)
         {
-            foreach (var x in cardAsset.cardEffects)
-            {
-                var eff = x;
-                ret.Add(new ButtonBinder(() =>
-                {
-                    return "use";
-                }, () =>
-                {
-                    this.SendEvent(new CardEffectEvent(eff, this));
-                }));
-            }
+            //foreach (var x in cardAsset.cardEffects)
+            //{
+            //    var eff = x;
+            //    ret.Add(new ButtonBinder(() =>
+            //    {
+            //        return "use";
+            //    }, () =>
+            //    {
+            //        this.SendEvent(new CardEffectEvent(eff, this));
+            //    }));
+            //}
             //foreach (var x in ((EnemyCardAsset)cardAsset).enemySkils)
             //{
             //    var eff = x;
@@ -107,6 +107,11 @@ public class EnemyCardModel : CardModel,IAnimalCard
     public CardEnum GetCardType()
     {
         return cardAsset.cardEnum;
+    }
+
+    public int ProcessAttack(int val)
+    {
+        return val;
     }
 }
 

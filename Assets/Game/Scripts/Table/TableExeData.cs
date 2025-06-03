@@ -115,12 +115,14 @@ public class TableChangeHpData : TableExeData
         }
     }
 }
-
-public class AddBuffToAnimal:TableExeData
+/// <summary>
+/// 反击BUFF
+/// </summary>
+public class AddCounterBuffToAnimal : TableExeData
 {
     public IAnimalCard card;
     public Action done;
-    public AddBuffToAnimal(IAnimalCard card,Action action,bool needLink=true):base(needLink)
+    public AddCounterBuffToAnimal(IAnimalCard card,Action action,bool needLink=true):base(needLink)
     {
         this.card = card;
         this.done = action;
@@ -129,6 +131,24 @@ public class AddBuffToAnimal:TableExeData
     public override void Exe()
     {
         this.SendEvent(new TableEffectDataEvent(new CounterBuffObjData(done,card,1)));
+    }
+}
+/// <summary>
+/// 反击BUFF
+/// </summary>
+public class AddAttackBuffToAnimal : TableExeData
+{
+    public IAnimalCard card;
+    public Action done;
+    public AddAttackBuffToAnimal(IAnimalCard card, Action action, bool needLink = true) : base(needLink)
+    {
+        this.card = card;
+        this.done = action;
+    }
+
+    public override void Exe()
+    {
+        this.SendEvent(new TableEffectDataEvent(new CounterBuffObjData(done, card, 1)));
     }
 }
 /// <summary>

@@ -13,11 +13,11 @@ public class CardAsset : SerializedScriptableObject
     public string cardDescription;
     [ReadOnly]
     public CardEnum cardEnum;
-    public List<CardEffectData> cardEffects=new List<CardEffectData>();
+    public CardEffectData cardEffect;
     [Button]
     public void AddEffect(CardEffect cardEffect)
     {
-        cardEffects.Add(cardEffect.EffectData());
+        this.cardEffect=cardEffect.EffectData();
     }
     public virtual CardModel CreateCardModel()
     {

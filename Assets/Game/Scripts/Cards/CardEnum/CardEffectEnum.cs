@@ -7,4 +7,5 @@ public enum CardEffectEnum
     AddBuffEffect,
     PutToSlotEffect,
     CounterBuffEffect,
+    AddAttackEffect,
 }

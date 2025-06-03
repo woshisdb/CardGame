@@ -4,22 +4,29 @@ using UnityEngine;
 
 public class EffectCardModel : CardModel
 {
-    public int power;
+    public int Power { get { return GetPower(); } }
     public EffectCardModel(CardAsset cardAsset) : base(cardAsset)
     {
-        this.power = ((EffectCardAsset)cardAsset).power;
     }
     public override void Refresh(CardUIView cardUIView)
     {
         base.Refresh(cardUIView);
-        cardUIView.items["power"].text = this.power.ToString();
+        cardUIView.items["power"].text = Power.ToString();
+    }
+    public virtual int GetPower()
+    {
+        return cardEffectData.GetPower();
+    }
+
+    public override string GetCardDescription()
+    {
+        return cardEffectData.cardEffect.GetEffectStr(cardEffectData);
     }
 }
 
 [CreateAssetMenu(fileName = "newEffectCard", menuName = "Card/newEffectCard")]
 public class EffectCardAsset : CardAsset
 {
-    public int power;
     public EffectCardAsset() : base()
     {
         cardEnum = CardEnum.EffectCard;

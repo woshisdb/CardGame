@@ -10,6 +10,18 @@ public class PutToSlotEffectData : CardEffectData
     public PutToSlotEffectData(ICardEffect cardEffect) : base(cardEffect)
     {
     }
+
+    public override CardEffectData Clone()
+    {
+        var ret = new PutToSlotEffectData(cardEffect);
+        ret.Name = Name;
+        return ret;
+    }
+
+    public override int GetPower()
+    {
+        return 0;
+    }
 }
 
 [CreateAssetMenu(fileName = "PutToSlotEffect", menuName = "CardEffect/PutToSlotEffect")]
@@ -46,5 +58,11 @@ public class PutToSlotEffect : CardEffect, ISendEvent
     public override CardEffectData EffectData()
     {
         return new PutToSlotEffectData(this);
+    }
+
+    public override string GetEffectStr(CardEffectData data)
+    {
+        var cd = data as PutToSlotEffectData;
+        return "放置到卡牌上";
     }
 }

@@ -9,6 +9,7 @@ public class OneCardSlotView : SlotView, IUISelector,ISendEvent
 {
     public CardModel cardModel;
     public CardScView scView;
+    public Transform contentView;
     public override void Update()
     {
         if(!IsEmpty())

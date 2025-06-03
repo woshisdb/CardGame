@@ -4,11 +4,24 @@ using UnityEngine;
 public class CardModel : IUISelector, IModel, ISendEvent
 {
     public CardAsset cardAsset;
-    public string cardName { get { return cardAsset.cardName; } }
-    public string cardDescription { get { return cardAsset.cardDescription; } }
+    public CardEffectData cardEffectData;
+    public string cardName { get { return GetCardName(); } }
+    public string cardDescription { get { return GetCardDescription(); } }
+
+    public virtual string GetCardName()
+    {
+        return cardAsset.cardName;
+    }
+
+    public virtual string GetCardDescription()
+    {
+        return cardAsset.cardDescription;
+    }
+
     public CardModel(CardAsset cardAsset)
     {
         this.cardAsset = cardAsset;
+        cardEffectData = cardAsset.cardEffect.Clone();
     }
 
     public IView CreateView()
@@ -66,17 +79,13 @@ public class CardModel : IUISelector, IModel, ISendEvent
         }));
         if (!fromScene)
         {
-            foreach (var x in cardAsset.cardEffects)
+            ret.Add(new ButtonBinder(() =>
             {
-                var eff = x;
-                ret.Add(new ButtonBinder(() =>
-                {
-                    return "use";
-                }, () =>
-                {
-                    this.SendEvent(new CardEffectEvent(eff, this));
-                }));
-            }
+                return "use";
+            }, () =>
+            {
+                this.SendEvent(new CardEffectEvent(cardAsset.cardEffect, this));
+            }));
         }
         return ret;
     }

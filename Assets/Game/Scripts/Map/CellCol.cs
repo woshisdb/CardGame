@@ -85,7 +85,7 @@ public class CellCol : MonoBehaviour,IRegisterEvent,IView
     public void BindModel(IModel model)
     {
         cell = (Cell)model;
-        transform.position = new Vector3(cell.pos.x * 10, 0, cell.pos.y * 10);
+        transform.localPosition = new Vector3(cell.pos.x * 10, 0, cell.pos.y * 10);
         cell.OnBind(this);
         Refresh();
     }
