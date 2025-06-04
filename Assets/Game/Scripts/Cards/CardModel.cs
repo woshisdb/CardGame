@@ -5,6 +5,15 @@ public class CardModel : IUISelector, IModel, ISendEvent
 {
     public CardAsset cardAsset;
     public CardEffectData cardEffectData;
+
+    public TableModel TableModel
+    {
+        get
+        {
+            return GameArchitect.Instance.GetTableModel();
+        }
+    }
+
     public string cardName { get { return GetCardName(); } }
     public string cardDescription { get { return GetCardDescription(); } }
 
@@ -77,15 +86,18 @@ public class CardModel : IUISelector, IModel, ISendEvent
         {
             return cardAsset.cardDescription;
         }));
-        if (!fromScene)
+        if (!fromScene && cardAsset.cardEffect!=null)
         {
-            ret.Add(new ButtonBinder(() =>
+            if (cardAsset.cardEffect.cardEffect.CanExe(cardAsset.cardEffect,TableModel,this))
             {
-                return "use";
-            }, () =>
-            {
-                this.SendEvent(new CardEffectEvent(cardAsset.cardEffect, this));
-            }));
+                ret.Add(new ButtonBinder(() =>
+                {
+                    return "use";
+                }, () =>
+                {
+                    this.SendEvent(new CardEffectEvent(cardAsset.cardEffect, this));
+                }));
+            }
         }
         return ret;
     }

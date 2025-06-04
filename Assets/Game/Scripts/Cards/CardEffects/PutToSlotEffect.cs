@@ -32,11 +32,6 @@ public class PutToSlotEffect : CardEffect, ISendEvent
         cardEffectEnum = CardEffectEnum.PutToSlotEffect;
     }
 
-    public override bool CanExe(CardEffectData effectData, TableModel table, CardModel card)
-    {
-        return true;
-    }
-
     public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card,Action done)
     {
         return new SelectSlotData((slot) =>

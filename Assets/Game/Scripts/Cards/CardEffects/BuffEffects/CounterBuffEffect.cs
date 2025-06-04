@@ -38,10 +38,6 @@ public class CounterBuffEffect : CardEffect,ISendEvent
     {
         cardEffectEnum = CardEffectEnum.CounterBuffEffect;
     }
-    public override bool CanExe(CardEffectData effectData, TableModel table, CardModel card)
-    {
-        return true;
-    }
 
     public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card,Action done)
     {

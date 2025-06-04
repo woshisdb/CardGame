@@ -46,6 +46,11 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         actionAfterLinks[typeof(T)].Add(linkAction);
         return linkAction;
     }
+    
+    public int GetPower()
+    {
+        return gameRule.GetPower();
+    }
 
     public void RemoveBeforActionFromTable<T>(LinkAction action)
     {

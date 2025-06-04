@@ -257,7 +257,7 @@ public class RemoveHandCardData : TableExeData
     public override void Exe()
     {
         GameArchitect.Instance.cardManager.RemoveCard(cardModel, State.Then(this,onSucc),
-            OnFail(onFail)); //onFail == null ? EndStage : onFail);
+            OnFail(onFail));
     }
 }
 

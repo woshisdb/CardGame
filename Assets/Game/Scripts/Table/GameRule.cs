@@ -282,6 +282,11 @@ public class GameRule:ISendEvent,IRegisterEvent
     {
         RunNormal();
     }
+
+    public int GetPower()
+    {
+        return power;
+    }
     public void EndGame(Action done)
     {
         GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.mapUI);
