@@ -14,6 +14,7 @@ using UnityEngine;
 public class CounterBuffEffectData: CardEffectData
 {
     public int power;
+    public int hp;
     public CounterBuffEffectData(ICardEffect cardEffect) : base(cardEffect)
     {
     }
@@ -22,12 +23,18 @@ public class CounterBuffEffectData: CardEffectData
     {
         var ret = new CounterBuffEffectData(cardEffect);
         ret.power = power;
+        ret.hp = hp;
         return ret;
     }
 
     public override int GetPower()
     {
         return power;
+    }
+
+    public int GetHp()
+    {
+        return tableModel.gameRule.GameRuleProcessor.ProcessAttack(tableModel.gameRule.owner,hp);
     }
 }
 
@@ -41,8 +48,10 @@ public class CounterBuffEffect : CardEffect,ISendEvent
 
     public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card,Action done)
     {
+        var data= effectData as CounterBuffEffectData;
         var hero = (table.FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView).cardModel as IAnimalCard;
-        return Cost((effectData as CounterBuffEffectData).power, new AddCounterBuffToAnimal(hero, () => { State.End(done); }));
+        return Cost((effectData as CounterBuffEffectData).power, new AddCounterBuffToAnimal(hero, () => { State.End(done); },
+            () => { return data.GetHp();}));
     }
 
     public override CardEffectData EffectData()

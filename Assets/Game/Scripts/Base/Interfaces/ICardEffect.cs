@@ -5,6 +5,14 @@ using UnityEngine;
 
 public abstract class CardEffectData
 {
+    public TableModel tableModel
+    {
+        get
+        {
+            return GameArchitect.Instance.GetTableModel();
+        }
+    }
+
     public ICardEffect cardEffect;
     public abstract int GetPower();
     public CardEffectData(ICardEffect cardEffect)

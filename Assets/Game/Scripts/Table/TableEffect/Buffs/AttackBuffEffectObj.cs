@@ -10,8 +10,8 @@ public struct AttackBuffObjData : TableEffectData, IAddBuffEffectData
     public Action done;
     public IAnimalCard card;
     public int effectTime;
-    public Func<int, int> func;
-    public AttackBuffObjData(Action done, IAnimalCard card, int effectTime,Func<int,int> func)
+    public Func<IAnimalCard,int, int> func;
+    public AttackBuffObjData(Action done, IAnimalCard card, int effectTime,Func<IAnimalCard,int,int> func)
     {
         this.done = done;
         this.card = card;
@@ -46,7 +46,7 @@ public class AttackBuffEffectObj : AddBuffEffectObj
     public override void AddBuff(IAnimalCard card, IAddBuffEffectData addBuffObjData)
     {
         var data = (AttackBuffObjData)addBuffObjData;
-        data.card.RegisterAttackProcess(new AttackProcesser(data.func));
+        TableModel.gameRule.GameRuleProcessor.RegisterAttackProcess(new AttackProcesser(data.func));
         var icon = GameObject.Instantiate(effectIcon);
         icon.gameObject.transform.parent = (data.getCard().GetSlot() as OneCardSlotView).contentView;
         icon.transform.localScale = Vector3.one;

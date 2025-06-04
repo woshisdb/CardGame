@@ -12,15 +12,6 @@ public enum HeroProperty
     strength
 }
 
-public class AttackProcesser
-{
-    public Func<int, int> func;
-    public AttackProcesser(Func<int, int> func)
-    {
-        this.func = func;
-    }
-}
-
 public class HeroCardModel : CardModel,IAnimalCard
 {
     public int knowledge;//知识
@@ -32,7 +23,7 @@ public class HeroCardModel : CardModel,IAnimalCard
     //////////////////////////////
     public int hp;
     public SlotView slot;
-    public List<AttackProcesser> attackProcessers=new List<AttackProcesser>();
+    // public List<AttackProcesser> attackProcessers=new List<AttackProcesser>();
 
     public void AddProperty(HeroProperty heroProperty,int val)
     {
@@ -109,23 +100,23 @@ public class HeroCardModel : CardModel,IAnimalCard
     /// 获得伤害
     /// </summary>
     /// <returns></returns>
-    public int ProcessAttack(int val)
-    {
-        int ret = val;
-        for(int i=0;i< attackProcessers.Count; i++)
-        {
-            ret = attackProcessers[i].func(ret);
-        }
-        return ret;
-    }
-    public void RegisterAttackProcess(AttackProcesser attackProcesser)
-    {
-        this.attackProcessers.Add(attackProcesser);
-    }
-    public void RemoveRegisterAttackProcess(AttackProcesser attackProcesser)
-    {
-        this.attackProcessers.Remove(attackProcesser);
-    }
+    // public int ProcessAttack(int val)
+    // {
+    //     int ret = val;
+    //     for(int i=0;i< attackProcessers.Count; i++)
+    //     {
+    //         ret = attackProcessers[i].func(ret);
+    //     }
+    //     return ret;
+    // }
+    // public void RegisterAttackProcess(AttackProcesser attackProcesser)
+    // {
+    //     this.attackProcessers.Add(attackProcesser);
+    // }
+    // public void RemoveRegisterAttackProcess(AttackProcesser attackProcesser)
+    // {
+    //     this.attackProcessers.Remove(attackProcesser);
+    // }
 }
 
 [CreateAssetMenu(fileName = "newHeroCard", menuName = "Card/newHeroCard")]

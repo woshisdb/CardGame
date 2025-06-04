@@ -9,4 +9,5 @@ public enum CardEffectEnum
     CounterBuffEffect,
     AddAttackEffect,
     ChangeHp,
+    GetCardFromDeckEffect
 }

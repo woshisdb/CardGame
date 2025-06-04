@@ -122,15 +122,17 @@ public class AddCounterBuffToAnimal : TableExeData
 {
     public IAnimalCard card;
     public Action done;
-    public AddCounterBuffToAnimal(IAnimalCard card,Action action,bool needLink=true):base(needLink)
+    public Func<int> hp;
+    public AddCounterBuffToAnimal(IAnimalCard card,Action action,Func<int> hp,bool needLink=true):base(needLink)
     {
         this.card = card;
         this.done = action;
+        this.hp = hp;
     }
 
     public override void Exe()
     {
-        this.SendEvent(new TableEffectDataEvent(new CounterBuffObjData(done,card,1)));
+        this.SendEvent(new TableEffectDataEvent(new CounterBuffObjData(done,card,hp())));
     }
 }
 /// <summary>
@@ -148,9 +150,16 @@ public class AddAttackBuffToAnimal : TableExeData
 
     public override void Exe()
     {
-        this.SendEvent(new TableEffectDataEvent(new AttackBuffObjData(done, card, 1, e =>
+        this.SendEvent(new TableEffectDataEvent(new AttackBuffObjData(done, card, 1, (f,e) =>
         {
-            return e * 2;
+            if (f.GetCardType()==CardEnum.HeroCard)
+            {
+                return e * 2;
+            }
+            else
+            {
+                return e;
+            }
         })));
     }
 }

@@ -67,6 +67,7 @@ public class UserGameState : GameState
     public override void Pre(Action done)
     {
         (TableModel.FindSlotByName("gameStage") as TextSlot).SetText("玩家回合");
+        TableModel.gameRule.owner = (TableModel.FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView).cardModel as IAnimalCard;
         AsyncQueue asyncQueue = new AsyncQueue();
         foreach (GameAction action in TableModel.gameRule.HeroPreActions)
         {
@@ -141,6 +142,7 @@ public class EnemyGameState : GameState
     public override void Pre(Action done)
     {
         (TableModel.FindSlotByName("gameStage") as TextSlot).SetText("敌方回合");
+        TableModel.gameRule.owner = (TableModel.FindSlotByTag(SlotTag.EnemySlot) as OneCardSlotView).cardModel as IAnimalCard;
         AsyncQueue asyncQueue = new AsyncQueue();
         foreach (GameAction action in TableModel.gameRule.EnemyPreActions)
         {
@@ -208,7 +210,8 @@ public class GameRule:ISendEvent,IRegisterEvent
     public int power=10;//能量
     public TableModel tableModel;
     public GameState gameState;//当前状态
-
+    public GameRuleProcessor GameRuleProcessor;
+    public IAnimalCard owner;//当前的回合角色
     public void ChangePower(int val)
     {
         power += val;

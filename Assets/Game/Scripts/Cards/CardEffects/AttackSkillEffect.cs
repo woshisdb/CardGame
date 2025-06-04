@@ -28,11 +28,7 @@ public class AttackSkillEffectData : CardEffectData
     }
     public int GetHp()
     {
-        if (GameArchitect.Instance.heroCardModel==null)
-        {
-            return hp;
-        }
-        return GameArchitect.Instance.heroCardModel.ProcessAttack(hp);
+        return tableModel.gameRule.GameRuleProcessor.ProcessAttack(tableModel.gameRule.owner,hp);
     }
 }
 

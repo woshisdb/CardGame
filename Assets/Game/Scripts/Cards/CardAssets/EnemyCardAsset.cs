@@ -108,17 +108,6 @@ public class EnemyCardModel : CardModel,IAnimalCard
     {
         return cardAsset.cardEnum;
     }
-
-    public int ProcessAttack(int val)
-    {
-        return val;
-    }
-    public void RegisterAttackProcess(AttackProcesser attackProcesser)
-    {
-    }
-    public void RemoveRegisterAttackProcess(AttackProcesser attackProcesser)
-    {
-    }
 }
 
 [CreateAssetMenu(fileName = "newEnemyCard", menuName = "Card/newEnemyCard")]
