@@ -134,7 +134,7 @@ public class AddCounterBuffToAnimal : TableExeData
     }
 }
 /// <summary>
-/// 反击BUFF
+/// 加攻BUFF
 /// </summary>
 public class AddAttackBuffToAnimal : TableExeData
 {
@@ -148,7 +148,10 @@ public class AddAttackBuffToAnimal : TableExeData
 
     public override void Exe()
     {
-        this.SendEvent(new TableEffectDataEvent(new AttackBuffObjData(done, card, 1)));
+        this.SendEvent(new TableEffectDataEvent(new AttackBuffObjData(done, card, 1, e =>
+        {
+            return e * 2;
+        })));
     }
 }
 /// <summary>

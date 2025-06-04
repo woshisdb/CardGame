@@ -43,7 +43,7 @@ public class AttackSkillEffect : CardEffect, ISendEvent
     public int power;
     public AttackSkillEffect()
     {
-        cardEffectEnum = CardEffectEnum.AddBuffEffect;
+        cardEffectEnum = CardEffectEnum.ChangeHp;
     }
     public override bool CanExe(CardEffectData effectData, TableModel table, CardModel card)
     {

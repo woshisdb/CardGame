@@ -157,6 +157,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
         {
             if (slotSel.cond(e.slot))
             {
+                this.SendEvent<ChangeEvent>(new ChangeEvent(TableCircleEnum.SelectCarding));
                 slotSel.succ(e.slot);
                 slotSel = null;
             }

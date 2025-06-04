@@ -29,10 +29,12 @@ public class AddHpEffectObj:TableEffectObj
     public GameObject hpEffect;
     public override void ShowEffect(TableEffectData effectData)
     {
+        Debug.Log("AddHpEffectObj:TableEffectObj");
         var data = (AddHpEffectObjData)effectData;
         var slot = data.card.GetSlot().gameObject;
         var hpEff = GameObject.Instantiate(hpEffect);
         hpEff.gameObject.transform.parent = slot.transform;
+        hpEff.gameObject.transform.localPosition = Vector3.zero;
         hpEff.gameObject.transform.DOLocalMoveX(1, 1).OnComplete(() =>
         {
             GameObject.Destroy(hpEff);

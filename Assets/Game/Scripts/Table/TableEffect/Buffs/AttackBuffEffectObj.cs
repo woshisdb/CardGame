@@ -10,11 +10,13 @@ public struct AttackBuffObjData : TableEffectData, IAddBuffEffectData
     public Action done;
     public IAnimalCard card;
     public int effectTime;
-    public AttackBuffObjData(Action done, IAnimalCard card, int effectTime)
+    public Func<int, int> func;
+    public AttackBuffObjData(Action done, IAnimalCard card, int effectTime,Func<int,int> func)
     {
         this.done = done;
         this.card = card;
         this.effectTime = effectTime;
+        this.func = func;
     }
 
     public TableEffectEnum GetEffectEnum()
@@ -44,10 +46,7 @@ public class AttackBuffEffectObj : AddBuffEffectObj
     public override void AddBuff(IAnimalCard card, IAddBuffEffectData addBuffObjData)
     {
         var data = (AttackBuffObjData)addBuffObjData;
-        data.card.RegisterAttackProcess(new AttackProcesser(e =>
-        {
-            return 100;
-        }));
+        data.card.RegisterAttackProcess(new AttackProcesser(data.func));
         var icon = GameObject.Instantiate(effectIcon);
         icon.gameObject.transform.parent = (data.getCard().GetSlot() as OneCardSlotView).contentView;
         icon.transform.localScale = Vector3.one;
