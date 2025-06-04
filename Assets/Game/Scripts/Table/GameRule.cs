@@ -221,6 +221,7 @@ public class GameRule:ISendEvent,IRegisterEvent
     public GameRule(TableModel tableModel)
     {
         this.tableModel = tableModel;
+        GameRuleProcessor= new GameRuleProcessor();
     }
     public void Init()
     {

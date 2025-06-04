@@ -14,12 +14,14 @@ public static class State
     }
     public static void Next(TableExeData data)
     {
-        tableModel.ExeActionBef(data,() =>
-        {
-            data.Exe(); 
-        });
+        data.Run();
     }
-
+    /// <summary>
+    /// 只会在ExeData中使用
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="done"></param>
+    /// <returns></returns>
     public static Action Then(TableExeData data,Action done)
     {
         return () => { tableModel.ExeActionAfter(data,done); };
@@ -46,7 +48,14 @@ public abstract class TableExeData : ISendEvent
     {
         this.needLink = needLink;
     }
-    public abstract void Exe();
+    public void Run()
+    {
+        tableModel.ExeActionBef(this, () =>
+        {
+            Exe();
+        });
+    }
+    protected abstract void Exe();
     public void EndStage()
     {
         State.End(null);
@@ -69,7 +78,7 @@ public class EndData : TableExeData
     {
         this.done = done;
     }
-    public override void Exe()
+    protected override void Exe()
     {
         if (done != null)
         {
@@ -98,7 +107,7 @@ public class TableChangeHpData : TableExeData
         this.to = to;
     }
 
-    public override void Exe()
+    protected override void Exe()
     {
         if (hpChange>0)
         {
@@ -130,7 +139,7 @@ public class AddCounterBuffToAnimal : TableExeData
         this.hp = hp;
     }
 
-    public override void Exe()
+    protected override void Exe()
     {
         this.SendEvent(new TableEffectDataEvent(new CounterBuffObjData(done,card,hp())));
     }
@@ -148,7 +157,7 @@ public class AddAttackBuffToAnimal : TableExeData
         this.done = action;
     }
 
-    public override void Exe()
+    protected override void Exe()
     {
         this.SendEvent(new TableEffectDataEvent(new AttackBuffObjData(done, card, 1, (f,e) =>
         {
@@ -181,7 +190,7 @@ public class GetCardFromDeck : TableExeData
         this.onSucc = onSucc;
         this.onFail = onFail;
     }
-    public override void Exe()
+    protected override void Exe()
     {
         var slot = tableModel.FindSlotByName("cardDeckSlot") as CardDeckSlot;
         var cards= slot.GetCardsAnim(num,()=>{});
@@ -219,7 +228,7 @@ public class SelectSlotData : TableExeData
         this.onConceal = onConceal;
     }
 
-    public override void Exe()
+    protected override void Exe()
     {
         tableModel.StartSelectSlot((slot) => { return this.require(slot); }, (e)=>
         {
@@ -244,7 +253,7 @@ public class AddHandCardData : TableExeData
         this.onSucc = onSucc;
         this.onFail = onFail;
     }
-    public override void Exe()
+    protected override void Exe()
     {
         GameArchitect.Instance.cardManager.AddCard(cardModel, State.Then(this,onSucc), OnFail(onFail));
     }
@@ -263,7 +272,7 @@ public class RemoveHandCardData : TableExeData
         this.onSucc = onSucc;
         this.onFail = onFail;
     }
-    public override void Exe()
+    protected override void Exe()
     {
         GameArchitect.Instance.cardManager.RemoveCard(cardModel, State.Then(this,onSucc),
             OnFail(onFail));
@@ -280,7 +289,7 @@ public class ChangePowerData:TableExeData
         this.power = power;
     }
 
-    public override void Exe()
+    protected override void Exe()
     {
         tableModel.gameRule.ChangePower(power);
         State.Then(this,done).Invoke();
@@ -300,7 +309,7 @@ public class AddSlotCardData : TableExeData
         this.onSucc = onSucc;
         this.onFail = onFail;
     }
-    public override void Exe()
+    protected override void Exe()
     {
         slotView.AddCard(cardModel, State.Then(this,onSucc), OnFail(onFail));
     }

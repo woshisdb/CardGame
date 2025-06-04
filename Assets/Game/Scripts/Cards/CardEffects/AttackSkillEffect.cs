@@ -52,7 +52,7 @@ public class AttackSkillEffect : CardEffect, ISendEvent
                 },
                 (slot) =>
                 {
-                    State.Next(new TableChangeHpData(eff.hp, null, (slot as OneCardSlotView).cardModel as IAnimalCard, done));
+                    State.Next(new TableChangeHpData(eff.GetHp(), null, (slot as OneCardSlotView).cardModel as IAnimalCard, done));
                 }));
             }, ()=>{}));
     }

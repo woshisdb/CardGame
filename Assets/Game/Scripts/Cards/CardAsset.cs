@@ -26,6 +26,10 @@ public class CardAsset : SerializedScriptableObject
     }
     public CardEffectData CloneCardEffectData()
     {
+        if (cardEffect==null)
+        {
+            return null;
+        }
         return cardEffect.Clone();
     }
     public bool CanExe(CardEffectData effectData, TableModel table, CardModel card)

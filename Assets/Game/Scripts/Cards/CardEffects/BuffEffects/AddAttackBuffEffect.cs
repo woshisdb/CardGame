@@ -52,7 +52,15 @@ public class AddAttackBuffEffect : CardEffect, ISendEvent
     public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card, Action done)
     {
         var hero = (table.FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView).cardModel as IAnimalCard;
-        return Cost(effectData.GetPower(), new AddAttackBuffToAnimal(hero, () => { State.End(done); }));
+        return Cost(effectData.GetPower(), new RemoveHandCardData(card, 
+            () => {
+                State.Next(
+                    new AddAttackBuffToAnimal(hero, () => { State.End(done); }));
+                },
+            ()=>{
+                State.End(done);
+            })
+        );
     }
 
     public override CardEffectData EffectData()
