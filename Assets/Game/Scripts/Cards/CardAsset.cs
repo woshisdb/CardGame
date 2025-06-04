@@ -13,7 +13,8 @@ public class CardAsset : SerializedScriptableObject
     public string cardDescription;
     [ReadOnly]
     public CardEnum cardEnum;
-    public CardEffectData cardEffect;
+    [ShowInInspector,SerializeField]
+    protected CardEffectData cardEffect;
     [Button]
     public void AddEffect(CardEffect cardEffect)
     {
@@ -22,5 +23,13 @@ public class CardAsset : SerializedScriptableObject
     public virtual CardModel CreateCardModel()
     {
         return new CardModel(this);
+    }
+    public CardEffectData CloneCardEffectData()
+    {
+        return cardEffect.Clone();
+    }
+    public bool CanExe(CardEffectData effectData, TableModel table, CardModel card)
+    {
+        return cardEffect.cardEffect.CanExe(effectData, table, card);
     }
 }

@@ -11,7 +11,14 @@ public abstract class CardEffect : SerializedScriptableObject, ICardEffect
 
     public virtual bool CanExe(CardEffectData effectData, TableModel table, CardModel card)
     {
-        return effectData.GetPower()<=table.GetPower();
+        if (effectData.GetPower() <= 0)
+        {
+            return Math.Abs(effectData.GetPower()) <= table.GetPower();
+        }
+        else
+        {
+            return true;
+        }    
     }
     public abstract TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card,Action done);
 

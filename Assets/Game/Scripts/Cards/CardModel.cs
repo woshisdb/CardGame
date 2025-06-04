@@ -30,7 +30,7 @@ public class CardModel : IUISelector, IModel, ISendEvent
     public CardModel(CardAsset cardAsset)
     {
         this.cardAsset = cardAsset;
-        cardEffectData = cardAsset.cardEffect.Clone();
+        cardEffectData = cardAsset.CloneCardEffectData();
     }
 
     public IView CreateView()
@@ -77,25 +77,25 @@ public class CardModel : IUISelector, IModel, ISendEvent
             return "Title";
         }, () =>
         {
-            return cardAsset.cardName;
+            return this.cardName;
         }));
         ret.Add(new KVItemBinder(() =>
         {
             return "Description";
         }, () =>
         {
-            return cardAsset.cardDescription;
+            return this.cardDescription;
         }));
-        if (!fromScene && cardAsset.cardEffect!=null)
+        if (!fromScene && cardEffectData != null)
         {
-            if (cardAsset.cardEffect.cardEffect.CanExe(cardAsset.cardEffect,TableModel,this))
+            if (cardAsset.CanExe(cardEffectData, TableModel,this))
             {
                 ret.Add(new ButtonBinder(() =>
                 {
                     return "use";
                 }, () =>
                 {
-                    this.SendEvent(new CardEffectEvent(cardAsset.cardEffect, this));
+                    this.SendEvent(new CardEffectEvent(cardEffectData, this));
                 }));
             }
         }

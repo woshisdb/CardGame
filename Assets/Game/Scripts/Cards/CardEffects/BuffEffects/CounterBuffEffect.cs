@@ -53,6 +53,6 @@ public class CounterBuffEffect : CardEffect,ISendEvent
     public override string GetEffectStr(CardEffectData data)
     {
         var cd = data as CounterBuffEffectData;
-        return "����Ч��:����"+",ÿ�����" + cd.GetPower().ToString()+"���˺�";
+        return "花费" + cd.GetPower().ToString()+"造成反伤";
     }
 }
