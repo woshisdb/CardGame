@@ -11,7 +11,7 @@ public class GameDateSystem : Singleton<GameDateSystem>
     public int ActionsPerDay = 3;
     public int RemainingActions { get; private set; }
 
-    public event Action OnDateChanged;
+    public event AsyncQueue OnDateChanged;
     public event Action OnActionChanged;
 
     /// <summary>执行一次行动</summary>

@@ -70,6 +70,7 @@
      <Compile Include="Assets\Game\Scripts\Base\Singlent\Singleton.cs" />
      <Compile Include="Assets\Game\Scripts\Base\Singlent\SingletonCreator.cs" />
      <Compile Include="Assets\Game\Scripts\Base\System\AsyncTaskQueue.cs" />
+     <Compile Include="Assets\Game\Scripts\Base\System\GameActionQueue.cs" />
      <Compile Include="Assets\Game\Scripts\Base\System\GameArchitect.cs" />
      <Compile Include="Assets\Game\Scripts\Base\System\GameFrameWork.cs" />
      <Compile Include="Assets\Game\Scripts\Base\System\Timer.cs" />
