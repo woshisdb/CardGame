@@ -12,7 +12,7 @@ public class ResConfig : SerializedScriptableObject
     public Dictionary<CardEnum, CardScView> cardSCTemplate;
     public GameObject slotView;
     public Dictionary<TableEnum,GameObject> tableAssets;
-
+    public Dictionary<DialoguePortraitEnum, Sprite> DialoguePortraits;
     public GameObject FindTableObject(TableEnum name)
     {
         if(tableAssets.ContainsKey(name))
