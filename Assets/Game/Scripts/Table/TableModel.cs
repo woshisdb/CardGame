@@ -10,15 +10,109 @@ public class LinkAction
 {
     public ActionTimePointType actionType;
     public Action<TableExeData,Action> done;
+    public bool isHero;
+    public GameObject icon;
+    public int passTime;
+    public Type Type;
+    public Action<Action> act;
 
-    public LinkAction(Action<TableExeData,Action> done)
+    public LinkAction(Action<TableExeData,Action> done, ActionTimePointType actionType,Type type)
     {
         this.done = done;
+        this.actionType = actionType;
+        this.Type = type;
+    }
+
+    public LinkAction SetAnimalState(bool isHero)
+    {
+        this.isHero = isHero;
+        return this;
+    }
+    public LinkAction SetPassTime(int passTime)
+    {
+        this.passTime = passTime;
+        if (actionType == ActionTimePointType.After)
+        {
+            act = e =>
+            {
+                this.passTime--;
+                if (this.passTime <= 0)
+                {
+                    TableModel.nowTableModel.RemoveAfterActionFromTable(Type,this);
+                    if (icon!=null)
+                    {
+                        GameObject.Destroy(icon);
+                    }
+                }
+                e.Invoke();
+            };
+        }
+        else
+        {
+            act = e =>
+            {
+                passTime--;
+                if (passTime <= 0)
+                {
+                    TableModel.nowTableModel.RemoveAfterActionFromTable(Type,this);
+                    if (icon!=null)
+                    {
+                        GameObject.Destroy(icon);
+                    }
+                }
+                e.Invoke();
+            };
+        }
+        return this;
+    }
+
+    public LinkAction SetEndCheck(ActionTimePointType actionType)
+    {
+        if (isHero)
+        {
+            if (actionType == ActionTimePointType.Bef)
+            {
+                TableModel.nowTableModel.gameRule.HeroPreActions.Remove(act);
+            }
+            else
+            {
+                TableModel.nowTableModel.gameRule.HeroPostActions.Remove(act);
+            }
+        }
+        else
+        {
+            if (actionType == ActionTimePointType.Bef)
+            {
+                TableModel.nowTableModel.gameRule.EnemyPreActions.Remove(act);
+            }
+            else
+            {
+                TableModel.nowTableModel.gameRule.EnemyPostActions.Remove(act);
+            }
+        }
+        return this;
+    }
+
+    public LinkAction SetIconShow(GameObject iconTemplate,OneCardSlotView slot)
+    {
+        icon = slot.AddEffectIcon(iconTemplate);
+        icon = GameObject.Instantiate(iconTemplate);
+        // icon.gameObject.transform.parent = slot.contentView ;
+        // icon.transform.localScale= Vector3.one;
+        return this;
     }
 }
 
 public class TableModel:IModel,IRegisterEvent,ISendEvent
 {
+    public static TableModel nowTableModel
+    {
+        get
+        {
+            return GameArchitect.Instance.GetTableModel();
+        }
+    }
+
     public List<SlotView> slots;
     public TableView view;
     public TableCircle tableCircle;
@@ -29,8 +123,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
 
     public LinkAction AddBeforActionToTable<T>(Action<TableExeData,Action> action)
     {
-        var linkAction = new LinkAction(action);
-        linkAction.actionType = ActionTimePointType.Bef;
+        var linkAction = new LinkAction(action,ActionTimePointType.Bef,typeof(T));
         if (!actionBeforLinks.ContainsKey(typeof(T)))
         {
             actionBeforLinks[typeof(T)]=new List<LinkAction>();
@@ -40,8 +133,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
     }
     public LinkAction AddAfterActionToTable<T>(Action<TableExeData,Action> action)
     {
-        var linkAction = new LinkAction(action);
-        linkAction.actionType = ActionTimePointType.After;
+        var linkAction = new LinkAction(action,ActionTimePointType.After,typeof(T));
         if (!actionAfterLinks.ContainsKey(typeof(T)))
         {
             actionAfterLinks[typeof(T)]=new List<LinkAction>();
@@ -63,6 +155,15 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
     public void RemoveAfterActionFromTable<T>(LinkAction action)
     {
         actionAfterLinks[typeof(T)].Remove(action);
+    }
+    public void RemoveBeforActionFromTable(Type T,LinkAction action)
+    {
+        actionBeforLinks[T].Remove(action);
+    }
+
+    public void RemoveAfterActionFromTable(Type T,LinkAction action)
+    {
+        actionAfterLinks[T].Remove(action);
     }
     
     public void ExeActionBef(TableExeData data,Action done)

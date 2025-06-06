@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameAction
-{
-    public Action<Action> action;
-    public GameAction(Action<Action> action)
-    {
-        this.action = action;
-    }
-}
+// public class GameAction
+// {
+//     public Action<Action> action;
+//     public GameAction(Action<Action> action)
+//     {
+//         this.action = action;
+//     }
+// }
 public abstract class GameState:ISendEvent
 {
     public GameRule GameRule { get { return GameArchitect.Instance.GetTableModel().gameRule; } }
@@ -48,40 +48,42 @@ public class UserGameState : GameState
 
     public override void Post(Action done)
     {
-        AsyncQueue asyncQueue = new AsyncQueue();
-        foreach (GameAction action in TableModel.gameRule.HeroPostActions)
-        {
-            asyncQueue.Add(e =>
-            {
-                action.action(e);
-            });
-        }
-        asyncQueue.Add(e =>
-        {
-            done();
-            e();
-        });
-        asyncQueue.Run();
+        TableModel.gameRule.HeroPostActions.Run(done);
+        // AsyncQueue asyncQueue = new AsyncQueue();
+        // foreach (GameAction action in TableModel.gameRule.HeroPostActions)
+        // {
+        //     asyncQueue.Add(e =>
+        //     {
+        //         action.action(e);
+        //     });
+        // }
+        // asyncQueue.Add(e =>
+        // {
+        //     done();
+        //     e();
+        // });
+        // asyncQueue.Run();
     }
 
     public override void Pre(Action done)
     {
         (TableModel.FindSlotByName("gameStage") as TextSlot).SetText("玩家回合");
         TableModel.gameRule.owner = (TableModel.FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView).cardModel as IAnimalCard;
-        AsyncQueue asyncQueue = new AsyncQueue();
-        foreach (GameAction action in TableModel.gameRule.HeroPreActions)
-        {
-            asyncQueue.Add(e =>
-            {
-                action.action(e);
-            });
-        }
-        asyncQueue.Add(e =>
-        {
-            done();
-            e();
-        });
-        asyncQueue.Run();
+        TableModel.gameRule.HeroPreActions.Run(done);
+        // AsyncQueue asyncQueue = new AsyncQueue();
+        // foreach (GameAction action in TableModel.gameRule.HeroPreActions)
+        // {
+        //     asyncQueue.Add(e =>
+        //     {
+        //         action.action(e);
+        //     });
+        // }
+        // asyncQueue.Add(e =>
+        // {
+        //     done();
+        //     e();
+        // });
+        // asyncQueue.Run();
     }
 
     public override void Process(Action done)
@@ -123,40 +125,42 @@ public class EnemyGameState : GameState
 
     public override void Post(Action done)
     {
-        AsyncQueue asyncQueue = new AsyncQueue();
-        foreach (GameAction action in TableModel.gameRule.EnemyPostActions)
-        {
-            asyncQueue.Add(e =>
-            {
-                action.action(e);
-            });
-        }
-        asyncQueue.Add(e =>
-        {
-            done();
-            e();
-        });
-        asyncQueue.Run();
+        TableModel.gameRule.EnemyPostActions.Run(done);
+        // AsyncQueue asyncQueue = new AsyncQueue();
+        // foreach (GameAction action in TableModel.gameRule.EnemyPostActions)
+        // {
+        //     asyncQueue.Add(e =>
+        //     {
+        //         action.action(e);
+        //     });
+        // }
+        // asyncQueue.Add(e =>
+        // {
+        //     done();
+        //     e();
+        // });
+        // asyncQueue.Run();
     }
 
     public override void Pre(Action done)
     {
         (TableModel.FindSlotByName("gameStage") as TextSlot).SetText("敌方回合");
         TableModel.gameRule.owner = (TableModel.FindSlotByTag(SlotTag.EnemySlot) as OneCardSlotView).cardModel as IAnimalCard;
-        AsyncQueue asyncQueue = new AsyncQueue();
-        foreach (GameAction action in TableModel.gameRule.EnemyPreActions)
-        {
-            asyncQueue.Add(e =>
-            {
-                action.action(e);
-            });
-        }
-        asyncQueue.Add(e =>
-        {
-            done();
-            e();
-        });
-        asyncQueue.Run();
+        TableModel.gameRule.EnemyPreActions.Run(done);
+        // AsyncQueue asyncQueue = new AsyncQueue();
+        // foreach (GameAction action in TableModel.gameRule.EnemyPreActions)
+        // {
+        //     asyncQueue.Add(e =>
+        //     {
+        //         action.action(e);
+        //     });
+        // }
+        // asyncQueue.Add(e =>
+        // {
+        //     done();
+        //     e();
+        // });
+        // asyncQueue.Run();
     }
 
     public override void Process(Action done)
@@ -203,10 +207,10 @@ public enum ActionTimePointType
 
 public class GameRule:ISendEvent,IRegisterEvent
 {
-    public List<GameAction> HeroPreActions = new List<GameAction>();
-    public List<GameAction> EnemyPreActions = new List<GameAction>();
-    public List<GameAction> HeroPostActions = new List<GameAction>();
-    public List<GameAction> EnemyPostActions = new List<GameAction>();
+    public GameActionQueue HeroPreActions = new GameActionQueue();
+    public GameActionQueue EnemyPreActions = new GameActionQueue();
+    public GameActionQueue HeroPostActions = new GameActionQueue();
+    public GameActionQueue EnemyPostActions = new GameActionQueue();
     public int power=10;//能量
     public TableModel tableModel;
     public GameState gameState;//当前状态

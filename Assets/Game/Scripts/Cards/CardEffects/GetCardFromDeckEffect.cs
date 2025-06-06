@@ -5,12 +5,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GetCardFromDeckEffectData : CardEffectData
 {
-    public int num;
-    public int power;
+    [ShowInInspector,SerializeField]
+    protected int num;
+    [ShowInInspector,SerializeField]
+    protected int power;
     public GetCardFromDeckEffectData(ICardEffect cardEffect) : base(cardEffect)
     {
     }
@@ -25,7 +28,7 @@ public class GetCardFromDeckEffectData : CardEffectData
 
     public override int GetPower()
     {
-        return power;
+        return gameRuleProcessor.Process(ProcessType.Power,tableModel.gameRule.owner,power);
     }
 
     public int GetCardNum()

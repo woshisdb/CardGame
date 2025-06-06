@@ -47,12 +47,10 @@ public class AttackBuffEffectObj : AddBuffEffectObj
     {
         var data = (AttackBuffObjData)addBuffObjData;
         TableModel.gameRule.GameRuleProcessor.Register(ProcessType.Attack,data.func);
-        var icon = GameObject.Instantiate(effectIcon);
-        icon.gameObject.transform.parent = (data.getCard().GetSlot() as OneCardSlotView).contentView;
-        icon.transform.localScale = Vector3.one;
-        int passTime = 1;
-        GameAction gameAction = null;
-        gameAction = new GameAction(e =>
+        var icon = (data.getCard().GetSlot() as OneCardSlotView).AddEffectIcon(effectIcon);
+        int passTime = data.GetEffectTime();
+        Action<Action> gameAction = null;
+        gameAction = e =>
         {
             passTime--;
             if (passTime <= 0)
@@ -60,7 +58,7 @@ public class AttackBuffEffectObj : AddBuffEffectObj
                 TableModel.gameRule.GameRuleProcessor.Remove(ProcessType.Attack, data.func);
                 GameObject.Destroy(icon);
             }
-        });
-        this.AddGameRuleListen(ActionTimePointType.Bef,data.card, passTime, gameAction);
+        };
+        this.AddGameRuleListen(ActionTimePointType.Bef,data.card, data.GetEffectTime(), gameAction);
     }
 }

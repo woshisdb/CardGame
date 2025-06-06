@@ -40,50 +40,50 @@ public class AddBuffEffectObj:TableEffectObj
     {
         
     }
-    public void SetEffectPassTime<T>(ActionTimePointType gameAction, int time,LinkAction linkAction, IAddBuffEffectData data)
-    {
-        var icon = GameObject.Instantiate(effectIcon);
-        icon.gameObject.transform.parent = (data.getCard().GetSlot() as OneCardSlotView).contentView ;
-        icon.transform.localScale= Vector3.one;
-        int passTime = time;
-        GameAction act = null;
-        if (linkAction.actionType == ActionTimePointType.After)
-        {
-            act = new GameAction(e =>
-            {
-                passTime--;
-                if (passTime <= 0)
-                {
-                    TableModel.RemoveAfterActionFromTable<T>(linkAction);
-                    GameObject.Destroy(icon);
-                }
-            });
-        }
-        else
-        {
-            act = new GameAction(e =>
-            {
-                passTime--;
-                if (passTime <= 0)
-                {
-                    TableModel.RemoveBeforActionFromTable<T>(linkAction);
-                    GameObject.Destroy(icon);
-                }
-            });
-        }
-
-        if (time != -1)
-        {
-            AddGameRuleListen(gameAction,data.getCard(),time,act);
-        }
-    }
-    public void AddGameRuleListen(ActionTimePointType gameActionType, IAnimalCard card,int time,GameAction act)
+    // public void SetEffectPassTime<T>(ActionTimePointType gameAction, int time,LinkAction linkAction, IAddBuffEffectData data)
+    // {
+    //     var icon = GameObject.Instantiate(effectIcon);
+    //     icon.gameObject.transform.parent = (data.getCard().GetSlot() as OneCardSlotView).contentView ;
+    //     icon.transform.localScale= Vector3.one;
+    //     int passTime = time;
+    //     GameAction act = null;
+    //     if (linkAction.actionType == ActionTimePointType.After)
+    //     {
+    //         act = new GameAction(e =>
+    //         {
+    //             passTime--;
+    //             if (passTime <= 0)
+    //             {
+    //                 TableModel.RemoveAfterActionFromTable<T>(linkAction);
+    //                 GameObject.Destroy(icon);
+    //             }
+    //         });
+    //     }
+    //     else
+    //     {
+    //         act = new GameAction(e =>
+    //         {
+    //             passTime--;
+    //             if (passTime <= 0)
+    //             {
+    //                 TableModel.RemoveBeforActionFromTable<T>(linkAction);
+    //                 GameObject.Destroy(icon);
+    //             }
+    //         });
+    //     }
+    //
+    //     if (time != -1)
+    //     {
+    //         AddGameRuleListen(gameAction,data.getCard(),time,act);
+    //     }
+    // }
+    public void AddGameRuleListen(ActionTimePointType gameActionType, IAnimalCard card,int time,Action<Action> act)
     {
         if (time != -1)
         {
             var passTime = time;
-            var action = act.action;
-            act.action = e =>
+            var action = act;
+            act = e =>
             {
                 action(e);
                 passTime--;

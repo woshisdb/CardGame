@@ -9,19 +9,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
-
-public enum AttackAddEnum
-{
-    Add,
-    Multi,
-}
 
 public class AddAttackBuffEffectData : CardEffectData
 {
-    public int power;
-    public int damage;
-    public AttackAddEnum type;
+    [ShowInInspector,SerializeField]
+    protected int power;
+    [ShowInInspector,SerializeField]
+    protected int damage;
+    [ShowInInspector,SerializeField]
+    protected AddEnum type;
     public AddAttackBuffEffectData(ICardEffect cardEffect) : base(cardEffect)
     {
     }
@@ -37,7 +35,16 @@ public class AddAttackBuffEffectData : CardEffectData
 
     public override int GetPower()
     {
-        return power;
+        return gameRuleProcessor.Process(ProcessType.Power,tableModel.gameRule.owner,power);
+    }
+
+    public int GetDamage()
+    {
+        return gameRuleProcessor.Process(ProcessType.AttackBuff,tableModel.gameRule.owner,damage);
+    }
+    public AddEnum GetAddType()
+    {
+        return type;
     }
 }
 
@@ -71,13 +78,13 @@ public class AddAttackBuffEffect : CardEffect, ISendEvent
     public override string GetEffectStr(CardEffectData data)
     {
         var cd = data as AddAttackBuffEffectData;
-        if (cd.type == AttackAddEnum.Add)
+        if (cd.GetAddType() == AddEnum.Add)
         {
-            return "伤害+" + cd.damage;
+            return "伤害+" + cd.GetDamage();
         }
         else
         {
-            return "伤害x" + cd.damage;
+            return "伤害x" + cd.GetDamage();
         }
 
     }

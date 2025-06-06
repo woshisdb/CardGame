@@ -9,12 +9,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class CounterBuffEffectData: CardEffectData
 {
-    public int power;
-    public int hp;
+    [ShowInInspector,SerializeField]
+    protected int power;
+    [ShowInInspector,SerializeField]
+    protected int hp;
     public CounterBuffEffectData(ICardEffect cardEffect) : base(cardEffect)
     {
     }
@@ -29,12 +32,12 @@ public class CounterBuffEffectData: CardEffectData
 
     public override int GetPower()
     {
-        return power;
+        return gameRuleProcessor.Process(ProcessType.Power,tableModel.gameRule.owner,power);
     }
 
     public int GetHp()
     {
-        return tableModel.gameRule.GameRuleProcessor.Process(ProcessType.Attack,tableModel.gameRule.owner,hp);
+        return gameRuleProcessor.Process(ProcessType.Attack,tableModel.gameRule.owner,hp);
     }
 }
 
@@ -50,7 +53,7 @@ public class CounterBuffEffect : CardEffect,ISendEvent
     {
         var data= effectData as CounterBuffEffectData;
         var hero = (table.FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView).cardModel as IAnimalCard;
-        return Cost((effectData as CounterBuffEffectData).power, new AddCounterBuffToAnimal(hero, () => { State.End(done); },
+        return Cost((effectData as CounterBuffEffectData).GetPower(), new AddCounterBuffToAnimal(hero, () => { State.End(done); },
             () => { return data.GetHp();}));
     }
 

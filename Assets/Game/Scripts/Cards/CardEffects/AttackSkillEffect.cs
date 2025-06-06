@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class AttackSkillEffectData : CardEffectData
 {
-    public int hp;
-    public int power;
+    [ShowInInspector,SerializeField]
+    protected int hp;
+    [ShowInInspector,SerializeField]
+    protected int power;
     public AttackSkillEffectData(ICardEffect cardEffect) : base(cardEffect)
     {
         var data = cardEffect as AttackSkillEffect;
@@ -24,11 +27,11 @@ public class AttackSkillEffectData : CardEffectData
 
     public override int GetPower()
     {
-        return power;
+        return gameRuleProcessor.Process(ProcessType.Power,tableModel.gameRule.owner,power);//power;
     }
     public int GetHp()
     {
-        return tableModel.gameRule.GameRuleProcessor.Process(ProcessType.Attack,tableModel.gameRule.owner,hp);
+        return gameRuleProcessor.Process(ProcessType.Attack,tableModel.gameRule.owner,hp);
     }
 }
 

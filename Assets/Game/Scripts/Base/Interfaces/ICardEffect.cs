@@ -13,6 +13,14 @@ public abstract class CardEffectData
         }
     }
 
+    public GameRuleProcessor gameRuleProcessor
+    {
+        get
+        {
+            return tableModel.gameRule.GameRuleProcessor;
+        }
+    }
+
     public ICardEffect cardEffect;
     public abstract int GetPower();
     public CardEffectData(ICardEffect cardEffect)

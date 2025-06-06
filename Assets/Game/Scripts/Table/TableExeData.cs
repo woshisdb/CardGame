@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface Result
+{
+    
+}
+
 public static class State
 {
     public static TableModel tableModel
@@ -64,10 +69,6 @@ public abstract class TableExeData : ISendEvent
     public Action OnFail(Action onFail)
     {
         return onFail == null ? EndStage : onFail;
-    }
-    public void Send(TableEffectData tableEffectData)
-    {
-        this.SendEvent(new TableEffectDataEvent(tableEffectData));
     }
 }
 
@@ -141,7 +142,7 @@ public class AddCounterBuffToAnimal : TableExeData
 
     protected override void Exe()
     {
-        this.SendEvent(new TableEffectDataEvent(new CounterBuffObjData(done,card,hp())));
+        this.SendEvent(new TableEffectDataEvent(new CounterBuffObjData(State.Then(this,done),card,hp())));
     }
 }
 /// <summary>

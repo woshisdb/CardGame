@@ -45,13 +45,15 @@ public class CounterBuffEffectObj:AddBuffEffectObj
     {
         var data = (CounterBuffObjData)addBuffObjData;
         var effect = TableModel.AddAfterActionToTable<TableChangeHpData>((e, done) =>
-        {
-            var nowAct = (TableChangeHpData)e;
-            if (nowAct.to == data.card && nowAct.hpChange<0)
             {
-                State.Next(new TableChangeHpData(-1,nowAct.to,nowAct.from,done,false));
-            }
-        });
-        SetEffectPassTime<TableChangeHpData>(ActionTimePointType.Bef, addBuffObjData.GetEffectTime(), effect, data);
+                var nowAct = (TableChangeHpData)e;
+                if (nowAct.to == data.card && nowAct.hpChange < 0)
+                {
+                    State.Next(new TableChangeHpData(-1, nowAct.to, nowAct.from, done, false));
+                }
+            }).SetIconShow(this.effectIcon, data.getCard().GetSlot() as OneCardSlotView)
+            .SetAnimalState(true)
+            .SetPassTime(3)
+            .SetEndCheck(ActionTimePointType.Bef);
     }
 }

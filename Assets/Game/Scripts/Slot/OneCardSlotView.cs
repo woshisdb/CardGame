@@ -19,6 +19,14 @@ public class OneCardSlotView : SlotView, IUISelector,ISendEvent
     {
         return cardModel;
     }
+
+    public GameObject AddEffectIcon(GameObject effectIcon)
+    {
+        var icon = GameObject.Instantiate(effectIcon);
+        icon.gameObject.transform.parent = contentView;
+        icon.transform.localScale = Vector3.one;
+        return icon;
+    }
     public void AddCard(CardModel cardModel,Action onSucc,Action onFail)
     {
         this.cardModel = cardModel;

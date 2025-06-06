@@ -9,5 +9,6 @@ public enum CardEffectEnum
     CounterBuffEffect,
     AddAttackEffect,
     ChangeHp,
-    GetCardFromDeckEffect
+    GetCardFromDeckEffect,
+    WasterPowerToGetDrawCardBuffEffect,//消耗power获取抽牌
 }

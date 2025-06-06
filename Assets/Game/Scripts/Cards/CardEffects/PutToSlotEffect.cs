@@ -6,7 +6,6 @@ using UnityEngine;
 public class PutToSlotEffectData : CardEffectData
 {
     public string Name;
-
     public PutToSlotEffectData(ICardEffect cardEffect) : base(cardEffect)
     {
     }

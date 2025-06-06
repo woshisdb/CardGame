@@ -26,7 +26,12 @@ public class Processer<T> : IProcesser
 
 public enum ProcessType
 {
-    Attack
+    Attack,//攻击
+    AttackBuff,//Buff
+    Power,//消耗
+    PowerBuff,
+    DrawCard,//抽卡
+    DrawCardBuff,
 }
 
 public class GameRuleProcessor
