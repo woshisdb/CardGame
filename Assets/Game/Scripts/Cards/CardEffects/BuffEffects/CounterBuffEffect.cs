@@ -34,7 +34,7 @@ public class CounterBuffEffectData: CardEffectData
 
     public int GetHp()
     {
-        return tableModel.gameRule.GameRuleProcessor.ProcessAttack(tableModel.gameRule.owner,hp);
+        return tableModel.gameRule.GameRuleProcessor.Process(ProcessType.Attack,tableModel.gameRule.owner,hp);
     }
 }
 

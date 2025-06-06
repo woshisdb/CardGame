@@ -46,18 +46,22 @@ public class AttackBuffEffectObj : AddBuffEffectObj
     public override void AddBuff(IAnimalCard card, IAddBuffEffectData addBuffObjData)
     {
         var data = (AttackBuffObjData)addBuffObjData;
-        TableModel.gameRule.GameRuleProcessor.RegisterAttackProcess(new AttackProcesser(data.func));
+        TableModel.gameRule.GameRuleProcessor.Register(ProcessType.Attack,data.func);
         var icon = GameObject.Instantiate(effectIcon);
         icon.gameObject.transform.parent = (data.getCard().GetSlot() as OneCardSlotView).contentView;
         icon.transform.localScale = Vector3.one;
         int passTime = 3;
-        this.AddGameRuleListen(ActionTimePointType.Bef,data.card,1, new GameAction(e =>
+        GameAction gameAction = null;
+        gameAction = new GameAction(e =>
         {
             passTime--;
             if (passTime <= 0)
             {
+                TableModel.gameRule.HeroPreActions.Add(gameAction);
+                TableModel.gameRule.GameRuleProcessor.Remove(ProcessType.Attack, data.func);
                 GameObject.Destroy(icon);
             }
-        }));
+        });
+        this.AddGameRuleListen(ActionTimePointType.Bef,data.card,1, gameAction);
     }
 }

@@ -142,7 +142,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
             gameRule.Run();
         }
     }
-    public void CardEffectEvent(CardEffectEvent e)
+    public virtual void CardEffectEvent(CardEffectEvent e)
     {
         if (e.effect.cardEffect.CanExe(e.effect, this, e.cardModel))
         {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class GameDateSystem : Singleton<GameDateSystem>
+public class GameDateSystem 
 {
 
     public int TotalDaysInTerm = 90;
@@ -11,21 +11,33 @@ public class GameDateSystem : Singleton<GameDateSystem>
     public int ActionsPerDay = 3;
     public int RemainingActions { get; private set; }
 
-    public event AsyncQueue OnDateChanged;
-    public event Action OnActionChanged;
+    public GameActionQueue OnDateChanged;
+    public GameActionQueue OnActionChanged;
 
+    public GameDateSystem()
+    {
+        OnDateChanged = new GameActionQueue();
+        OnActionChanged = new GameActionQueue();
+    }
+
+    public void Init(SaveData saveData)
+    {
+        RemainingActions = saveData.saveFile.RemainingActions;
+        CurrentDay = saveData.saveFile.CurrentDay;
+    }
     /// <summary>执行一次行动</summary>
     public bool UseAction()
     {
         if (RemainingActions > 0)
         {
             RemainingActions--;
-            OnActionChanged?.Invoke();
-
-            if (RemainingActions == 0)
+            OnActionChanged.Run(() =>
             {
-                AdvanceDay();
-            }
+                if (RemainingActions == 0)
+                {
+                    AdvanceDay();
+                }
+            });
             return true;
         }
         else
@@ -42,8 +54,10 @@ public class GameDateSystem : Singleton<GameDateSystem>
         {
             CurrentDay++;
             RemainingActions = ActionsPerDay;
-            OnDateChanged?.Invoke();
-            OnActionChanged?.Invoke();
+            OnDateChanged.Run(() =>
+            {
+                UseAction();
+            });
         }
         else
         {

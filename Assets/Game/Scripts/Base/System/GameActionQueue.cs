@@ -20,4 +20,19 @@ public class GameActionQueue
     {
         actions.Remove(action);
     }
+
+    public void Run(Action done)
+    {
+        AsyncQueue queue = new AsyncQueue();
+        foreach (Action<Action> action in actions)
+        {
+            queue.Add(action);
+        }
+        queue.Add(e =>
+        {
+            done?.Invoke();
+            e();
+        });
+        queue.Run(done);
+    }
 }

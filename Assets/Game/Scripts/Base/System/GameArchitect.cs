@@ -18,6 +18,7 @@ public class GameArchitect : Singleton<GameArchitect>
     public GameObject tableRoot; 
     public CardManager cardManager;
     protected GameObject tableViewNow;
+    public GameDateSystem gameDateSystem;
     public HeroCardModel heroCardModel
     {
         get { return saveSystem.saveFile.heroCardModel; }
@@ -39,7 +40,11 @@ public class GameArchitect : Singleton<GameArchitect>
         cardManager = GameObject.Find("CardManager").GetComponent<CardManager>();
         gameFrameWork.InitFunc(()=> {
         });
+        gameDateSystem = new GameDateSystem();
+        gameDateSystem.Init(saveSystem);
     }
+    public GameActionQueue OnDateChanged{get{return gameDateSystem.OnDateChanged;}}
+    public GameActionQueue OnActionChanged{get{return gameDateSystem.OnActionChanged;}}
     public void SetTable(GameObject gameObject)
     {
         if(tableViewNow != null)
