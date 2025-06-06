@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class LinkAction
 {
+    public ActionTimePointType actionType;
     public Action<TableExeData,Action> done;
 
     public LinkAction(Action<TableExeData,Action> done)
@@ -29,6 +30,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
     public LinkAction AddBeforActionToTable<T>(Action<TableExeData,Action> action)
     {
         var linkAction = new LinkAction(action);
+        linkAction.actionType = ActionTimePointType.Bef;
         if (!actionBeforLinks.ContainsKey(typeof(T)))
         {
             actionBeforLinks[typeof(T)]=new List<LinkAction>();
@@ -39,6 +41,7 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
     public LinkAction AddAfterActionToTable<T>(Action<TableExeData,Action> action)
     {
         var linkAction = new LinkAction(action);
+        linkAction.actionType = ActionTimePointType.After;
         if (!actionAfterLinks.ContainsKey(typeof(T)))
         {
             actionAfterLinks[typeof(T)]=new List<LinkAction>();

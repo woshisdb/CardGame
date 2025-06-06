@@ -40,14 +40,14 @@ public class AddBuffEffectObj:TableEffectObj
     {
         
     }
-    public void SetEffectPassTime<T>(ActionTimePointType gameAction, ActionTimePointType timePoint, int time,LinkAction linkAction, IAddBuffEffectData data)
+    public void SetEffectPassTime<T>(ActionTimePointType gameAction, int time,LinkAction linkAction, IAddBuffEffectData data)
     {
         var icon = GameObject.Instantiate(effectIcon);
         icon.gameObject.transform.parent = (data.getCard().GetSlot() as OneCardSlotView).contentView ;
         icon.transform.localScale= Vector3.one;
         int passTime = time;
         GameAction act = null;
-        if (timePoint == ActionTimePointType.After)
+        if (linkAction.actionType == ActionTimePointType.After)
         {
             act = new GameAction(e =>
             {
@@ -80,6 +80,39 @@ public class AddBuffEffectObj:TableEffectObj
     public void AddGameRuleListen(ActionTimePointType gameActionType, IAnimalCard card,int time,GameAction act)
     {
         if (time != -1)
+        {
+            var passTime = time;
+            var action = act.action;
+            act.action = e =>
+            {
+                action(e);
+                passTime--;
+                if(passTime <= 0)
+                {
+                    if (card.GetCardType() == CardEnum.HeroCard)
+                    {
+                        if (gameActionType == ActionTimePointType.Bef)
+                        {
+                            TableModel.gameRule.HeroPreActions.Remove(act);
+                        }
+                        else
+                        {
+                            TableModel.gameRule.HeroPostActions.Remove(act);
+                        }
+                    }
+                    else
+                    {
+                        if (gameActionType == ActionTimePointType.Bef)
+                        {
+                            TableModel.gameRule.EnemyPreActions.Remove(act);
+                        }
+                        else
+                        {
+                            TableModel.gameRule.EnemyPostActions.Remove(act);
+                        }
+                    }
+                }
+            };
             if (card.GetCardType() == CardEnum.HeroCard)
             {
                 if (gameActionType == ActionTimePointType.Bef)
@@ -102,6 +135,7 @@ public class AddBuffEffectObj:TableEffectObj
                     TableModel.gameRule.EnemyPostActions.Add(act);
                 }
             }
+        }
     }
 }
 

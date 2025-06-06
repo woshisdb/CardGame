@@ -50,18 +50,17 @@ public class AttackBuffEffectObj : AddBuffEffectObj
         var icon = GameObject.Instantiate(effectIcon);
         icon.gameObject.transform.parent = (data.getCard().GetSlot() as OneCardSlotView).contentView;
         icon.transform.localScale = Vector3.one;
-        int passTime = 3;
+        int passTime = 1;
         GameAction gameAction = null;
         gameAction = new GameAction(e =>
         {
             passTime--;
             if (passTime <= 0)
             {
-                TableModel.gameRule.HeroPreActions.Add(gameAction);
                 TableModel.gameRule.GameRuleProcessor.Remove(ProcessType.Attack, data.func);
                 GameObject.Destroy(icon);
             }
         });
-        this.AddGameRuleListen(ActionTimePointType.Bef,data.card,1, gameAction);
+        this.AddGameRuleListen(ActionTimePointType.Bef,data.card, passTime, gameAction);
     }
 }
