@@ -11,7 +11,10 @@ public enum HeroProperty
     agility,
     strength
 }
-
+public enum AnimalTagEnum
+{
+    Angry
+}
 public class HeroCardModel : CardModel,IAnimalCard
 {
     public int knowledge;//知识
@@ -19,12 +22,19 @@ public class HeroCardModel : CardModel,IAnimalCard
     public int charm;//吸引力
     public int agility;//敏捷
     public int strength;//力量
-
+    public Dictionary<AnimalTagEnum, int> tags;
     //////////////////////////////
     public int hp;
     public SlotView slot;
     // public List<AttackProcesser> attackProcessers=new List<AttackProcesser>();
-
+    public int TagInf(AnimalTagEnum animalTag)
+    {
+        if (!tags.ContainsKey(animalTag))
+        {
+            return 0;
+        }
+        return tags[animalTag];
+    }
     public void AddProperty(HeroProperty heroProperty,int val)
     {
         if(heroProperty==HeroProperty.knowledge)
@@ -53,6 +63,11 @@ public class HeroCardModel : CardModel,IAnimalCard
     {
         var asset = cardAsset as HeroCardAsset;
         this.hp = asset.hp;
+        tags=new Dictionary<AnimalTagEnum, int>();
+        foreach (var x in Enum.GetValues(typeof(AnimalTagEnum)))
+        {
+            tags[(AnimalTagEnum)x] = 0;
+        }
     }
 
     public int GetHp()

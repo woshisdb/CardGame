@@ -29,9 +29,10 @@ public enum ProcessType
     Attack,//攻击
     AttackBuff,//Buff
     Power,//消耗
-    PowerBuff,
+    PowerBuff,//消耗Buff
     DrawCard,//抽卡
-    DrawCardBuff,
+    DrawCardBuff,//抽卡Buff
+    Angry,//愤怒
 }
 
 public class GameRuleProcessor

@@ -67,33 +67,16 @@ public class UserGameState : GameState
 
     public override void Pre(Action done)
     {
+        Debug.Log("Pre");
         (TableModel.FindSlotByName("gameStage") as TextSlot).SetText("玩家回合");
         TableModel.gameRule.owner = (TableModel.FindSlotByTag(SlotTag.HeroSlot) as OneCardSlotView).cardModel as IAnimalCard;
         TableModel.gameRule.HeroPreActions.Run(done);
-        // AsyncQueue asyncQueue = new AsyncQueue();
-        // foreach (GameAction action in TableModel.gameRule.HeroPreActions)
-        // {
-        //     asyncQueue.Add(e =>
-        //     {
-        //         action.action(e);
-        //     });
-        // }
-        // asyncQueue.Add(e =>
-        // {
-        //     done();
-        //     e();
-        // });
-        // asyncQueue.Run();
     }
 
     public override void Process(Action done)
     {
         Debug.Log("UserGameState");
         AsyncQueue async = new AsyncQueue();
-        async.Add(e =>
-        {
-            State.Next(new GetCardFromDeck(1,e,e));
-        });
         async.Add(e =>
         {
             TableModel.view.endTurnAction = e;
@@ -207,10 +190,10 @@ public enum ActionTimePointType
 
 public class GameRule:ISendEvent,IRegisterEvent
 {
-    public GameActionQueue HeroPreActions = new GameActionQueue();
-    public GameActionQueue EnemyPreActions = new GameActionQueue();
-    public GameActionQueue HeroPostActions = new GameActionQueue();
-    public GameActionQueue EnemyPostActions = new GameActionQueue();
+    public GameActionQueue HeroPreActions;
+    public GameActionQueue EnemyPreActions;
+    public GameActionQueue HeroPostActions;
+    public GameActionQueue EnemyPostActions;
     public int power=10;//能量
     public TableModel tableModel;
     public GameState gameState;//当前状态
@@ -226,7 +209,12 @@ public class GameRule:ISendEvent,IRegisterEvent
     {
         this.tableModel = tableModel;
         GameRuleProcessor= new GameRuleProcessor();
-    }
+        HeroPreActions = new GameActionQueue();
+        EnemyPreActions = new GameActionQueue();
+        HeroPostActions = new GameActionQueue();
+        EnemyPostActions = new GameActionQueue();
+        PeProcessRule.Process(this);
+}
     public void Init()
     {
         var powerSlot = tableModel.FindSlotByName("power") as TextSlot;
@@ -258,10 +246,17 @@ public class GameRule:ISendEvent,IRegisterEvent
         }
         async.Add(done =>
         {
+            Debug.Log("ssssssss");
+            var sxc = done;
+            done = () => {
+                Debug.Log("1111");
+                sxc();
+            };
             gameState.Process(done);
         });
         async.Add(done =>
         {
+            Debug.Log("wwwwwwwww");
             if (gameState.IsEnd())
             {
                 gameState.Post(() => {
@@ -297,7 +292,7 @@ public class GameRule:ISendEvent,IRegisterEvent
     }
     public void EndGame(Action done)
     {
-        GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.mapUI);
+        GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.cellUI);
         Camera.main.transform.position = new Vector3(0, 10, 0);
         tableModel.Destory();
         GameArchitect.Instance.DestoryTable();

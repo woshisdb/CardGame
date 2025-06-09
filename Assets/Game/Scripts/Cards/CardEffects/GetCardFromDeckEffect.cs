@@ -16,6 +16,9 @@ public class GetCardFromDeckEffectData : CardEffectData
     protected int power;
     public GetCardFromDeckEffectData(ICardEffect cardEffect) : base(cardEffect)
     {
+        var data = cardEffect as GetCardFromDeckEffectData;
+        num = data.num;
+        power = data.power;
     }
 
     public override CardEffectData Clone()
@@ -42,7 +45,7 @@ public class GetCardFromDeckEffect : CardEffect, ISendEvent
 {
     public GetCardFromDeckEffect()
     {
-        cardEffectEnum = CardEffectEnum.GetCardFromDeckEffect;
+        cardEffectEnum = CardEffectEnum.GetCardFromDeck;
     }
 
     public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card,Action done)

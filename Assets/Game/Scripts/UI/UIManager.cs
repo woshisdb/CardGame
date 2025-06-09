@@ -7,10 +7,10 @@ using UnityEngine;
 public enum UIEnum
 {
     cellUI,
-    mapUI
+    DialogueUI
 }
 
-public class UIManager : MonoBehaviour
+public class UIManager : SerializedMonoBehaviour
 {
     public InspectorUI inspector;
     public GameObject kvItemUI;
@@ -18,17 +18,27 @@ public class UIManager : MonoBehaviour
     public GameObject buttonUI;
     public GameObject cellUI;
     public GameObject mapUI;
+    public Dictionary<UIEnum,GameObject> map;
     public void ToSceneUI(UIEnum uienum)
     {
-        if(uienum == UIEnum.cellUI)
+        foreach (var kv in map)
         {
-            cellUI.SetActive(true);
-            mapUI.SetActive(false);
+            kv.Value.SetActive(false);
         }
-        else
+        if (map[uienum])
         {
-            cellUI.SetActive(false);
-            mapUI.SetActive(true);
+            map[uienum].SetActive(true);
         }
+        //if(uienum == UIEnum.cellUI)
+        //{
+        //    //cellUI.SetActive(true);
+        //    //mapUI.SetActive(false);
+
+        //}
+        //else
+        //{
+        //    //cellUI.SetActive(false);
+        //    //mapUI.SetActive(true);
+        //}
     }
 }

@@ -13,7 +13,7 @@ public class DialogueChoice
     {
         this.text = text;
         this.nextNode = nextNode;
-        this.condition = condition;
+        this.condition = condition == null ? (e) => { return true; } :condition;
         this.playerEffect = playerEffect;
     }
 

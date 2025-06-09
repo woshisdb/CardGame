@@ -15,7 +15,7 @@ public class AttackAndAddHpData : CardEffectData
     public AttackAndAddHpData(ICardEffect cardEffect) : base(cardEffect)
     {
         var data = cardEffect as AttackAndAddHp;
-        attack = data.hp;
+        attack = data.attack;
         power = data.power;
         hp = data.hp;
     }
@@ -47,11 +47,12 @@ public class AttackAndAddHpData : CardEffectData
 [CreateAssetMenu(fileName = "AttackAndAddHp", menuName = "CardEffect/AttackAndAddHp")]
 public class AttackAndAddHp : CardEffect, ISendEvent
 {
+    public int attack;
     public int hp;
     public int power;
     public AttackAndAddHp()
     {
-        cardEffectEnum = CardEffectEnum.ChangeHp;
+        cardEffectEnum = CardEffectEnum.AttackAndAddHp;
     }
     public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card, Action done)
     {

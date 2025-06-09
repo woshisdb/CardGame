@@ -284,7 +284,6 @@ public class TableModel:IModel,IRegisterEvent,ISendEvent
     {
         tableData.TableInit(this);
         tableData.GameRule(this);
-        // gameRule = new GameRule(this);
         (this.FindSlotByName("cardDeckSlot") as CardDeckSlot).cardDeckModel = GameArchitect.Instance.saveSystem.saveFile.cardDeckModel;
         //Debug.Log(gameRule);
         //Debug.Log(this);

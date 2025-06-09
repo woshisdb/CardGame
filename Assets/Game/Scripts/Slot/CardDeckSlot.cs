@@ -40,11 +40,11 @@ public class CardDeckSlot : SlotView,ISendEvent,CardSetView
     public override List<UIItemBinder> GetUI()
     {
         var ret = new List<UIItemBinder>();
-        for (int i = 0; i < cardDeckModel.cards.Count; i++)
+        foreach(var card in cardDeckModel.cards)
         {
             ret.Add(new KVItemBinder(() =>
             {
-                return cardDeckModel.cards[i].cardName;
+                return card.cardName;
             }, () =>
             {
                 return "---------------";

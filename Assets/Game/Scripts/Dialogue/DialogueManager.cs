@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(DialogueNode tree)
     {
+        GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.DialogueUI);
         currentNode = tree;
         DisplayCurrentNode();
     }
@@ -30,7 +32,7 @@ public class DialogueManager : MonoBehaviour
 
         if (currentNode.HasChoices)
         {
-            continueButton.enabled = false;
+            continueButton.gameObject.SetActive(false);
             foreach (var choice in currentNode.choices)
             {
                 if (!choice.IsAvailable(choice.playerEffect)) continue;
@@ -42,7 +44,7 @@ public class DialogueManager : MonoBehaviour
         }
         else if (currentNode.nextNode != null)
         {
-            continueButton.enabled = true;
+            continueButton.gameObject.SetActive(true);
             continueButton.onClick.RemoveAllListeners();
             continueButton.onClick.AddListener(() =>
             {
@@ -71,6 +73,7 @@ public class DialogueManager : MonoBehaviour
         speakerText.text = "对话结束";
         foreach (Transform child in choicesPanel.transform)
             Destroy(child.gameObject);
+        GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.cellUI);
     }
     void Start()
     {

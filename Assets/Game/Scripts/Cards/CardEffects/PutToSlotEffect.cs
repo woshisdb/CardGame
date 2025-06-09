@@ -28,7 +28,7 @@ public class PutToSlotEffect : CardEffect, ISendEvent
 {
     public PutToSlotEffect()
     {
-        cardEffectEnum = CardEffectEnum.PutToSlotEffect;
+        cardEffectEnum = CardEffectEnum.PutToSlot;
     }
 
     public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card,Action done)

@@ -53,7 +53,7 @@ public class AddAttackBuffEffect : CardEffect, ISendEvent
 {
     public AddAttackBuffEffect()
     {
-        cardEffectEnum = CardEffectEnum.CounterBuffEffect;
+        cardEffectEnum = CardEffectEnum.AddAttackBuff;
     }
 
     public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card, Action done)

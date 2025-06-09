@@ -46,7 +46,7 @@ public class CounterBuffEffect : CardEffect,ISendEvent
 {
     public CounterBuffEffect()
     {
-        cardEffectEnum = CardEffectEnum.CounterBuffEffect;
+        cardEffectEnum = CardEffectEnum.CounterBuff;
     }
 
     public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card,Action done)

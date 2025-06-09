@@ -3,10 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface Result
-{
-    
-}
 
 public static class State
 {
@@ -171,6 +167,26 @@ public class AddAttackBuffToAnimal : TableExeData
                 return e;
             }
         })));
+    }
+}
+/// <summary>
+/// 愤怒BUFF
+/// </summary>
+public class AddAngryBuffToAnimal : TableExeData
+{
+    public IAnimalCard card;
+    public int angry;
+    public Action done;
+    public AddAngryBuffToAnimal(IAnimalCard card,int angry, Action action, bool needLink = true) : base(needLink)
+    {
+        this.card = card;
+        this.angry = angry;
+        this.done = action;
+    }
+
+    protected override void Exe()
+    {
+        this.SendEvent(new TableEffectDataEvent(new AddAngryBuffObjData(done, card, angry)));
     }
 }
 /// <summary>

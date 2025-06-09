@@ -42,7 +42,7 @@ public class AttackSkillEffect : CardEffect, ISendEvent
     public int power;
     public AttackSkillEffect()
     {
-        cardEffectEnum = CardEffectEnum.ChangeHp;
+        cardEffectEnum = CardEffectEnum.AttackSkil;
     }
     public override TableExeData Effect(CardEffectData effectData, TableModel table, CardModel card, Action done)
     {

@@ -7,6 +7,7 @@ public enum TableEffectEnum
     Shield,//护盾
     Regeneration,
     Attack,
+    Angry,
 }
 
 public struct TableEffectDataEvent:IEvent
