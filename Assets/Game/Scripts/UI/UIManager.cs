@@ -7,7 +7,8 @@ using UnityEngine;
 public enum UIEnum
 {
     cellUI,
-    DialogueUI
+    DialogueUI,
+    DayUI,
 }
 
 public class UIManager : SerializedMonoBehaviour

@@ -94,7 +94,7 @@ public class DialogueManager : MonoBehaviour
             .Build();
 
         // 用 root 开始对话系统
-        FindObjectOfType<DialogueManager>().StartDialogue(root);
+        StartDialogue(root);
     }
 
 }
