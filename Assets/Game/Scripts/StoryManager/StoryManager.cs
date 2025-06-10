@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -5,17 +6,18 @@ using TMPro;
 using UnityEngine;
 public class StoryManager:SerializedMonoBehaviour
 {
+    private DayDates day = new DayDates();
     public void Init()
     {
         GameArchitect.Instance.gameDateSystem.OnActionChanged.Add(e =>
         {
             var time = GetTime();
-            ProcessAction(time.Item1,time.Item2,time.Item3);
+            ProcessAction(time.Item1,time.Item2,time.Item3,e);
         });
         GameArchitect.Instance.gameDateSystem.OnDateChanged.Add(e =>
         {
             var time = GetTime();
-            ProcessDay(time.Item1,time.Item2);
+            ProcessDay(time.Item1,time.Item2,e);
         });
     }
     public (int, WeekDayType, DayTimeType) GetTime()
@@ -30,7 +32,7 @@ public class StoryManager:SerializedMonoBehaviour
     /// </summary>
     /// <param name="week"></param>
     /// <param name="day"></param>
-    public void ProcessDay(int week,WeekDayType day)
+    public void ProcessDay(int week,WeekDayType day,Action e)
     {
         
     }
@@ -40,7 +42,7 @@ public class StoryManager:SerializedMonoBehaviour
     /// <param name="week"></param>
     /// <param name="day"></param>
     /// <param name="dayTime"></param>
-    public void ProcessAction(int week,WeekDayType day,DayTimeType dayTime)
+    public void ProcessAction(int week,WeekDayType day,DayTimeType dayTime,Action e)
     {
         
     }
