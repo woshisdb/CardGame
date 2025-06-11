@@ -32,7 +32,7 @@ public class StoryManager:SerializedMonoBehaviour
     /// </summary>
     /// <param name="week"></param>
     /// <param name="day"></param>
-    public void ProcessDay(int week,WeekDayType day,Action e)
+    public void ProcessDay(int week,WeekDayType day,Action done)
     {
         
     }
@@ -42,9 +42,55 @@ public class StoryManager:SerializedMonoBehaviour
     /// <param name="week"></param>
     /// <param name="day"></param>
     /// <param name="dayTime"></param>
-    public void ProcessAction(int week,WeekDayType day,DayTimeType dayTime,Action e)
+    public void ProcessAction(int week,WeekDayType day,DayTimeType dayTime,Action done)
     {
-        
+        AsyncQueue async = new AsyncQueue();
+        async.Add(e =>
+        {
+            NpcFreeAction(e);
+        });
+        async.Add(e =>
+        {
+            CellPlanAction(e);
+        });
     }
-    
+
+    public void CellPlanAction(Action done)
+    {
+        GameActionQueue actions = new GameActionQueue();
+        foreach (var cell in GameArchitect.Instance.cellList)
+        {
+            foreach (var cellItem in cell.CellItems)
+            {
+                foreach (var plan in cellItem.Plans)
+                {
+                    actions.Add(e =>
+                    {
+                        if (plan.CanRun())
+                        {
+                            plan.Run(e);
+                        }
+                        e();
+                    });
+                }
+            }
+        }
+        actions.Run(done);
+    }
+    public void NpcFreeAction(Action done)
+    {
+        AsyncQueue async = new AsyncQueue();
+        foreach (var npc in GameArchitect.Instance.npcSetManager.npcs)
+        {
+            async.Add(e =>
+            {
+                npc.Decision(e);
+            });
+        }
+        async.Add(e =>
+        {
+            done();
+            e();
+        });
+    }
 }

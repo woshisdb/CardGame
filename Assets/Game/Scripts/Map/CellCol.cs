@@ -10,6 +10,7 @@ using UnityEngine;
 /// </summary>
 public class Cell : IUISelector, ISendEvent, IModel
 {
+    public List<CellItem> CellItems;
     public ICellBindTableModel tableData;
 
     public static Dictionary<TableModelDataEnum, Func<ICellBindTableModel>> tableModelDataModelDic =

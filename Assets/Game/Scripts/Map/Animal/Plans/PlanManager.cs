@@ -1,22 +1,17 @@
-﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class NpcPlan
+public class PlanManager
 {
-    public INpc Owner;                // 计划发起者
-    public string Action;            // 行为类型
-    public string Location;          // 行为地点
-    public int TimeSlot;             // 回合时间段
+    public Dictionary<int, List<PlanBase>> plansPerDay;
+    public Dictionary<INpc, List<PlanBase>> plansPerNpc;
+    public PlanManager()
+    {
+        plansPerDay = new Dictionary<int, List<PlanBase>>();
+        plansPerNpc = new Dictionary<INpc, List<PlanBase>>();
+    }
 
-    // 需要的关键角色及对应人数
-    public Dictionary<string, int> RequiredRolesCount = new();
-
-    // 计划当前阶段
-    public PlanStage Stage;
-
-    public bool IsConfirmed;
-
-    // 匹配成功的角色->NPC列表
-    public Dictionary<string, List<Npc>> MatchedNpcsByRole = new();
+    public List<PlanBase> GetPlans(CellItem cellItem)
+    {
+        return cellItem.Plans;
+    }
 }

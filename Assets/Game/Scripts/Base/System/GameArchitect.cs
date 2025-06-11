@@ -19,6 +19,8 @@ public class GameArchitect : Singleton<GameArchitect>
     public CardManager cardManager;
     protected GameObject tableViewNow;
     public GameDateSystem gameDateSystem;
+    public PlanManager planManager;
+    public NpcSetManager npcSetManager;
     public HeroCardModel heroCardModel
     {
         get { return saveSystem.saveFile.heroCardModel; }
@@ -42,6 +44,8 @@ public class GameArchitect : Singleton<GameArchitect>
         });
         gameDateSystem = new GameDateSystem();
         gameDateSystem.Init(saveSystem);
+        npcSetManager = new NpcSetManager();
+
     }
     public GameActionQueue OnDateChanged{get{return gameDateSystem.OnDateChanged;}}
     public GameActionQueue OnActionChanged{get{return gameDateSystem.OnActionChanged;}}

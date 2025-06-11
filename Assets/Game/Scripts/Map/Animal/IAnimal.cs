@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -50,6 +51,11 @@ public class NpcRelationship
 public interface INpc
 {
     /// <summary>
+    /// 所在位置
+    /// </summary>
+    /// <returns></returns>
+    Cell InPlace();
+    /// <summary>
     /// 获得友好度[-1,1]讨厌->好感
     /// </summary>
     /// <param name="animal"></param>
@@ -62,4 +68,6 @@ public interface INpc
     Dictionary<AnimalProperty, int> GetPropertys();
     int GetProperty(AnimalProperty property);
     void AddProperty(AnimalProperty property,int val);
+
+    void Decision(Action act);
 }

@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public abstract class CellItem : MonoBehaviour, IPointerClickHandler, ISendEvent, IUISelector
 {
+    public Cell cell;
+    public List<PlanBase> Plans;
     public HeroCardModel Hero { get { return GameArchitect.Instance.heroCardModel; } }
     public abstract List<UIItemBinder> GetUI();
 
