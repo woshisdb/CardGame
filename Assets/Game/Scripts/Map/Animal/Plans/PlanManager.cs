@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NpcPlan
 {
-    public Npc Owner;                // 计划发起者
+    public INpc Owner;                // 计划发起者
     public string Action;            // 行为类型
     public string Location;          // 行为地点
     public int TimeSlot;             // 回合时间段
