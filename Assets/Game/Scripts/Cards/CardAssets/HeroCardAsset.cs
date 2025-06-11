@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum HeroProperty
+public enum AnimalProperty
 {
-    knowledge,
-    brave,
-    charm,
-    agility,
-    strength
+    knowledge,//知识
+    brave,//勇气
+    charm,//吸引力
+    agility,//敏捷
+    strength//力量
 }
 public enum AnimalTagEnum
 {
@@ -17,11 +17,7 @@ public enum AnimalTagEnum
 }
 public class HeroCardModel : CardModel,IAnimalCard
 {
-    public int knowledge;//知识
-    public int brave;//勇气
-    public int charm;//吸引力
-    public int agility;//敏捷
-    public int strength;//力量
+    public Dictionary<AnimalProperty, int> property;
     public Dictionary<AnimalTagEnum, int> tags;
     //////////////////////////////
     public int hp;
@@ -35,28 +31,33 @@ public class HeroCardModel : CardModel,IAnimalCard
         }
         return tags[animalTag];
     }
-    public void AddProperty(HeroProperty heroProperty,int val)
+    public int GetProperty(AnimalProperty propertyType)
     {
-        if(heroProperty==HeroProperty.knowledge)
-        {
-            knowledge += val;
-        }
-        else if(heroProperty==HeroProperty.brave)
-        {
-            brave += val;
-        }
-        if(heroProperty==HeroProperty.charm)
-        {
-            charm += val;
-        }
-        if (heroProperty==HeroProperty.agility)
-        {
-            agility += val;
-        }
-        if(heroProperty == HeroProperty.strength)
-        {
-            strength += val;
-        }
+        return property[propertyType];
+    }
+    public void AddProperty(AnimalProperty heroProperty,int val)
+    {
+        property[heroProperty] = +val;
+        //if(heroProperty==HeroProperty.knowledge)
+        //{
+        //    knowledge += val;
+        //}
+        //else if(heroProperty==HeroProperty.brave)
+        //{
+        //    brave += val;
+        //}
+        //if(heroProperty==HeroProperty.charm)
+        //{
+        //    charm += val;
+        //}
+        //if (heroProperty==HeroProperty.agility)
+        //{
+        //    agility += val;
+        //}
+        //if(heroProperty == HeroProperty.strength)
+        //{
+        //    strength += val;
+        //}
     }
 
     public HeroCardModel(CardAsset cardAsset) : base(cardAsset)

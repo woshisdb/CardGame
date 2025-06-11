@@ -9,7 +9,7 @@ public class BookStoreCellItem : CellItem, ISendEvent
         var ret = new List<UIItemBinder>();
         string text = "读书";
         ret.Add(new ButtonBinder(() => { return text; }, () => {
-            Hero.AddProperty(HeroProperty.knowledge,3);
+            Hero.AddProperty(AnimalProperty.knowledge,3);
             Debug.Log(text);
         }));
         return ret;
