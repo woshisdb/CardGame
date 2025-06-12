@@ -23,8 +23,18 @@ public class DialogueChoice
     }
 }
 
-public class DialogueNode : ScriptableObject
+public class DialogueEnvir
 {
+    public Dictionary<string, INpc> players;
+    public DialogueEnvir(Dictionary<string, INpc> players)
+    {
+        this.players = players;
+    }
+}
+
+public class DialogueNode
+{
+    public DialogueEnvir DialogueEnvir;
     [Header("文本内容")]
     [TextArea]
     public string speakerText;
@@ -45,9 +55,9 @@ public class DialogueNode : ScriptableObject
 
     // ----------- 链式构建 API -----------
 
-    public static DialogueNode Line(string text, string speaker = null)
+    public DialogueNode(DialogueEnvir dialogueEnvir)
     {
-        return new DialogueNode().SetText(text).SetSpeaker(speaker);
+        this.DialogueEnvir= dialogueEnvir;
     }
 
     public DialogueNode SetSpeaker(string speaker)
@@ -86,7 +96,7 @@ public class DialogueNode : ScriptableObject
 
     public DialogueNode Next(string text, string speaker = null)
     {
-        var next = new DialogueNode().SetText(text);
+        var next = new DialogueNode(DialogueEnvir).SetText(text);
         next.SetSpeaker(speaker ?? this.currentSpeaker);
         this.nextNode = next;
         return next;

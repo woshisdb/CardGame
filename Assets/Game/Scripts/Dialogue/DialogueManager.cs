@@ -14,11 +14,26 @@ public class DialogueManager : MonoBehaviour
     public Button continueButton;
     private DialogueNode currentNode;
 
-    public void StartDialogue(DialogueNode tree,Dictionary<string,INpc> players)
+    public void StartDialogue(DialogueNode tree)
     {
-        GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.DialogueUI);
-        currentNode = tree;
-        DisplayCurrentNode();
+        bool isPureLogic = true;
+        foreach (var player in tree.DialogueEnvir.players)
+        {
+            if(player.Value.IsPlayer())
+            {
+                isPureLogic = false;
+            }
+        }
+        if (isPureLogic)
+        {
+
+        }
+        else//显示动画
+        {
+            GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.DialogueUI);
+            currentNode = tree;
+            DisplayCurrentNode();
+        }
     }
 
     void DisplayCurrentNode()
@@ -75,26 +90,27 @@ public class DialogueManager : MonoBehaviour
             Destroy(child.gameObject);
         GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.cellUI);
     }
-    void Start()
-    {
-        var afterYes = new DialogueNode()
-            .SetText("太棒了，我们马上开始！")
-            .SetSpeaker("老师");
-        var afterNo = new DialogueNode()
-            .SetText("没关系，我会等你准备好。")
-            .SetSpeaker("老师");
-        DialogueNode root = new DialogueBuilder()
-            .Start("你好！", "老师")
-            .Next("欢迎来到新学期", "老师")
-            .Next("你准备好了吗？", "老师")
-            .Choice(
-                ("是的！（勇气3）", afterYes,null,null),
-                ("我还没准备好", afterNo,null,null)
-            )
-            .Build();
+    //void StartGame()
+    //{
+    //    //DialogueEnvir dialogueEnvir;
+    //    //var afterYes = new DialogueNode()
+    //    //    .SetText("太棒了，我们马上开始！")
+    //    //    .SetSpeaker("老师");
+    //    //var afterNo = new DialogueNode()
+    //    //    .SetText("没关系，我会等你准备好。")
+    //    //    .SetSpeaker("老师");
+    //    //DialogueNode root = new DialogueBuilder()
+    //    //    .Start("你好！", "老师")
+    //    //    .Next("欢迎来到新学期", "老师")
+    //    //    .Next("你准备好了吗？", "老师")
+    //    //    .Choice(
+    //    //        ("是的！（勇气3）", afterYes,null,null),
+    //    //        ("我还没准备好", afterNo,null,null)
+    //    //    )
+    //    //    .Build();
 
-        // 用 root 开始对话系统
-        StartDialogue(root,null);
-    }
+    //    //// 用 root 开始对话系统
+    //    //StartDialogue(root);
+    //}
 
 }

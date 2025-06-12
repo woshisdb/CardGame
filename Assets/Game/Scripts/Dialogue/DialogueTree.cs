@@ -41,7 +41,7 @@ public class DialogueBuilder
 
     private DialogueNode CreateNode(string text, string speaker, Sprite portrait)
     {
-        var node = new DialogueNode();
+        var node = new DialogueNode(envir);
         node.speakerText = text;
         node.speakerName = speaker;
         node.portrait = portrait;
@@ -49,6 +49,10 @@ public class DialogueBuilder
         createdNodes.Add(node);
         return node;
     }
-
+    DialogueEnvir envir;
+    public DialogueBuilder(DialogueEnvir dialogueEnvir)
+    {
+        envir = dialogueEnvir;
+    }
     public List<DialogueNode> GetAllNodes() => createdNodes;
 }

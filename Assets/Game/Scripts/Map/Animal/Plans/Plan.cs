@@ -9,6 +9,16 @@ public enum PlanEnum
     Test2,
 }
 
+public abstract class DialogueStoryBuilder
+{
+    protected DialogueEnvir envir;
+    public DialogueStoryBuilder(DialogueEnvir envir)
+    {
+        this.envir = envir;
+    }
+    public abstract DialogueNode build();
+}
+
 public abstract class PlanBase
 {
     public PlanEnum PlanEnum;
