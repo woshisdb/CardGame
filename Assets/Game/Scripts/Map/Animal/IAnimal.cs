@@ -50,6 +50,8 @@ public class NpcRelationship
 
 public interface INpc
 {
+    void SetPlan(PlanBase plan);
+    PlanBase GetPlan();
     /// <summary>
     /// 所在位置
     /// </summary>
@@ -68,6 +70,6 @@ public interface INpc
     Dictionary<AnimalProperty, int> GetPropertys();
     int GetProperty(AnimalProperty property);
     void AddProperty(AnimalProperty property,int val);
-
     void Decision(Action act);
+    
 }

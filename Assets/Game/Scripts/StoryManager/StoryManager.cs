@@ -93,4 +93,30 @@ public class StoryManager:SerializedMonoBehaviour
             e();
         });
     }
+
+    public void StoryCreator()
+    {
+        
+    }
+}
+/// <summary>
+/// 故事生成
+/// </summary>
+public class StoryCellItemManager
+{
+    public List<INpc> Npcs;
+    public HashSet<PlanBase> Plans;
+    public Dictionary<string, object> infos;
+    public StoryCellItemManager(List<INpc> npcs)
+    {
+        this.Npcs = npcs;
+    }
+
+    public void ProcessNpcs()
+    {
+        foreach (var npc in Npcs)
+        {
+            
+        }
+    }
 }
