@@ -14,7 +14,7 @@ public class DialogueManager : MonoBehaviour
     public Button continueButton;
     private DialogueNode currentNode;
 
-    public void StartDialogue(DialogueNode tree)
+    public void StartDialogue(DialogueNode tree,Dictionary<string,INpc> players)
     {
         GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.DialogueUI);
         currentNode = tree;
@@ -94,7 +94,7 @@ public class DialogueManager : MonoBehaviour
             .Build();
 
         // 用 root 开始对话系统
-        StartDialogue(root);
+        StartDialogue(root,null);
     }
 
 }

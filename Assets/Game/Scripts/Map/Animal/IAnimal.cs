@@ -50,6 +50,7 @@ public class NpcRelationship
 
 public interface INpc
 {
+    bool IsPlayer();
     void SetPlan(PlanBase plan);
     PlanBase GetPlan();
     /// <summary>

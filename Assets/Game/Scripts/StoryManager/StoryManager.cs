@@ -93,11 +93,6 @@ public class StoryManager:SerializedMonoBehaviour
             e();
         });
     }
-
-    public void StoryCreator()
-    {
-        
-    }
 }
 /// <summary>
 /// 故事生成

@@ -24,5 +24,13 @@ public abstract class PlanBase
     public Dictionary<string, List<INpc>> MatchedNpcsByRole = new Dictionary<string, List<INpc>>();
 
     public abstract bool CanRun();
-    public abstract void Run(Action done,bool pureLogic=false);
+    public abstract void Run(Action done);
+    public INpc GetNpc(string name)
+    {
+        return MatchedNpcsByRole[name][0];
+    }
+    public List<INpc> GetNpcs(string name)
+    {
+        return MatchedNpcsByRole[name];
+    }
 }

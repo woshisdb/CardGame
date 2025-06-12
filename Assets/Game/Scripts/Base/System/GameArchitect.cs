@@ -21,6 +21,7 @@ public class GameArchitect : Singleton<GameArchitect>
     public GameDateSystem gameDateSystem;
     public PlanManager planManager;
     public NpcSetManager npcSetManager;
+    public DialogueManager dialogueManager;
     public HeroCardModel heroCardModel
     {
         get { return saveSystem.saveFile.heroCardModel; }
@@ -35,6 +36,7 @@ public class GameArchitect : Singleton<GameArchitect>
     //    public GovernmentObj government { get{ return saveSystem.saveData.Government; } }
     private GameArchitect():base()
     {
+        dialogueManager= GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
         tableRoot = GameObject.Find("TableRoot");
         resConfig = (ResConfig)Resources.Load("newResConfig");
         gameFrameWork = GameObject.Find("GameFrameWork").GetComponent<GameFrameWork>();
