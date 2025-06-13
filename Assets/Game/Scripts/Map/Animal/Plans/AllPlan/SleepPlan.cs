@@ -30,6 +30,7 @@ public class SleepPlan : PlanBase
 
 public class SleepDialogueStoryBuilder : DialogueStoryBuilder
 {
+    public string speaker = "老师";
     public SleepDialogueStoryBuilder(DialogueEnvir envir) : base(envir)
     {
     }
@@ -38,14 +39,14 @@ public class SleepDialogueStoryBuilder : DialogueStoryBuilder
     {
         var afterYes = new DialogueNode(this.envir)
             .SetText("太棒了，我们马上开始！")
-            .SetSpeaker("老师");
+            .SetSpeaker(speaker);
         var afterNo = new DialogueNode(this.envir)
             .SetText("没关系，我会等你准备好。")
-            .SetSpeaker("老师");
+            .SetSpeaker(speaker);
         DialogueNode root = new DialogueBuilder(this.envir)
-            .Start("你好！", "老师")
-            .Next("欢迎来到新学期", "老师")
-            .Next("你准备好了吗？", "老师")
+            .Start("你好！", speaker)
+            .Next("欢迎来到新学期", speaker)
+            .Next("你准备好了吗？", speaker)
             .Choice(
                 ("是的！（勇气3）", afterYes, null, null),
                 ("我还没准备好", afterNo, null, null)

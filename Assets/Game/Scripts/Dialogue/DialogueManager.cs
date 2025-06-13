@@ -4,6 +4,41 @@ using TMPro;
 using System.Collections.Generic;
 using System;
 
+public class PureLogicDialogue
+{
+    public Action Done;
+    public DialogueNode currentNode;
+    public PureLogicDialogue(DialogueNode tree, Action done)
+    {
+        this.currentNode = tree;
+        this.Done=done;
+    }
+    void Process()
+    {
+        currentNode.Process();
+        if (currentNode.HasChoices)
+        {
+            foreach (var choice in currentNode.choices)
+            {
+                if (!choice.IsAvailable(choice.playerEffect)) continue;
+                //var btn = Instantiate(choiceButtonPrefab, choicesPanel.transform);
+                //btn.GetComponentInChildren<TextMeshProUGUI>().text = choice.text;
+                //btn.onClick.RemoveAllListeners();
+                //btn.onClick.AddListener(() => OnChoiceSelected(choice));
+            }
+        }
+        else if (currentNode.nextNode != null)
+        {
+            currentNode = currentNode.nextNode;
+            Process();
+        }
+        else//结束
+        {
+            Done();
+        }
+    }
+}
+
 public class DialogueManager : MonoBehaviour
 {
     public TextMeshProUGUI speakerText;
@@ -13,8 +48,9 @@ public class DialogueManager : MonoBehaviour
     public Button choiceButtonPrefab;
     public Button continueButton;
     private DialogueNode currentNode;
+    public Action Done;
 
-    public void StartDialogue(DialogueNode tree)
+    public void StartDialogue(DialogueNode tree,Action done)
     {
         bool isPureLogic = true;
         foreach (var player in tree.DialogueEnvir.players)
@@ -26,12 +62,13 @@ public class DialogueManager : MonoBehaviour
         }
         if (isPureLogic)
         {
-
+            new PureLogicDialogue(tree,done).Run();
         }
         else//显示动画
         {
             GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.DialogueUI);
             currentNode = tree;
+            this.Done = done;
             DisplayCurrentNode();
         }
     }
@@ -85,32 +122,11 @@ public class DialogueManager : MonoBehaviour
 
     void EndDialogue()
     {
+        Done?.Invoke();
         speakerText.text = "对话结束";
         foreach (Transform child in choicesPanel.transform)
             Destroy(child.gameObject);
         GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.cellUI);
     }
-    //void StartGame()
-    //{
-    //    //DialogueEnvir dialogueEnvir;
-    //    //var afterYes = new DialogueNode()
-    //    //    .SetText("太棒了，我们马上开始！")
-    //    //    .SetSpeaker("老师");
-    //    //var afterNo = new DialogueNode()
-    //    //    .SetText("没关系，我会等你准备好。")
-    //    //    .SetSpeaker("老师");
-    //    //DialogueNode root = new DialogueBuilder()
-    //    //    .Start("你好！", "老师")
-    //    //    .Next("欢迎来到新学期", "老师")
-    //    //    .Next("你准备好了吗？", "老师")
-    //    //    .Choice(
-    //    //        ("是的！（勇气3）", afterYes,null,null),
-    //    //        ("我还没准备好", afterNo,null,null)
-    //    //    )
-    //    //    .Build();
-
-    //    //// 用 root 开始对话系统
-    //    //StartDialogue(root);
-    //}
 
 }
