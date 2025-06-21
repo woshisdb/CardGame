@@ -11,6 +11,7 @@ using UnityEngine;
 public class Cell : IUISelector, ISendEvent, IModel
 {
     public List<CellItem> CellItems;
+    public List<INpc> npcs;
     public ICellBindTableModel tableData;
 
     public static Dictionary<TableModelDataEnum, Func<ICellBindTableModel>> tableModelDataModelDic =
@@ -86,6 +87,7 @@ public class CellCol : MonoBehaviour,IRegisterEvent,IView
     public void BindModel(IModel model)
     {
         cell = (Cell)model;
+        cell.CellItems = new List<CellItem>(GetComponentsInChildren<CellItem>());
         transform.localPosition = new Vector3(cell.pos.x * 10, 0, cell.pos.y * 10);
         cell.OnBind(this);
         Refresh();

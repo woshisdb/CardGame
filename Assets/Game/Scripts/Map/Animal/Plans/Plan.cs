@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum PlanEnum
 {
-    Test1,
+    Sleep,
     Test2,
 }
 
@@ -38,6 +38,18 @@ public abstract class PlanBase
     public INpc GetNpc(string name)
     {
         return MatchedNpcsByRole[name][0];
+    }
+    public void Math(string str,INpc npc)
+    {
+        if(MatchedNpcsByRole.ContainsKey(str))
+        {
+            MatchedNpcsByRole[str].Add(npc);
+        }
+        else
+        {
+            MatchedNpcsByRole[str] = new List<INpc>();
+            MatchedNpcsByRole[str].Add(npc);
+        }
     }
     public List<INpc> GetNpcs(string name)
     {

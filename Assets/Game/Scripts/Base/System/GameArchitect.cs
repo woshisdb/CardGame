@@ -22,10 +22,16 @@ public class GameArchitect : Singleton<GameArchitect>
     public PlanManager planManager;
     public NpcSetManager npcSetManager;
     public DialogueManager dialogueManager;
+    public StoryManager storyManager;
+    public BuySystem buySystem;
     public HeroCardModel heroCardModel
     {
         get { return saveSystem.saveFile.heroCardModel; }
     }
+    public Player player { get
+        {
+            return saveSystem.saveFile.player;
+        } }
     //public TableModel GetTableModel()
     //{
     //    return (TableModel)tableViewNow.GetComponent<TableView>().GetModel();
@@ -38,16 +44,21 @@ public class GameArchitect : Singleton<GameArchitect>
     {
         dialogueManager= GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
         tableRoot = GameObject.Find("TableRoot");
-        resConfig = (ResConfig)Resources.Load("newResConfig");
+        resConfig = (ResConfig)Resources.Load("Config/newResConfig");
         gameFrameWork = GameObject.Find("GameFrameWork").GetComponent<GameFrameWork>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         cardManager = GameObject.Find("CardManager").GetComponent<CardManager>();
         gameFrameWork.InitFunc(()=> {
         });
-        gameDateSystem = new GameDateSystem();
+        gameDateSystem = GameObject.Find("GameDateSystem").GetComponent<GameDateSystem>();//new GameDateSystem();
         gameDateSystem.Init(saveSystem);
-        npcSetManager = new NpcSetManager();
-
+        npcSetManager = new NpcSetManager(saveSystem);
+        uiManager.ToSceneUI(UIEnum.DayUI);
+        storyManager = GameObject.Find("StoryManager").GetComponent<StoryManager>();
+        storyManager.Init(gameDateSystem);
+        var buySystemObj = GameObject.Find("GameBuySystem");// GetComponent<BuySystem>();
+        var buySystem = uiManager.map[UIEnum.BuyUI];
+        //new GameDateSystem();
     }
     public GameActionQueue OnDateChanged{get{return gameDateSystem.OnDateChanged;}}
     public GameActionQueue OnActionChanged{get{return gameDateSystem.OnActionChanged;}}

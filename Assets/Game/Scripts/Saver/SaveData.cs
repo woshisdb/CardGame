@@ -13,8 +13,10 @@ public class SaveFile
     public List<CardModel> cards;
     public CardDeckModel cardDeckModel;
     public HeroCardModel heroCardModel;
+    public Player player;
     public int RemainingActions;
     public int CurrentDay;
+    public List<INpc> npcs;
 
     [Button]
     public void CreateHero(HeroCardAsset heroCardAsset)

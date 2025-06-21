@@ -13,24 +13,20 @@ public class PureLogicDialogue
         this.currentNode = tree;
         this.Done=done;
     }
-    void Process()
+    public void Process()
     {
-        currentNode.Process();
+        //currentNode.Process();
         if (currentNode.HasChoices)
         {
-            foreach (var choice in currentNode.choices)
-            {
-                if (!choice.IsAvailable(choice.playerEffect)) continue;
-                //var btn = Instantiate(choiceButtonPrefab, choicesPanel.transform);
-                //btn.GetComponentInChildren<TextMeshProUGUI>().text = choice.text;
-                //btn.onClick.RemoveAllListeners();
-                //btn.onClick.AddListener(() => OnChoiceSelected(choice));
-            }
+            var ret = currentNode.GetNpc(currentNode.speakerName).GetChoice(currentNode);
+            currentNode = ret.nextNode;
         }
         else if (currentNode.nextNode != null)
         {
-            currentNode = currentNode.nextNode;
-            Process();
+            currentNode.Process(() => {
+                currentNode = currentNode.nextNode;
+                Process();
+            });
         }
         else//结束
         {
@@ -62,7 +58,7 @@ public class DialogueManager : MonoBehaviour
         }
         if (isPureLogic)
         {
-            new PureLogicDialogue(tree,done).Run();
+            new PureLogicDialogue(tree,done).Process();
         }
         else//显示动画
         {
@@ -78,20 +74,36 @@ public class DialogueManager : MonoBehaviour
         speakerText.text = currentNode.speakerText;
         speakerNameText.text = currentNode.speakerName;
         portraitImage.sprite = currentNode.portrait;
-        currentNode.Process();
+        //currentNode.Process();
         foreach (Transform child in choicesPanel.transform)
             Destroy(child.gameObject);
 
         if (currentNode.HasChoices)
         {
-            continueButton.gameObject.SetActive(false);
-            foreach (var choice in currentNode.choices)
+            if (!currentNode.GetNpc().IsPlayer())
             {
-                if (!choice.IsAvailable(choice.playerEffect)) continue;
-                var btn = Instantiate(choiceButtonPrefab, choicesPanel.transform);
-                btn.GetComponentInChildren<TextMeshProUGUI>().text = choice.text;
-                btn.onClick.RemoveAllListeners();
-                btn.onClick.AddListener(() => OnChoiceSelected(choice));
+                var ret = currentNode.GetNpc().GetChoice(currentNode);
+                speakerText.text += "(" + ret.text + ")";
+                //OnChoiceSelected(ret);
+                continueButton.gameObject.SetActive(true);
+                continueButton.onClick.RemoveAllListeners();
+                continueButton.onClick.AddListener(() =>
+                {
+                    currentNode = ret.nextNode;
+                    DisplayCurrentNode(); // 自动跳转
+                });
+            }
+            else//是玩家
+            {
+                continueButton.gameObject.SetActive(false);
+                foreach (var choice in currentNode.choices)
+                {
+                    if (!choice.IsAvailable(choice.playerEffect)) continue;
+                    var btn = Instantiate(choiceButtonPrefab, choicesPanel.transform);
+                    btn.GetComponentInChildren<TextMeshProUGUI>().text = choice.text;
+                    btn.onClick.RemoveAllListeners();
+                    btn.onClick.AddListener(() => OnChoiceSelected(choice));
+                }
             }
         }
         else if (currentNode.nextNode != null)
@@ -100,8 +112,12 @@ public class DialogueManager : MonoBehaviour
             continueButton.onClick.RemoveAllListeners();
             continueButton.onClick.AddListener(() =>
             {
-                currentNode = currentNode.nextNode;
-                DisplayCurrentNode(); // 自动跳转
+                var cur = currentNode;
+                currentNode.Process(() =>
+                {
+                    currentNode = currentNode.nextNode;
+                    DisplayCurrentNode(); // 自动跳转
+                });
             });
         }
         else

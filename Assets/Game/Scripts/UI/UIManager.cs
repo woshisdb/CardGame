@@ -9,6 +9,7 @@ public enum UIEnum
     cellUI,
     DialogueUI,
     DayUI,
+    BuyUI,
 }
 
 public class UIManager : SerializedMonoBehaviour

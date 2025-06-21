@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newResConfig", menuName = "Config/newResConfig")]
 public class ResConfig : SerializedScriptableObject
 {
+    public Dictionary<int, Item> goods;
     public GameObject cell;
     public List<CardAsset> cardAssets;
     public Dictionary<CardEnum,CardUIView> cardUITemplate;

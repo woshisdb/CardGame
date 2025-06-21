@@ -50,7 +50,7 @@ public class NpcRelationship
 
 public interface INpc
 {
-    public string Name { get; set; }
+    string Name { get; set; }
     bool IsPlayer();
     void SetPlan(PlanBase plan);
     PlanBase GetPlan();
@@ -73,5 +73,18 @@ public interface INpc
     int GetProperty(AnimalProperty property);
     void AddProperty(AnimalProperty property,int val);
     void Decision(Action act);
+    DialogueChoice GetChoice(DialogueNode dialogue);
+
+    Shop GetShop();
     
 }
+public enum NpcTrait
+{
+    //
+}
+public class NpcState
+{
+    //理想(职业目标)
+    //
+}
+

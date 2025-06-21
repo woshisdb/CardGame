@@ -18,12 +18,17 @@ public class SleepPlan : PlanBase
         {
             actionQueue.Add(e =>
             {
-                var ret = new SleepDialogueStoryBuilder(new DialogueEnvir(new Dictionary<string, INpc>())).build();
-                GameArchitect.Instance.dialogueManager.StartDialogue(ret);
-                e();
+                var mapper = new Dictionary<string, INpc>();
+                mapper.Add("老师",GetNpc(sleeper));
+                var ret = new SleepDialogueStoryBuilder(new DialogueEnvir(mapper)).build();
+                GameArchitect.Instance.dialogueManager.StartDialogue(ret, e);
             });
         }
         actionQueue.Run(done);
+    }
+    public SleepPlan():base()
+    {
+        PlanEnum = PlanEnum.Sleep;
     }
 }
 
@@ -48,8 +53,8 @@ public class SleepDialogueStoryBuilder : DialogueStoryBuilder
             .Next("欢迎来到新学期", speaker)
             .Next("你准备好了吗？", speaker)
             .Choice(
-                ("是的！（勇气3）", afterYes, null, null),
-                ("我还没准备好", afterNo, null, null)
+                ("是的！（勇气3）", afterYes, (e) => { return 0.5f; }, null, null),
+                ("我还没准备好", afterNo, (e) => { return 0.3f; }, null, null)
             )
             .Build();
 

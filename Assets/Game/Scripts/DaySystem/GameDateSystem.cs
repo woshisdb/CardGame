@@ -68,6 +68,10 @@ public class GameDateSystem:SerializedMonoBehaviour
                 {
                     AdvanceDay();
                 }
+                else
+                {
+                    UseAction();
+                }
             });
             return true;
         }
@@ -77,10 +81,13 @@ public class GameDateSystem:SerializedMonoBehaviour
             return false;
         }
     }
-
+    public void Start()
+    {
+        UseAction();
+    }
     public void SetDay()
     {
-        day.text = GetDateDisplay()+"\n"+GetProgressDisplay();
+        day.text = GetDateDisplay()+":"+GetProgressDisplay();
     }
 
     /// <summary>推进一天</summary>
@@ -110,7 +117,7 @@ public class GameDateSystem:SerializedMonoBehaviour
     {
         return (WeekDayType)((CurrentDay - 1) % 7);
     }
-    public string GetDateDisplay() => $"第{GetCurrentWeek()}周 {GetWeekDay()}（第{CurrentDay}天）";
+    public string GetDateDisplay() => $"第{GetCurrentWeek()}周|{GetWeekDay()}|第{CurrentDay}天|";
     public string GetProgressDisplay()
     {
         if (RemainingActions==3)

@@ -30,6 +30,11 @@ public class GameFrameWork : MonoBehaviour,IRegisterEvent
             GameArchitect.Instance.uiManager.inspector.ShowUI(e.view);
         });
     }
+    [Button]
+    public void StartGame()
+    {
+        GameArchitect.Instance.gameDateSystem.Start();
+    }
     public void InitFunc(Action func)
     {
         StartCoroutine(DelayCoroutine(0, func));

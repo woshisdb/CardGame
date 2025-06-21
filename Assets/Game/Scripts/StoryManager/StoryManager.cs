@@ -6,15 +6,15 @@ using TMPro;
 using UnityEngine;
 public class StoryManager:SerializedMonoBehaviour
 {
-    private DayDates day = new DayDates();
-    public void Init()
+    public Action OnPlayerSelectPlan;
+    public void Init(GameDateSystem gameDateSystem)
     {
-        GameArchitect.Instance.gameDateSystem.OnActionChanged.Add(e =>
+        gameDateSystem.OnActionChanged.Add(e =>
         {
             var time = GetTime();
             ProcessAction(time.Item1,time.Item2,time.Item3,e);
         });
-        GameArchitect.Instance.gameDateSystem.OnDateChanged.Add(e =>
+        gameDateSystem.OnDateChanged.Add(e =>
         {
             var time = GetTime();
             ProcessDay(time.Item1,time.Item2,e);
@@ -34,7 +34,7 @@ public class StoryManager:SerializedMonoBehaviour
     /// <param name="day"></param>
     public void ProcessDay(int week,WeekDayType day,Action done)
     {
-        
+        done();
     }
     /// <summary>
     /// 一个行为结束后的检测
@@ -45,6 +45,11 @@ public class StoryManager:SerializedMonoBehaviour
     public void ProcessAction(int week,WeekDayType day,DayTimeType dayTime,Action done)
     {
         AsyncQueue async = new AsyncQueue();
+        //async.Add(e =>
+        //{
+        //    GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.cellUI);
+        //    e();
+        //});
         async.Add(e =>
         {
             NpcFreeAction(e);
@@ -53,11 +58,12 @@ public class StoryManager:SerializedMonoBehaviour
         {
             CellPlanAction(e);
         });
+        async.Run(done);
     }
 
     public void CellPlanAction(Action done)
     {
-        GameActionQueue actions = new GameActionQueue();
+        AsyncQueue actions = new AsyncQueue();
         foreach (var cell in GameArchitect.Instance.cellList)
         {
             foreach (var cellItem in cell.CellItems)
@@ -70,28 +76,43 @@ public class StoryManager:SerializedMonoBehaviour
                         {
                             plan.Run(e);
                         }
-                        e();
+                        else
+                        {
+                            e();
+                        }
                     });
                 }
+                actions.Add(e =>
+                {
+                    cellItem.Plans.Clear();
+                    e();
+                });
             }
         }
-        actions.Run(done);
+        actions.Run(()=> {
+            Debug.Log(1);
+            done(); 
+        });
     }
     public void NpcFreeAction(Action done)
     {
         AsyncQueue async = new AsyncQueue();
         foreach (var npc in GameArchitect.Instance.npcSetManager.npcs)
         {
-            async.Add(e =>
+            if(npc.IsPlayer())
             {
-                npc.Decision(e);
-            });
+                async.Add(e =>
+                {
+                    OnPlayerSelectPlan = e;
+                    GameArchitect.Instance.uiManager.ToSceneUI(UIEnum.cellUI);
+                });
+            }
+            else
+            {
+                async.Add(e => { npc.Decision(e); });
+            }
         }
-        async.Add(e =>
-        {
-            done();
-            e();
-        });
+        async.Run(done);
     }
 }
 /// <summary>
