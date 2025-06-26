@@ -87,7 +87,14 @@ public class DialogueNode
 
     public void Process(Action done)
     {
-        process?.Invoke(done);
+        if(process!=null)
+        {
+            process?.Invoke(done);
+        }
+        else
+        {
+            done();
+        }
     }
     public DialogueNode SetProcess(Action<Action> process)
     {

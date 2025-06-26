@@ -54,6 +54,7 @@ public class DialogueManager : MonoBehaviour
             if(player.Value.IsPlayer())
             {
                 isPureLogic = false;
+                break;
             }
         }
         if (isPureLogic)
@@ -106,7 +107,7 @@ public class DialogueManager : MonoBehaviour
                 }
             }
         }
-        else if (currentNode.nextNode != null)
+        else if (currentNode != null)
         {
             continueButton.gameObject.SetActive(true);
             continueButton.onClick.RemoveAllListeners();

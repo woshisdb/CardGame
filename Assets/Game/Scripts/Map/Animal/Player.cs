@@ -7,7 +7,9 @@ public class Player : INpc
 {
     public Cell cell;
     public PlanBase Plan;
-    public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public Shop shop;
+    public string name;
+    public string Name { get => name; set => name = value; }
 
     public void AddProperty(AnimalProperty property, int val)
     {
@@ -46,7 +48,7 @@ public class Player : INpc
 
     public Shop GetShop()
     {
-        throw new NotImplementedException();
+        return shop;
     }
 
     public Cell InPlace()

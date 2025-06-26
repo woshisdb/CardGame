@@ -56,8 +56,8 @@ public class GameArchitect : Singleton<GameArchitect>
         uiManager.ToSceneUI(UIEnum.DayUI);
         storyManager = GameObject.Find("StoryManager").GetComponent<StoryManager>();
         storyManager.Init(gameDateSystem);
-        var buySystemObj = GameObject.Find("GameBuySystem");// GetComponent<BuySystem>();
-        var buySystem = uiManager.map[UIEnum.BuyUI];
+        //var buySystemObj = GameObject.Find("GameBuySystem");// GetComponent<BuySystem>();
+        buySystem = uiManager.map[UIEnum.BuyUI].GetComponent<BuySystem>();
         //new GameDateSystem();
     }
     public GameActionQueue OnDateChanged{get{return gameDateSystem.OnDateChanged;}}

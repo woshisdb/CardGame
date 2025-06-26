@@ -13,6 +13,10 @@ public class Cell : IUISelector, ISendEvent, IModel
     public List<CellItem> CellItems;
     public List<INpc> npcs;
     public ICellBindTableModel tableData;
+    /// <summary>
+    /// 市场
+    /// </summary>
+    public Market market;
 
     public static Dictionary<TableModelDataEnum, Func<ICellBindTableModel>> tableModelDataModelDic =
         new Dictionary<TableModelDataEnum, Func<ICellBindTableModel>>()
@@ -76,6 +80,18 @@ public class Cell : IUISelector, ISendEvent, IModel
     {
         
     }
+    [Button]
+    public void AddNpc()
+    {
+        var obj = new Npc();
+        npcs.Add(obj);
+        obj.cell = this;
+        obj.shop.cell = this;
+    }
+    public INpc FindNpcByName(string name)
+    {
+        return npcs.Find(e => { return e.Name == name; });
+    }
 }
 
 
@@ -83,13 +99,17 @@ public class CellCol : MonoBehaviour,IRegisterEvent,IView
 {
     [ShowInInspector]
     public Cell cell;
-
     public void BindModel(IModel model)
     {
         cell = (Cell)model;
         cell.CellItems = new List<CellItem>(GetComponentsInChildren<CellItem>());
         transform.localPosition = new Vector3(cell.pos.x * 10, 0, cell.pos.y * 10);
         cell.OnBind(this);
+        var bookStore = (BookStoreCellItem)(cell.CellItems.Find(e =>
+        {
+            return e is BookStoreCellItem;
+        }));
+        bookStore.owner = cell.FindNpcByName("bookOwner");
         Refresh();
     }
 

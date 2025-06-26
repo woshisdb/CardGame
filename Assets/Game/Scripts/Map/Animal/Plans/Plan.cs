@@ -6,7 +6,7 @@ using UnityEngine;
 public enum PlanEnum
 {
     Sleep,
-    Test2,
+    Buy,
 }
 
 public abstract class DialogueStoryBuilder

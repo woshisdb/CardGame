@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class BuyPlan : PlanBase
 {
-    public string sleeper = "睡觉";
+    public string seller = "店主";
+    public string buyer = "卖家";
     public override bool CanRun()
     {
         return true;
@@ -14,21 +15,19 @@ public class BuyPlan : PlanBase
     public override void Run(Action done)
     {
         GameActionQueue actionQueue = new GameActionQueue();
-        foreach (var x in GetNpcs(sleeper))
+        actionQueue.Add(e =>
         {
-            actionQueue.Add(e =>
-            {
-                var mapper = new Dictionary<string, INpc>();
-                mapper.Add("老师", GetNpc(sleeper));
-                var ret = new BuyDialogueStoryBuilder(new DialogueEnvir(mapper)).build();
-                GameArchitect.Instance.dialogueManager.StartDialogue(ret, e);
-            });
-        }
+            var mapper = new Dictionary<string, INpc>();
+            mapper.Add(seller, GetNpc(seller));
+            mapper.Add(buyer, GetNpc(buyer));
+            var ret = new BuyDialogueStoryBuilder(new DialogueEnvir(mapper)).build();
+            GameArchitect.Instance.dialogueManager.StartDialogue(ret, e);
+        });
         actionQueue.Run(done);
     }
     public BuyPlan() : base()
     {
-        PlanEnum = PlanEnum.Sleep;
+        PlanEnum = PlanEnum.Buy;
     }
 }
 
@@ -45,10 +44,9 @@ public class BuyDialogueStoryBuilder : DialogueStoryBuilder
     {
         DialogueNode root = new DialogueBuilder(this.envir)
             .Start("你好！", seller)
-            .Next("要买什么书?", seller, null, e =>
+            .Next("要买什么?", seller, null, e =>
             {
-                //var obj = envir.GetNpc(buyer);
-                GameArchitect.Instance.buySystem.BuyAction(envir.GetNpc(seller), envir.GetNpc(buyer),e);
+                GameArchitect.Instance.buySystem.BuyAction(envir.GetNpc(buyer), envir.GetNpc(seller),e);
             })
             .Build();
 

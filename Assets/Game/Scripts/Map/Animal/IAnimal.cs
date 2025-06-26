@@ -47,7 +47,6 @@ public class NpcRelationship
 }
 
 
-
 public interface INpc
 {
     string Name { get; set; }
@@ -78,13 +77,3 @@ public interface INpc
     Shop GetShop();
     
 }
-public enum NpcTrait
-{
-    //
-}
-public class NpcState
-{
-    //理想(职业目标)
-    //
-}
-

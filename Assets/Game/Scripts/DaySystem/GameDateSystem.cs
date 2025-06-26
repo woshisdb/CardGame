@@ -81,7 +81,7 @@ public class GameDateSystem:SerializedMonoBehaviour
             return false;
         }
     }
-    public void Start()
+    public void StartDatePass()
     {
         UseAction();
     }

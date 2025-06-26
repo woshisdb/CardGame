@@ -6,7 +6,10 @@ using UnityEngine;
 public class Npc : INpc
 {
     public PlanBase Plan;
-    public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public string name = "tester";
+    public Shop shop;
+    public Cell cell;
+    public string Name { get => name; set => this.name =value; }
 
     public void AddProperty(AnimalProperty property, int val)
     {
@@ -15,7 +18,7 @@ public class Npc : INpc
 
     public void Decision(Action act)
     {
-        throw new NotImplementedException();
+        act();
     }
 
     public DialogueChoice GetChoice(DialogueNode dialogue)
@@ -40,17 +43,17 @@ public class Npc : INpc
 
     public NpcRelationship GetRelationship(INpc animal)
     {
-        throw new NotImplementedException();
+        return null;
     }
 
     public Shop GetShop()
     {
-        throw new NotImplementedException();
+        return shop;
     }
 
     public Cell InPlace()
     {
-        throw new NotImplementedException();
+        return cell;
     }
 
     public bool IsPlayer()
@@ -61,5 +64,9 @@ public class Npc : INpc
     public void SetPlan(PlanBase plan)
     {
         this.Plan = plan;
+    }
+    public Npc()
+    {
+        this.shop = new Shop();
     }
 }

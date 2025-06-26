@@ -33,7 +33,7 @@ public class GameFrameWork : MonoBehaviour,IRegisterEvent
     [Button]
     public void StartGame()
     {
-        GameArchitect.Instance.gameDateSystem.Start();
+        GameArchitect.Instance.gameDateSystem.StartDatePass();
     }
     public void InitFunc(Action func)
     {

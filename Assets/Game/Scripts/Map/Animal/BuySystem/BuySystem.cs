@@ -32,11 +32,13 @@ public static class ItemTools
 }
 public class Shop
 {
+    public Cell cell;
+    public Market market { get { return cell.market; } }
     public int MoneyItemId()
     {
         return 0;
     }
-    private Dictionary<int, int> inventory = new Dictionary<int,int>();
+    public Dictionary<int, int> inventory;
 
     public void AddItem(Item item, int quantity)
     {
@@ -73,6 +75,10 @@ public class Shop
     {
         return inventory;
     }
+    public Shop()
+    {
+        inventory = new Dictionary<int, int>();
+    }
 }
 
 // PlayerInventory.cs
@@ -85,6 +91,7 @@ public class BuySystem : MonoBehaviour
     public GameObject buyUI;
     public Button button;
     public Button close;
+    public List<GameObject> childs;
     public void BuyAction(INpc buyer,INpc seller,Action Done)
     {
         if(buyer.IsPlayer())
@@ -95,7 +102,7 @@ public class BuySystem : MonoBehaviour
             var ret = new Dictionary<int, int>();
             int allMoney = 0;
             var moneyItemId = sellerShop.MoneyItemId();
-            foreach (var item in buyerShop.GetInventory())
+            foreach (var item in sellerShop.GetInventory())
             {
                 var itemObj = ItemTools.GetItem(item.Key);
                 var itemUi = GameObject.Instantiate(buyUI);
@@ -118,6 +125,8 @@ public class BuySystem : MonoBehaviour
                     allMoney += itemObj.Price;
                     ret[item.Key]++;
                 });
+                itemUi.transform.SetParent(content);
+                childs.Add(itemUi);
             }
             close.onClick.RemoveAllListeners();
             close.onClick.AddListener(() => { Done(); });
@@ -130,6 +139,11 @@ public class BuySystem : MonoBehaviour
                     {
                         TryBuyItem(buyerShop, sellerShop, x.Key, x.Value);
                     }
+                    foreach(var y in childs)
+                    {
+                        GameObject.Destroy(y);
+                    }
+                    childs.Clear();
                     Done();
                 }
             });
